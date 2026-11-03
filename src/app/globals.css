@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #C8105D;
+  --primary-light: #D81B60;
+  --burgundy-dark: #6B0833;
+  --burgundy-main: #9E0B4B;
+  --bg-soft: #FDF4F7;
+  --bg-card-border: #F3D6E2;
+  --whatsapp: #25D366;
+}
+
+body {
+  color: #1F1F1F;
+  background-color: var(--bg-soft);
+  font-family: var(--font-jakarta), system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #fdf4f7;
+}
+::-webkit-scrollbar-thumb {
+  background: #f3c2d4;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c8105d;
+}
+
+/* Pulse animation for WhatsApp CTA button */
+@keyframes pulse-subtle {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 4px 14px 0 rgba(37, 211, 102, 0.35);
+  }
+  50% {
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px 0 rgba(37, 211, 102, 0.5);
+  }
+}
+
+.animate-pulse-subtle {
+  animation: pulse-subtle 3s infinite ease-in-out;
+}
+
+/* Floating shadow */
+.shadow-pink-glow {
+  box-shadow: 0 8px 24px -4px rgba(200, 16, 93, 0.22);
+}
+
+.shadow-admin-card {
+  box-shadow: 0 4px 20px rgba(107, 8, 51, 0.05);
+}
