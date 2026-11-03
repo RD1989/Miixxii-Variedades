@@ -26,7 +26,7 @@ const plusJakarta = Plus_Jakarta_Sans({
 export const metadata: Metadata = {
   title: 'MIIXXIIE Variedades | Moda Plus Size Feminina — Manaus AM',
   description:
-    'Estilo, Conforto e Autoestima ♡ Compre moda plus size feminina de qualidade com finalização rápida e atendimento exclusivo pelo WhatsApp em Manaus e para todo o Brasil.',
+    'Estilo, Conforto e Autoestima ♡ Compre moda plus size feminina de qualidade com finalização rápida e entregas exclusivas em toda Manaus - AM via WhatsApp.',
   keywords: [
     'moda plus size',
     'roupas femininas plus size',
