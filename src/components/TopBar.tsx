@@ -14,7 +14,7 @@ export const TopBar: React.FC = () => {
         <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto no-scrollbar mx-auto sm:mx-0 py-0.5">
           <div className="flex items-center gap-1.5 whitespace-nowrap font-medium text-pink-100">
             <Truck className="w-3.5 h-3.5 text-pink-300 shrink-0" />
-            <span>Frete Grátis* para todo o Brasil</span>
+            <span>Entregas Somente em Manaus - AM</span>
           </div>
 
           <span className="hidden sm:inline text-pink-300/40">|</span>

@@ -96,7 +96,7 @@ export const Footer: React.FC = () => {
               <Truck className="w-5 h-5 text-pink-300 shrink-0" />
               <div>
                 <span className="font-bold block text-white">Entrega Rápida</span>
-                <span className="text-[10px] text-pink-200">Para todo o Brasil</span>
+                <span className="text-[10px] text-pink-200">Somente em Manaus - AM</span>
               </div>
             </div>
 
