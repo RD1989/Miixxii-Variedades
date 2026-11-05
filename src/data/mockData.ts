@@ -46,12 +46,12 @@ export const STORE_CONFIG = {
   city: 'Manaus - AM',
   whatsappNumber: '5592999999999',
   colors: {
-    primary: '#C8105D',
-    primaryLight: '#D81B60',
-    burgundyDark: '#6B0833',
-    burgundyMain: '#9E0B4B',
-    backgroundSoft: '#FDF4F7',
-    cardBorder: '#F3D6E2',
+    primary: '#0A0A0A',
+    primaryLight: '#1F1F1F',
+    dark: '#050505',
+    darkMain: '#121214',
+    backgroundSoft: '#F8F8FA',
+    cardBorder: '#E4E4E7',
     whatsapp: '#25D366',
   },
 };

@@ -16,7 +16,7 @@ import { InfoModal } from '@/components/InfoModal';
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col pb-16 md:pb-0 bg-[#FDF4F7]">
+    <main className="min-h-screen flex flex-col pb-16 md:pb-0 bg-[#F8F8FA]">
       {/* 1. Burgundy Top Bar */}
       <TopBar />
 

@@ -8,27 +8,27 @@ export const TopBar: React.FC = () => {
   const { openInfoModal, openWhatsAppModal } = useStore();
 
   return (
-    <div className="w-full bg-gradient-to-r from-[#6B0833] via-[#9E0B4B] to-[#6B0833] text-white text-[11px] sm:text-xs py-2 px-4 sm:px-8 lg:px-12 2xl:px-16 shadow-sm border-b border-[#b5145b]/30">
+    <div className="w-full bg-gradient-to-r from-[#0C0C0E] via-[#17171A] to-[#0C0C0E] text-neutral-300 text-[11px] sm:text-xs py-2 px-4 sm:px-8 lg:px-12 2xl:px-16 shadow-sm border-b border-neutral-800">
       <div className="w-full flex items-center justify-between">
         {/* Left / Center: Shipping & Security Perks */}
         <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto no-scrollbar mx-auto sm:mx-0 py-0.5">
-          <div className="flex items-center gap-1.5 whitespace-nowrap font-medium text-pink-100">
-            <Truck className="w-3.5 h-3.5 text-pink-300 shrink-0" />
+          <div className="flex items-center gap-1.5 whitespace-nowrap font-medium text-neutral-100">
+            <Truck className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
             <span>Entregas Somente em Manaus - AM</span>
           </div>
 
-          <span className="hidden sm:inline text-pink-300/40">|</span>
+          <span className="hidden sm:inline text-neutral-700">|</span>
 
-          <div className="hidden sm:flex items-center gap-1.5 whitespace-nowrap text-pink-100 font-medium">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-300 shrink-0" />
+          <div className="hidden sm:flex items-center gap-1.5 whitespace-nowrap text-neutral-200 font-medium">
+            <ShieldCheck className="w-3.5 h-3.5 text-neutral-400 shrink-0" />
             <span>Compra 100% Segura</span>
           </div>
 
-          <span className="hidden md:inline text-pink-300/40">|</span>
+          <span className="hidden md:inline text-neutral-700">|</span>
 
           <button
             onClick={openWhatsAppModal}
-            className="hidden md:flex items-center gap-1.5 whitespace-nowrap text-emerald-300 hover:text-white transition-colors font-semibold"
+            className="hidden md:flex items-center gap-1.5 whitespace-nowrap text-[#25D366] hover:text-emerald-300 transition-colors font-semibold"
           >
             <MessageCircle className="w-3.5 h-3.5 fill-current shrink-0" />
             <span>Atendimento via WhatsApp</span>
@@ -36,7 +36,7 @@ export const TopBar: React.FC = () => {
         </div>
 
         {/* Right: Social Media Links */}
-        <div className="hidden lg:flex items-center gap-3 text-pink-200">
+        <div className="hidden lg:flex items-center gap-3 text-neutral-400">
           <button
             onClick={() =>
               openInfoModal(

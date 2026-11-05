@@ -17,7 +17,7 @@ export const Navbar: React.FC = () => {
   const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
 
   return (
-    <nav className="hidden md:block bg-white border-b border-[#F3D6E2] py-2 px-4 sm:px-8 lg:px-12 2xl:px-16 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
+    <nav className="hidden md:block bg-white border-b border-neutral-200 py-2.5 px-4 sm:px-8 lg:px-12 2xl:px-16 shadow-[0_2px_4px_rgba(0,0,0,0.02)]">
       <div className="w-full flex items-center justify-between">
         {/* Navigation Links */}
         <div className="flex items-center gap-1 lg:gap-2">
@@ -27,8 +27,8 @@ export const Navbar: React.FC = () => {
             onClick={() => setSelectedCategory(null)}
             className={`flex items-center gap-1.5 px-4 py-1.5 rounded-full text-xs font-bold transition-all shadow-sm ${
               selectedCategory === null
-                ? 'bg-[#C8105D] text-white'
-                : 'text-gray-700 hover:text-[#C8105D] hover:bg-pink-50'
+                ? 'bg-black text-white'
+                : 'text-neutral-700 hover:text-black hover:bg-neutral-100'
             }`}
           >
             <Home className="w-3.5 h-3.5" />
@@ -45,8 +45,8 @@ export const Navbar: React.FC = () => {
               onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
                 selectedCategory !== null
-                  ? 'text-[#C8105D] font-bold bg-pink-50'
-                  : 'text-gray-700 hover:text-[#C8105D]'
+                  ? 'text-black font-bold bg-neutral-100'
+                  : 'text-neutral-700 hover:text-black hover:bg-neutral-50'
               }`}
             >
               <span>Categorias</span>
@@ -54,17 +54,17 @@ export const Navbar: React.FC = () => {
             </button>
 
             {isCategoryDropdownOpen && (
-              <div className="absolute top-full left-0 w-52 bg-white rounded-xl shadow-xl border border-[#F3D6E2] py-2 z-50 animate-in fade-in-50 duration-150">
+              <div className="absolute top-full left-0 w-52 bg-white rounded-xl shadow-xl border border-neutral-200 py-2 z-50 animate-in fade-in-50 duration-150">
                 <button
                   onClick={() => {
                     setSelectedCategory(null);
                     setIsCategoryDropdownOpen(false);
                   }}
-                  className="w-full text-left px-4 py-1.5 text-xs font-semibold text-gray-800 hover:bg-[#FDF4F7] hover:text-[#C8105D] transition-colors"
+                  className="w-full text-left px-4 py-1.5 text-xs font-semibold text-neutral-900 hover:bg-neutral-100 transition-colors"
                 >
                   Todas as Categorias
                 </button>
-                <div className="my-1 border-t border-gray-100" />
+                <div className="my-1 border-t border-neutral-100" />
                 {CATEGORIES.map((cat) => (
                   <button
                     key={cat.id}
@@ -76,12 +76,12 @@ export const Navbar: React.FC = () => {
                     }}
                     className={`w-full text-left px-4 py-1.5 text-xs transition-colors flex items-center justify-between ${
                       selectedCategory === cat.slug
-                        ? 'text-[#C8105D] font-bold bg-pink-50'
-                        : 'text-gray-600 hover:bg-[#FDF4F7] hover:text-[#C8105D]'
+                        ? 'text-black font-bold bg-neutral-100'
+                        : 'text-neutral-600 hover:bg-neutral-50 hover:text-black'
                     }`}
                   >
                     <span>{cat.name}</span>
-                    <span className="text-[10px] text-pink-300">Plus Size</span>
+                    <span className="text-[10px] text-neutral-400">Plus Size</span>
                   </button>
                 ))}
               </div>
@@ -95,7 +95,7 @@ export const Navbar: React.FC = () => {
               const el = document.getElementById('novidades-section');
               el?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="px-3 py-1.5 rounded-full text-xs font-medium text-gray-700 hover:text-[#C8105D] transition-colors"
+            className="px-3 py-1.5 rounded-full text-xs font-medium text-neutral-700 hover:text-black hover:bg-neutral-50 transition-colors"
           >
             Novidades
           </button>
@@ -107,7 +107,7 @@ export const Navbar: React.FC = () => {
               const el = document.getElementById('mais-vendidos-section');
               el?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="px-3 py-1.5 rounded-full text-xs font-medium text-gray-700 hover:text-[#C8105D] transition-colors"
+            className="px-3 py-1.5 rounded-full text-xs font-medium text-neutral-700 hover:text-black hover:bg-neutral-50 transition-colors"
           >
             Mais Vendidos
           </button>
@@ -119,7 +119,7 @@ export const Navbar: React.FC = () => {
               const el = document.getElementById('festa-section');
               el?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="px-3 py-1.5 rounded-full text-xs font-medium text-gray-700 hover:text-[#C8105D] transition-colors"
+            className="px-3 py-1.5 rounded-full text-xs font-medium text-neutral-700 hover:text-black hover:bg-neutral-50 transition-colors"
           >
             Festa & Noite
           </button>
@@ -130,10 +130,10 @@ export const Navbar: React.FC = () => {
               const el = document.getElementById('novidades-section');
               el?.scrollIntoView({ behavior: 'smooth' });
             }}
-            className="px-3 py-1.5 rounded-full text-xs font-medium text-gray-700 hover:text-[#C8105D] transition-colors flex items-center gap-1"
+            className="px-3 py-1.5 rounded-full text-xs font-medium text-neutral-700 hover:text-black hover:bg-neutral-50 transition-colors flex items-center gap-1.5"
           >
             <span>Ofertas</span>
-            <span className="w-2 h-2 rounded-full bg-[#C8105D]"></span>
+            <span className="w-1.5 h-1.5 rounded-full bg-black"></span>
           </button>
 
           {/* Quem Somos */}
@@ -144,7 +144,7 @@ export const Navbar: React.FC = () => {
                 'Nossa loja nasceu com a missão de vestir a mulher plus size com peças modernas, tecidos de caimento fluido e acabamento de alta costura em Manaus - AM. Acreditamos que a beleza se manifesta em todas as formas e curvas!'
               )
             }
-            className="px-3 py-1.5 rounded-full text-xs font-medium text-gray-700 hover:text-[#C8105D] transition-colors"
+            className="px-3 py-1.5 rounded-full text-xs font-medium text-neutral-700 hover:text-black hover:bg-neutral-50 transition-colors"
           >
             Quem Somos
           </button>
@@ -157,7 +157,7 @@ export const Navbar: React.FC = () => {
                 'Dúvidas sobre tamanhos ou entregas? Fale com nossas consultoras pelo WhatsApp oficial ou visite nosso showroom exclusivo em Manaus.'
               )
             }
-            className="px-3 py-1.5 rounded-full text-xs font-medium text-gray-700 hover:text-[#C8105D] transition-colors"
+            className="px-3 py-1.5 rounded-full text-xs font-medium text-neutral-700 hover:text-black hover:bg-neutral-50 transition-colors"
           >
             Fale Conosco
           </button>

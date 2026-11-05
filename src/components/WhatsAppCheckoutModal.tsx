@@ -4,14 +4,11 @@ import React, { useState } from 'react';
 import {
   MessageCircle,
   X,
-  CheckCircle2,
-  ArrowRight,
   ExternalLink,
   Smartphone,
   Send,
   Sparkles,
   Paperclip,
-  Mic,
   MoreVertical,
   Phone,
   Video,
@@ -20,7 +17,6 @@ import { useStore } from '@/store/useStore';
 import {
   generateWhatsAppCheckoutUrl,
   formatCurrencyBRL,
-  STORE_CONFIG,
 } from '@/data/mockData';
 
 export const WhatsAppCheckoutModal: React.FC = () => {
@@ -31,7 +27,6 @@ export const WhatsAppCheckoutModal: React.FC = () => {
     customerName,
     setCustomerName,
     addAdminOrder,
-    clearCart,
   } = useStore();
 
   const [activeTab, setActiveTab] = useState<'handoff' | 'chatSimulator'>('handoff');
@@ -39,7 +34,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
 
   if (!isWhatsAppModalOpen) return null;
 
-  const { url, rawMessage, subtotal } = generateWhatsAppCheckoutUrl(
+  const { url, subtotal } = generateWhatsAppCheckoutUrl(
     cart,
     customerName || undefined
   );
@@ -54,7 +49,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
       extraItemsBadge: cart.length > 2 ? `+${cart.length - 2}` : undefined,
       total: subtotal,
       status: 'Em Atendimento',
-      statusBadge: 'bg-blue-100 text-blue-700',
+      statusBadge: 'bg-neutral-100 text-neutral-800',
     });
 
     // Open WhatsApp in new tab
@@ -63,7 +58,6 @@ export const WhatsAppCheckoutModal: React.FC = () => {
 
   const handleSendInSimulator = () => {
     setChatSent(true);
-    // Register order in Admin
     const newOrderId = `#${Math.floor(1000 + Math.random() * 9000)}`;
     addAdminOrder({
       id: newOrderId,
@@ -72,26 +66,26 @@ export const WhatsAppCheckoutModal: React.FC = () => {
       extraItemsBadge: cart.length > 2 ? `+${cart.length - 2}` : undefined,
       total: subtotal,
       status: 'Em Atendimento',
-      statusBadge: 'bg-blue-100 text-blue-700',
+      statusBadge: 'bg-neutral-100 text-neutral-800',
     });
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
       <div
-        className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden border border-[#F3D6E2] max-h-[92vh] flex flex-col animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden border border-neutral-200 max-h-[92vh] flex flex-col animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 bg-[#FDF4F7]">
+        <div className="flex items-center justify-between px-5 py-3 border-b border-neutral-200 bg-neutral-50">
           {/* Tabs for client presentation */}
-          <div className="flex items-center gap-1 bg-white p-1 rounded-full border border-pink-200 text-xs">
+          <div className="flex items-center gap-1 bg-white p-1 rounded-full border border-neutral-200 text-xs">
             <button
               onClick={() => setActiveTab('handoff')}
               className={`px-3 py-1 rounded-full font-bold transition-all ${
                 activeTab === 'handoff'
-                  ? 'bg-[#25D366] text-white shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-black text-white shadow-sm'
+                  : 'text-neutral-600 hover:text-black'
               }`}
             >
               Etapa 4: Pedido
@@ -101,7 +95,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
               className={`px-3 py-1 rounded-full font-bold transition-all ${
                 activeTab === 'chatSimulator'
                   ? 'bg-[#075E54] text-white shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  : 'text-neutral-600 hover:text-black'
               }`}
             >
               Etapa 5: Chat ao Vivo
@@ -110,7 +104,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
 
           <button
             onClick={closeWhatsAppModal}
-            className="w-8 h-8 rounded-full bg-white hover:bg-gray-100 text-gray-500 hover:text-gray-800 flex items-center justify-center shadow-sm transition-colors"
+            className="w-8 h-8 rounded-full bg-white hover:bg-neutral-100 text-neutral-500 hover:text-black flex items-center justify-center shadow-sm transition-colors"
             aria-label="Fechar"
           >
             <X className="w-5 h-5" />
@@ -131,16 +125,16 @@ export const WhatsAppCheckoutModal: React.FC = () => {
             </div>
 
             {/* Title & Subtitle */}
-            <h3 className="text-2xl sm:text-3xl font-bold text-gray-900 tracking-tight">
+            <h3 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
               Pedido via WhatsApp
             </h3>
-            <p className="text-sm sm:text-base text-gray-600 mt-1 max-w-xs">
-              Agora é só conversar com nossa equipe!
+            <p className="text-sm sm:text-base text-neutral-600 mt-1 max-w-xs">
+              Agora é só conversar com nossa equipe em Manaus!
             </p>
 
             {/* Optional Customer Name Personalization */}
             <div className="w-full max-w-sm mt-5 text-left">
-              <label className="block text-xs font-semibold text-gray-700 mb-1">
+              <label className="block text-xs font-semibold text-neutral-700 mb-1">
                 Seu Nome (opcional para atendimento personalizado):
               </label>
               <input
@@ -148,25 +142,25 @@ export const WhatsAppCheckoutModal: React.FC = () => {
                 value={customerName}
                 onChange={(e) => setCustomerName(e.target.value)}
                 placeholder="Ex: Juliana Silva"
-                className="w-full px-4 py-2 text-xs rounded-xl border border-gray-300 focus:outline-none focus:border-[#25D366] focus:ring-1 focus:ring-[#25D366] bg-gray-50/50"
+                className="w-full px-4 py-2 text-xs rounded-xl border border-neutral-300 focus:outline-none focus:border-black focus:ring-1 focus:ring-black bg-neutral-50"
               />
             </div>
 
             {/* Order Summary Box */}
-            <div className="w-full max-w-sm bg-pink-50/60 rounded-2xl p-4 my-5 border border-pink-100 text-left space-y-2">
-              <div className="flex items-center justify-between text-xs font-semibold text-gray-700 pb-2 border-b border-pink-200/60">
+            <div className="w-full max-w-sm bg-neutral-50 rounded-2xl p-4 my-5 border border-neutral-200 text-left space-y-2">
+              <div className="flex items-center justify-between text-xs font-semibold text-neutral-700 pb-2 border-b border-neutral-200">
                 <span>Resumo ({cart.length} itens):</span>
-                <span className="text-[#C8105D] font-bold">
+                <span className="text-black font-extrabold text-sm">
                   {formatCurrencyBRL(subtotal)}
                 </span>
               </div>
-              <div className="max-h-24 overflow-y-auto space-y-1.5 text-[11px] text-gray-600 pr-1">
+              <div className="max-h-24 overflow-y-auto space-y-1.5 text-[11px] text-neutral-600 pr-1">
                 {cart.map((item, idx) => (
                   <div key={idx} className="flex justify-between">
                     <span className="truncate max-w-[200px]">
                       {item.quantity}x {item.product.name} ({item.selectedSize})
                     </span>
-                    <span className="font-semibold text-gray-800">
+                    <span className="font-semibold text-neutral-900">
                       {formatCurrencyBRL(item.product.price * item.quantity)}
                     </span>
                   </div>
@@ -187,7 +181,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
 
               <button
                 onClick={() => setActiveTab('chatSimulator')}
-                className="w-full py-2.5 text-xs text-gray-600 hover:text-[#C8105D] font-semibold flex items-center justify-center gap-1.5 hover:underline"
+                className="w-full py-2.5 text-xs text-neutral-600 hover:text-black font-semibold flex items-center justify-center gap-1.5 hover:underline"
               >
                 <Smartphone className="w-3.5 h-3.5" />
                 <span>Ver Demonstração de Chat Simulada</span>
@@ -200,8 +194,8 @@ export const WhatsAppCheckoutModal: React.FC = () => {
             {/* WhatsApp Topbar */}
             <div className="bg-[#075E54] text-white px-4 py-3 flex items-center justify-between shadow-md">
               <div className="flex items-center gap-3">
-                <div className="relative w-10 h-10 rounded-full bg-pink-100 border-2 border-pink-300 overflow-hidden flex items-center justify-center text-[#C8105D] font-bold text-sm">
-                  🌸
+                <div className="relative w-10 h-10 rounded-full bg-white border border-neutral-300 overflow-hidden flex items-center justify-center text-black font-bold text-xs">
+                  MX
                 </div>
                 <div>
                   <h4 className="font-bold text-sm leading-tight flex items-center gap-1.5">
@@ -232,9 +226,9 @@ export const WhatsAppCheckoutModal: React.FC = () => {
               <div className="flex justify-start">
                 <div className="max-w-[85%] bg-white rounded-2xl rounded-tl-sm p-3 shadow-sm text-gray-800 space-y-1">
                   <p>
-                    Olá! 🌸 Seja muito bem-vinda à <strong>MIIXXIIE Variedades</strong>!
+                    Olá! Seja muito bem-vinda à <strong>MIIXXIIE Variedades</strong>!
                   </p>
-                  <p>Qualquer dúvida estou por aqui para te ajudar. 💕</p>
+                  <p>Qualquer dúvida sobre tamanhos, tecidos ou entrega em Manaus estou por aqui. ✨</p>
                   <span className="block text-[9px] text-gray-400 text-right">11:24</span>
                 </div>
               </div>
@@ -268,7 +262,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
                     Perfeito! Vou confirmar seu pedido agora. 😊
                   </p>
                   <p>
-                    Muito obrigada por comprar conosco! Já estamos separando seu look em Manaus. 💖
+                    Muito obrigada por comprar conosco! Já estamos separando seu look para entrega expressa em Manaus. 🤍
                   </p>
                   <span className="block text-[9px] text-gray-400 text-right">11:26</span>
                 </div>

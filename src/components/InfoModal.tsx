@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { X, Sparkles, CheckCircle, ArrowRight } from 'lucide-react';
+import { X, Sparkles, ArrowRight } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 
 export const InfoModal: React.FC = () => {
@@ -10,34 +10,34 @@ export const InfoModal: React.FC = () => {
   if (!infoModal.isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-150">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-150">
       <div
-        className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 border border-[#F3D6E2] animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-md bg-white rounded-3xl shadow-2xl p-6 border border-neutral-200 animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={closeInfoModal}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 text-gray-500 hover:text-gray-800 flex items-center justify-center transition-colors"
+          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-black flex items-center justify-center transition-colors"
           aria-label="Fechar"
         >
           <X className="w-5 h-5" />
         </button>
 
         <div className="flex items-center gap-2 mb-3">
-          <div className="w-9 h-9 rounded-full bg-pink-100 flex items-center justify-center text-[#C8105D]">
+          <div className="w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-black">
             <Sparkles className="w-5 h-5" />
           </div>
-          <h3 className="font-bold text-lg text-gray-900">{infoModal.title}</h3>
+          <h3 className="font-bold text-lg text-neutral-900">{infoModal.title}</h3>
         </div>
 
-        <p className="text-sm text-gray-600 leading-relaxed mb-6">
+        <p className="text-sm text-neutral-600 leading-relaxed mb-6">
           {infoModal.description}
         </p>
 
         <div className="flex items-center justify-end gap-2">
           <button
             onClick={closeInfoModal}
-            className="px-4 py-2 rounded-full text-xs font-semibold text-gray-600 hover:bg-gray-100 transition-colors"
+            className="px-4 py-2 rounded-full text-xs font-semibold text-neutral-600 hover:bg-neutral-100 transition-colors"
           >
             Fechar
           </button>
@@ -46,7 +46,7 @@ export const InfoModal: React.FC = () => {
               closeInfoModal();
               openWhatsAppModal();
             }}
-            className="px-5 py-2 rounded-full text-xs font-bold bg-[#C8105D] text-white hover:bg-[#A8084A] transition-colors flex items-center gap-1.5 shadow-sm"
+            className="px-5 py-2 rounded-full text-xs font-bold bg-black text-white hover:bg-neutral-800 transition-colors flex items-center gap-1.5 shadow-sm"
           >
             <span>Falar no WhatsApp</span>
             <ArrowRight className="w-3.5 h-3.5" />

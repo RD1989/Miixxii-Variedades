@@ -20,7 +20,7 @@ export const CategoryBar: React.FC = () => {
 
   return (
     <section className="w-full px-3 sm:px-6 lg:px-10 2xl:px-12 py-6 sm:py-8">
-      <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-[#F3D6E2]">
+      <div className="bg-white rounded-3xl p-4 sm:p-6 shadow-sm border border-neutral-200">
         {/* Horizontal Container: 8 items */}
         <div className="flex items-center justify-between gap-3 sm:gap-6 overflow-x-auto no-scrollbar scroll-smooth py-2 px-2">
           {CATEGORIES.map((cat) => {
@@ -36,11 +36,11 @@ export const CategoryBar: React.FC = () => {
                 <div
                   className={`relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 rounded-full overflow-hidden transition-all duration-300 p-0.5 ${
                     isSelected
-                      ? 'ring-4 ring-[#C8105D] shadow-lg scale-105'
-                      : 'border-2 border-[#F3D6E2] group-hover:border-[#C8105D] group-hover:shadow-md'
+                      ? 'ring-4 ring-black shadow-lg scale-105'
+                      : 'border-2 border-neutral-200 group-hover:border-black group-hover:shadow-md'
                   }`}
                 >
-                  <div className="relative w-full h-full rounded-full overflow-hidden bg-pink-50">
+                  <div className="relative w-full h-full rounded-full overflow-hidden bg-neutral-100">
                     <Image
                       src={cat.image}
                       alt={cat.name}
@@ -55,8 +55,8 @@ export const CategoryBar: React.FC = () => {
                 <span
                   className={`text-xs sm:text-sm font-semibold transition-colors text-center ${
                     isSelected
-                      ? 'text-[#C8105D] font-bold'
-                      : 'text-gray-700 group-hover:text-[#C8105D]'
+                      ? 'text-black font-extrabold'
+                      : 'text-neutral-700 group-hover:text-black'
                   }`}
                 >
                   {cat.name}

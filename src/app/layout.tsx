@@ -53,7 +53,7 @@ export default function RootLayout({
       lang="pt-BR"
       className={`${cinzel.variable} ${dancingScript.variable} ${plusJakarta.variable}`}
     >
-      <body className="min-h-screen bg-[#FDF4F7] text-[#1F1F1F] font-sans antialiased selection:bg-[#C8105D] selection:text-white">
+      <body className="min-h-screen bg-[#F8F8FA] text-[#111111] font-sans antialiased selection:bg-black selection:text-white">
         {children}
       </body>
     </html>

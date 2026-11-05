@@ -56,25 +56,24 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FDF4F7] flex flex-col md:flex-row text-gray-800 pb-20 md:pb-0">
+    <div className="min-h-screen bg-[#F8F8FA] flex flex-col md:flex-row text-gray-800 pb-20 md:pb-0">
       {/* 1. Desktop Permanent Sidebar (Vinho Escuro) */}
-      <aside className="hidden md:flex md:w-64 bg-gradient-to-b from-[#6B0833] via-[#7F0A3D] to-[#9E0B4B] text-white flex-col justify-between shrink-0 shadow-2xl z-30 min-h-screen sticky top-0">
+      <aside className="hidden md:flex md:w-64 bg-gradient-to-b from-[#0A0A0C] via-[#121214] to-[#17171A] text-white flex-col justify-between shrink-0 shadow-2xl z-30 min-h-screen sticky top-0">
         <div>
           {/* Logo Header */}
-          <div className="p-6 border-b border-pink-400/20 flex flex-col items-center text-center">
+          <div className="p-6 border-b border-white/10 flex flex-col items-center text-center">
             <Link href="/" className="group flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full bg-white p-2 shadow-lg flex items-center justify-center border-2 border-pink-300 transition-transform group-hover:scale-105">
-                <div className="text-center">
-                  <span className="font-brand font-bold text-xs tracking-wider text-[#6B0833] block">
-                    MIIXXIIE
-                  </span>
-                  <span className="font-script text-xs text-[#C8105D] -mt-1 block">
-                    Variedades ♡
-                  </span>
-                </div>
+              <div className="w-16 h-16 rounded-full bg-white p-1.5 shadow-lg flex items-center justify-center border-2 border-neutral-700 transition-transform group-hover:scale-105">
+                <Image
+                  src="/images/logo-circle.png"
+                  alt="MIIXXIIE"
+                  width={56}
+                  height={56}
+                  className="rounded-full object-contain"
+                />
               </div>
-              <span className="text-[10px] tracking-[0.2em] uppercase font-bold text-pink-200 mt-2">
-                Moda Plus Size Feminina
+              <span className="text-[10px] tracking-[0.24em] uppercase font-bold text-neutral-300 mt-2.5">
+                Moda Plus Size
               </span>
             </Link>
           </div>
@@ -85,8 +84,8 @@ export default function AdminPage() {
               onClick={() => handleTabChange('dashboard')}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
                 activeTab === 'dashboard'
-                  ? 'bg-[#C8105D] text-white shadow-md'
-                  : 'text-pink-100/80 hover:bg-white/10 hover:text-white'
+                  ? 'bg-white text-black font-extrabold shadow-md'
+                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
               }`}
             >
               <LayoutDashboard className="w-4 h-4" />
@@ -97,8 +96,8 @@ export default function AdminPage() {
               onClick={() => handleTabChange('produtos')}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
                 activeTab === 'produtos'
-                  ? 'bg-[#C8105D] text-white shadow-md'
-                  : 'text-pink-100/80 hover:bg-white/10 hover:text-white'
+                  ? 'bg-white text-black font-extrabold shadow-md'
+                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
               }`}
             >
               <Shirt className="w-4 h-4" />
@@ -112,7 +111,7 @@ export default function AdminPage() {
                   'Permite criar, reordenar e editar as 8 categorias ativas da vitrine (Vestidos, Conjuntos, Blusas, Calças, Shorts, Saias, Macacões, Plus Size).'
                 )
               }
-              className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium text-pink-100/80 hover:bg-white/10 hover:text-white transition-all"
+              className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium text-neutral-400 hover:bg-white/10 hover:text-white transition-all"
             >
               <Grid className="w-4 h-4" />
               <span>Categorias</span>
@@ -122,15 +121,15 @@ export default function AdminPage() {
               onClick={() => handleTabChange('pedidos')}
               className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
                 activeTab === 'pedidos'
-                  ? 'bg-[#C8105D] text-white shadow-md'
-                  : 'text-pink-100/80 hover:bg-white/10 hover:text-white'
+                  ? 'bg-white text-black font-extrabold shadow-md'
+                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
               }`}
             >
               <div className="flex items-center gap-3">
                 <ShoppingBag className="w-4 h-4" />
                 <span>Pedidos</span>
               </div>
-              <span className="bg-[#C8105D] text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/20">
+              <span className="bg-[#0A0A0A] text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/20">
                 24
               </span>
             </button>
@@ -139,8 +138,8 @@ export default function AdminPage() {
               onClick={() => handleTabChange('clientes')}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
                 activeTab === 'clientes'
-                  ? 'bg-[#C8105D] text-white shadow-md'
-                  : 'text-pink-100/80 hover:bg-white/10 hover:text-white'
+                  ? 'bg-white text-black font-extrabold shadow-md'
+                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
               }`}
             >
               <Users className="w-4 h-4" />
@@ -151,8 +150,8 @@ export default function AdminPage() {
               onClick={() => handleTabChange('cupons')}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
                 activeTab === 'cupons'
-                  ? 'bg-[#C8105D] text-white shadow-md'
-                  : 'text-pink-100/80 hover:bg-white/10 hover:text-white'
+                  ? 'bg-white text-black font-extrabold shadow-md'
+                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
               }`}
             >
               <Ticket className="w-4 h-4" />
@@ -166,7 +165,7 @@ export default function AdminPage() {
                   'Configure os slides da página inicial, campanhas sazonais e anúncios de frete grátis em Manaus.'
                 )
               }
-              className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium text-pink-100/80 hover:bg-white/10 hover:text-white transition-all"
+              className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium text-neutral-400 hover:bg-white/10 hover:text-white transition-all"
             >
               <ImageIcon className="w-4 h-4" />
               <span>Banners</span>
@@ -176,8 +175,8 @@ export default function AdminPage() {
               onClick={() => handleTabChange('relatorios')}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
                 activeTab === 'relatorios'
-                  ? 'bg-[#C8105D] text-white shadow-md'
-                  : 'text-pink-100/80 hover:bg-white/10 hover:text-white'
+                  ? 'bg-white text-black font-extrabold shadow-md'
+                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
               }`}
             >
               <BarChart3 className="w-4 h-4" />
@@ -188,8 +187,8 @@ export default function AdminPage() {
               onClick={() => handleTabChange('configuracoes')}
               className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
                 activeTab === 'configuracoes'
-                  ? 'bg-[#C8105D] text-white shadow-md'
-                  : 'text-pink-100/80 hover:bg-white/10 hover:text-white'
+                  ? 'bg-white text-black font-extrabold shadow-md'
+                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
               }`}
             >
               <Settings className="w-4 h-4" />
@@ -198,7 +197,7 @@ export default function AdminPage() {
 
             <Link
               href="/"
-              className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium text-pink-200 hover:bg-white/10 hover:text-white transition-all pt-2"
+              className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium text-neutral-300 hover:bg-white/10 hover:text-white transition-all pt-2"
             >
               <LogOut className="w-4 h-4" />
               <span>Voltar para a Loja</span>
@@ -217,7 +216,7 @@ export default function AdminPage() {
                 className="object-cover object-top"
               />
             </div>
-            <p className="font-script text-base text-pink-200 font-bold leading-tight">
+            <p className="font-script text-base text-neutral-300 font-bold leading-tight">
               Moda Plus Size com muito estilo e amor! ♡
             </p>
           </div>
@@ -234,21 +233,21 @@ export default function AdminPage() {
           />
 
           {/* Drawer Content */}
-          <div className="relative w-4/5 max-w-xs bg-gradient-to-b from-[#6B0833] via-[#7F0A3D] to-[#9E0B4B] text-white h-full shadow-2xl flex flex-col justify-between p-5 z-10 animate-in slide-in-from-left duration-250">
+          <div className="relative w-4/5 max-w-xs bg-gradient-to-b from-[#0A0A0C] via-[#121214] to-[#17171A] text-white h-full shadow-2xl flex flex-col justify-between p-5 z-10 animate-in slide-in-from-left duration-250">
             <div>
-              <div className="flex items-center justify-between pb-4 border-b border-pink-400/20">
+              <div className="flex items-center justify-between pb-4 border-b border-white/10">
                 <div className="flex items-center gap-2">
                   <div className="w-9 h-9 rounded-full bg-white p-1 flex items-center justify-center">
-                    <span className="font-brand font-bold text-[10px] text-[#6B0833]">MX</span>
+                    <span className="font-brand font-bold text-[10px] text-[#0A0A0C]">MX</span>
                   </div>
                   <div>
                     <span className="font-brand font-bold text-xs text-white block">MIIXXIIE</span>
-                    <span className="text-[10px] text-pink-200">Painel Admin</span>
+                    <span className="text-[10px] text-neutral-300">Painel Admin</span>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="p-1 rounded-full text-pink-200 hover:text-white"
+                  className="p-1 rounded-full text-neutral-300 hover:text-white"
                   aria-label="Fechar menu"
                 >
                   <X className="w-5 h-5" />
@@ -259,7 +258,7 @@ export default function AdminPage() {
                 <button
                   onClick={() => handleTabChange('dashboard')}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-bold ${
-                    activeTab === 'dashboard' ? 'bg-[#C8105D] text-white shadow-sm' : 'text-pink-100 hover:bg-white/10'
+                    activeTab === 'dashboard' ? 'bg-white text-black font-extrabold shadow-sm' : 'text-neutral-400 hover:bg-white/10 hover:text-white'
                   }`}
                 >
                   <LayoutDashboard className="w-4 h-4" />
@@ -269,7 +268,7 @@ export default function AdminPage() {
                 <button
                   onClick={() => handleTabChange('produtos')}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium ${
-                    activeTab === 'produtos' ? 'bg-[#C8105D] text-white shadow-sm' : 'text-pink-100 hover:bg-white/10'
+                    activeTab === 'produtos' ? 'bg-white text-black font-extrabold shadow-sm' : 'text-neutral-400 hover:bg-white/10 hover:text-white'
                   }`}
                 >
                   <Shirt className="w-4 h-4" />
@@ -279,14 +278,14 @@ export default function AdminPage() {
                 <button
                   onClick={() => handleTabChange('pedidos')}
                   className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium ${
-                    activeTab === 'pedidos' ? 'bg-[#C8105D] text-white shadow-sm' : 'text-pink-100 hover:bg-white/10'
+                    activeTab === 'pedidos' ? 'bg-white text-black font-extrabold shadow-sm' : 'text-neutral-400 hover:bg-white/10 hover:text-white'
                   }`}
                 >
                   <div className="flex items-center gap-3">
                     <ShoppingBag className="w-4 h-4" />
                     <span>Pedidos</span>
                   </div>
-                  <span className="bg-[#C8105D] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+                  <span className="bg-[#0A0A0A] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
                     24
                   </span>
                 </button>
@@ -294,7 +293,7 @@ export default function AdminPage() {
                 <button
                   onClick={() => handleTabChange('clientes')}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium ${
-                    activeTab === 'clientes' ? 'bg-[#C8105D] text-white shadow-sm' : 'text-pink-100 hover:bg-white/10'
+                    activeTab === 'clientes' ? 'bg-white text-black font-extrabold shadow-sm' : 'text-neutral-400 hover:bg-white/10 hover:text-white'
                   }`}
                 >
                   <Users className="w-4 h-4" />
@@ -304,7 +303,7 @@ export default function AdminPage() {
                 <button
                   onClick={() => handleTabChange('cupons')}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium ${
-                    activeTab === 'cupons' ? 'bg-[#C8105D] text-white shadow-sm' : 'text-pink-100 hover:bg-white/10'
+                    activeTab === 'cupons' ? 'bg-white text-black font-extrabold shadow-sm' : 'text-neutral-400 hover:bg-white/10 hover:text-white'
                   }`}
                 >
                   <Ticket className="w-4 h-4" />
@@ -314,7 +313,7 @@ export default function AdminPage() {
                 <button
                   onClick={() => handleTabChange('relatorios')}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium ${
-                    activeTab === 'relatorios' ? 'bg-[#C8105D] text-white shadow-sm' : 'text-pink-100 hover:bg-white/10'
+                    activeTab === 'relatorios' ? 'bg-white text-black font-extrabold shadow-sm' : 'text-neutral-400 hover:bg-white/10 hover:text-white'
                   }`}
                 >
                   <BarChart3 className="w-4 h-4" />
@@ -324,7 +323,7 @@ export default function AdminPage() {
                 <button
                   onClick={() => handleTabChange('configuracoes')}
                   className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium ${
-                    activeTab === 'configuracoes' ? 'bg-[#C8105D] text-white shadow-sm' : 'text-pink-100 hover:bg-white/10'
+                    activeTab === 'configuracoes' ? 'bg-white text-black font-extrabold shadow-sm' : 'text-neutral-400 hover:bg-white/10 hover:text-white'
                   }`}
                 >
                   <Settings className="w-4 h-4" />
@@ -333,10 +332,10 @@ export default function AdminPage() {
               </nav>
             </div>
 
-            <div className="pt-4 border-t border-pink-400/20">
+            <div className="pt-4 border-t border-white/10">
               <Link
                 href="/"
-                className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-pink-200 hover:bg-white/10"
+                className="w-full flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-xs font-semibold text-neutral-300 hover:bg-white/10"
               >
                 <LogOut className="w-4 h-4" />
                 <span>Voltar para a Loja</span>
@@ -349,12 +348,12 @@ export default function AdminPage() {
       {/* 3. Main Content Container */}
       <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
         {/* Responsive Topbar Admin */}
-        <header className="bg-white border-b border-[#F3D6E2] px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between sticky top-0 z-20 shadow-xs">
+        <header className="bg-white border-b border-[#E4E4E7] px-3 sm:px-6 py-3 sm:py-4 flex items-center justify-between sticky top-0 z-20 shadow-xs">
           {/* Left: Mobile Drawer Trigger + Brand Title */}
           <div className="flex items-center gap-2 sm:gap-4">
             <button
               onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden p-1.5 rounded-lg text-gray-700 hover:text-[#C8105D] hover:bg-pink-50"
+              className="md:hidden p-1.5 rounded-lg text-gray-700 hover:text-[#0A0A0A] hover:bg-neutral-100"
               aria-label="Abrir menu lateral"
             >
               <Menu className="w-5 h-5" />
@@ -363,7 +362,7 @@ export default function AdminPage() {
             <div>
               <h1 className="text-sm sm:text-lg font-bold text-gray-900 flex items-center gap-1 sm:gap-2 leading-tight">
                 <span>MIIXXIIE</span>
-                <span className="hidden sm:inline font-script text-[#C8105D] text-base">Variedades</span>
+                <span className="hidden sm:inline font-script text-[#0A0A0A] text-base">Variedades</span>
                 <span className="text-[10px] sm:text-xs text-gray-400 font-normal">| Admin</span>
               </h1>
             </div>
@@ -395,18 +394,18 @@ export default function AdminPage() {
                   '3 novas mensagens de clientes aguardando resposta no WhatsApp de Manaus.'
                 )
               }
-              className="relative p-1.5 rounded-full text-gray-500 hover:text-[#C8105D] hover:bg-pink-50 transition-colors"
+              className="relative p-1.5 rounded-full text-gray-500 hover:text-[#0A0A0A] hover:bg-neutral-100 transition-colors"
               aria-label="Notificações"
             >
               <Bell className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span className="absolute top-0 right-0 w-3.5 h-3.5 rounded-full bg-[#C8105D] text-white text-[8px] font-bold flex items-center justify-center">
+              <span className="absolute top-0 right-0 w-3.5 h-3.5 rounded-full bg-[#0A0A0A] text-white text-[8px] font-bold flex items-center justify-center">
                 3
               </span>
             </button>
 
             {/* Admin Profile */}
             <div className="flex items-center gap-2 pl-1.5 border-l border-gray-200">
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#6B0833] text-white flex items-center justify-center font-bold text-[11px] sm:text-xs shadow-xs">
+              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#0A0A0C] text-white flex items-center justify-center font-bold text-[11px] sm:text-xs shadow-xs">
                 AD
               </div>
               <div className="hidden lg:block text-left text-xs leading-tight">
@@ -423,7 +422,7 @@ export default function AdminPage() {
             {/* 4 Top KPI Cards — 2x2 Grid on Mobile, 4x1 on Desktop */}
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4">
               {/* KPI 1: Pedidos Totais */}
-              <div className="bg-white rounded-2xl p-3 sm:p-5 border border-[#F3D6E2] shadow-xs relative overflow-hidden flex flex-col justify-between">
+              <div className="bg-white rounded-2xl p-3 sm:p-5 border border-[#E4E4E7] shadow-xs relative overflow-hidden flex flex-col justify-between">
                 <div className="flex justify-between items-start">
                   <div>
                     <span className="text-[10px] sm:text-xs font-semibold text-gray-500 block truncate">
@@ -435,7 +434,7 @@ export default function AdminPage() {
                       <span>+12%</span>
                     </div>
                   </div>
-                  <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-pink-100 flex items-center justify-center text-[#C8105D] shrink-0">
+                  <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-xl sm:rounded-2xl bg-neutral-200 flex items-center justify-center text-[#0A0A0A] shrink-0">
                     <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5" />
                   </div>
                 </div>
@@ -452,7 +451,7 @@ export default function AdminPage() {
               </div>
 
               {/* KPI 2: Visitantes */}
-              <div className="bg-white rounded-2xl p-3 sm:p-5 border border-[#F3D6E2] shadow-xs relative overflow-hidden flex flex-col justify-between">
+              <div className="bg-white rounded-2xl p-3 sm:p-5 border border-[#E4E4E7] shadow-xs relative overflow-hidden flex flex-col justify-between">
                 <div className="flex justify-between items-start">
                   <div>
                     <span className="text-[10px] sm:text-xs font-semibold text-gray-500 block truncate">
@@ -481,7 +480,7 @@ export default function AdminPage() {
               </div>
 
               {/* KPI 3: Faturamento */}
-              <div className="bg-white rounded-2xl p-3 sm:p-5 border border-[#F3D6E2] shadow-xs relative overflow-hidden flex flex-col justify-between">
+              <div className="bg-white rounded-2xl p-3 sm:p-5 border border-[#E4E4E7] shadow-xs relative overflow-hidden flex flex-col justify-between">
                 <div className="flex justify-between items-start">
                   <div>
                     <span className="text-[10px] sm:text-xs font-semibold text-gray-500 block truncate">
@@ -512,7 +511,7 @@ export default function AdminPage() {
               </div>
 
               {/* KPI 4: Avaliação */}
-              <div className="bg-white rounded-2xl p-3 sm:p-5 border border-[#F3D6E2] shadow-xs relative overflow-hidden flex flex-col justify-between">
+              <div className="bg-white rounded-2xl p-3 sm:p-5 border border-[#E4E4E7] shadow-xs relative overflow-hidden flex flex-col justify-between">
                 <div className="flex justify-between items-start">
                   <div>
                     <span className="text-[10px] sm:text-xs font-semibold text-gray-500 block truncate">
@@ -538,17 +537,17 @@ export default function AdminPage() {
             {/* Grid 2 Columns: Main Chart (Left) + WhatsApp Queue Widget (Right) */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6">
               {/* Sales Chart: Vendas nos Últimos 30 Dias (Col 8) */}
-              <div className="lg:col-span-8 bg-white rounded-3xl p-4 sm:p-6 border border-[#F3D6E2] shadow-xs">
+              <div className="lg:col-span-8 bg-white rounded-3xl p-4 sm:p-6 border border-[#E4E4E7] shadow-xs">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-3 border-b border-gray-100">
                   <div className="flex items-center gap-2">
-                    <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-[#C8105D]" />
+                    <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 text-[#0A0A0A]" />
                     <h3 className="font-bold text-xs sm:text-base text-gray-900">
                       Vendas nos Últimos 30 Dias
                     </h3>
                   </div>
 
                   <div className="flex items-center gap-2 text-[11px] sm:text-xs self-start sm:self-auto">
-                    <span className="bg-pink-50 text-[#C8105D] px-2.5 py-0.5 sm:py-1 rounded-full font-bold border border-pink-200">
+                    <span className="bg-neutral-100 text-[#0A0A0A] px-2.5 py-0.5 sm:py-1 rounded-full font-bold border border-neutral-300">
                       Últimos 30 dias
                     </span>
                   </div>
@@ -557,11 +556,11 @@ export default function AdminPage() {
                 {/* Interactive SVG Chart */}
                 <div className="relative pt-4 sm:pt-6 pb-2">
                   {/* Tooltip Highlight */}
-                  <div className="mb-2 p-2 sm:p-2.5 rounded-xl bg-[#6B0833] text-white text-[11px] sm:text-xs inline-flex items-center gap-1.5 sm:gap-2 shadow-md max-w-full truncate">
+                  <div className="mb-2 p-2 sm:p-2.5 rounded-xl bg-[#0A0A0C] text-white text-[11px] sm:text-xs inline-flex items-center gap-1.5 sm:gap-2 shadow-md max-w-full truncate">
                     <span className="w-2 h-2 rounded-full bg-pink-400 shrink-0"></span>
                     <span className="truncate">
                       Data: <strong>{selectedChartPoint.date}</strong> — Faturamento:{' '}
-                      <strong className="text-pink-300">
+                      <strong className="text-neutral-200">
                         {formatCurrencyBRL(selectedChartPoint.revenue)}
                       </strong>{' '}
                       ({selectedChartPoint.sales} vendas)
@@ -573,8 +572,8 @@ export default function AdminPage() {
                     <svg viewBox="0 0 700 240" className="w-full h-full min-w-[500px] sm:min-w-0 overflow-visible">
                       <defs>
                         <linearGradient id="salesGrad" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#C8105D" stopOpacity="0.35" />
-                          <stop offset="100%" stopColor="#C8105D" stopOpacity="0.0" />
+                          <stop offset="0%" stopColor="#0A0A0A" stopOpacity="0.35" />
+                          <stop offset="100%" stopColor="#0A0A0A" stopOpacity="0.0" />
                         </linearGradient>
                       </defs>
 
@@ -586,7 +585,7 @@ export default function AdminPage() {
                           y1={y}
                           x2="700"
                           y2={y}
-                          stroke="#F3D6E2"
+                          stroke="#E4E4E7"
                           strokeDasharray="4 4"
                           strokeWidth="1"
                         />
@@ -602,7 +601,7 @@ export default function AdminPage() {
                       <path
                         d="M 10 190 Q 70 140, 130 130 T 250 100 T 370 170 T 490 60 T 610 110 T 690 30"
                         fill="none"
-                        stroke="#C8105D"
+                        stroke="#0A0A0A"
                         strokeWidth="3.5"
                         strokeLinecap="round"
                       />
@@ -621,8 +620,8 @@ export default function AdminPage() {
                               r={isSelected ? 7 : 4}
                               className={
                                 isSelected
-                                  ? 'fill-white stroke-[#C8105D] stroke-[3]'
-                                  : 'fill-[#C8105D] hover:fill-[#6B0833] transition-colors'
+                                  ? 'fill-white stroke-[#0A0A0A] stroke-[3]'
+                                  : 'fill-[#0A0A0A] hover:fill-[#0A0A0C] transition-colors'
                               }
                             />
                             {isSelected && (
@@ -630,7 +629,7 @@ export default function AdminPage() {
                                 cx={cx}
                                 cy={cy}
                                 r={14}
-                                className="fill-[#C8105D]/20 animate-ping"
+                                className="fill-[#0A0A0A]/20 animate-ping"
                               />
                             )}
                           </g>
@@ -645,9 +644,9 @@ export default function AdminPage() {
                       <button
                         key={p.date}
                         onClick={() => setSelectedChartPoint(p)}
-                        className={`hover:text-[#C8105D] transition-colors whitespace-nowrap px-1 ${
+                        className={`hover:text-[#0A0A0A] transition-colors whitespace-nowrap px-1 ${
                           selectedChartPoint.date === p.date
-                            ? 'font-bold text-[#C8105D]'
+                            ? 'font-bold text-[#0A0A0A]'
                             : ''
                         }`}
                       >
@@ -659,7 +658,7 @@ export default function AdminPage() {
               </div>
 
               {/* Right Widget: Pedidos via WhatsApp Online (Col 4) */}
-              <div className="lg:col-span-4 bg-white rounded-3xl p-4 sm:p-6 border border-[#F3D6E2] shadow-xs flex flex-col justify-between">
+              <div className="lg:col-span-4 bg-white rounded-3xl p-4 sm:p-6 border border-[#E4E4E7] shadow-xs flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between pb-3 border-b border-gray-100">
                     <div className="flex items-center gap-2">
@@ -687,10 +686,10 @@ export default function AdminPage() {
                             `Última mensagem enviada às ${item.time}: "${item.message}". Status atual: ${item.status}.`
                           )
                         }
-                        className="py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3 hover:bg-pink-50/50 p-1.5 sm:p-2 rounded-xl cursor-pointer transition-colors"
+                        className="py-2.5 sm:py-3 flex items-center justify-between gap-2 sm:gap-3 hover:bg-neutral-100/50 p-1.5 sm:p-2 rounded-xl cursor-pointer transition-colors"
                       >
                         <div className="flex items-center gap-2 sm:gap-2.5 min-w-0">
-                          <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-pink-100 overflow-hidden shrink-0 border border-pink-200">
+                          <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-neutral-200 overflow-hidden shrink-0 border border-neutral-300">
                             <Image
                               src={item.avatar}
                               alt={item.name}
@@ -732,7 +731,7 @@ export default function AdminPage() {
                         'noopener,noreferrer'
                       )
                     }
-                    className="w-full flex items-center justify-center gap-2 bg-[#C8105D] hover:bg-[#A8084A] text-white font-bold text-xs py-2.5 sm:py-3 rounded-full shadow-sm transition-all hover:scale-[1.02]"
+                    className="w-full flex items-center justify-center gap-2 bg-[#0A0A0A] hover:bg-[#262626] text-white font-bold text-xs py-2.5 sm:py-3 rounded-full shadow-sm transition-all hover:scale-[1.02]"
                   >
                     <MessageCircle className="w-3.5 h-3.5 fill-white" />
                     <span>Abrir WhatsApp Web</span>
@@ -743,10 +742,10 @@ export default function AdminPage() {
             </div>
 
             {/* Recent Orders — Native Responsive Table on Desktop, Native Cards on Mobile */}
-            <div className="bg-white rounded-3xl p-4 sm:p-6 border border-[#F3D6E2] shadow-xs">
+            <div className="bg-white rounded-3xl p-4 sm:p-6 border border-[#E4E4E7] shadow-xs">
               <div className="flex items-center justify-between pb-3 sm:pb-4 border-b border-gray-100 mb-3 sm:mb-4">
                 <div className="flex items-center gap-2">
-                  <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 text-[#C8105D]" />
+                  <ShoppingBag className="w-4 h-4 sm:w-5 sm:h-5 text-[#0A0A0A]" />
                   <h3 className="font-bold text-xs sm:text-base text-gray-900">
                     Últimos Pedidos ({adminOrders.length})
                   </h3>
@@ -754,7 +753,7 @@ export default function AdminPage() {
 
                 <button
                   onClick={() => handleTabChange('pedidos')}
-                  className="text-xs font-bold text-[#C8105D] hover:underline flex items-center gap-1"
+                  className="text-xs font-bold text-[#0A0A0A] hover:underline flex items-center gap-1"
                 >
                   <span>Ver Todos</span>
                   <ChevronRight className="w-3.5 h-3.5" />
@@ -766,7 +765,7 @@ export default function AdminPage() {
                 {adminOrders.map((order) => (
                   <div
                     key={order.id}
-                    className="p-3 bg-pink-50/40 rounded-2xl border border-pink-100/70 space-y-2"
+                    className="p-3 bg-neutral-100/40 rounded-2xl border border-neutral-200/70 space-y-2"
                   >
                     <div className="flex items-center justify-between">
                       <div>
@@ -781,7 +780,7 @@ export default function AdminPage() {
                             e.target.value as AdminOrder['status']
                           )
                         }
-                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border-none focus:ring-1 focus:ring-[#C8105D] cursor-pointer ${order.statusBadge}`}
+                        className={`text-[10px] font-bold px-2 py-0.5 rounded-full border-none focus:ring-1 focus:ring-[#0A0A0A] cursor-pointer ${order.statusBadge}`}
                       >
                         <option value="Pago">● Pago</option>
                         <option value="Em Atendimento">● Em Atendimento</option>
@@ -790,18 +789,18 @@ export default function AdminPage() {
                       </select>
                     </div>
 
-                    <div className="flex items-center justify-between pt-1 border-t border-pink-100">
+                    <div className="flex items-center justify-between pt-1 border-t border-neutral-200">
                       <div className="flex items-center -space-x-1.5">
                         {PRODUCTS.slice(0, 3).map((p, i) => (
                           <div
                             key={i}
-                            className="relative w-5 h-5 rounded-full overflow-hidden border border-white shadow-2xs bg-pink-100"
+                            className="relative w-5 h-5 rounded-full overflow-hidden border border-white shadow-2xs bg-neutral-200"
                           >
                             <Image src={p.image} alt="Look" fill className="object-cover" />
                           </div>
                         ))}
                         {order.extraItemsBadge && (
-                          <div className="w-5 h-5 rounded-full bg-pink-100 text-[#C8105D] font-bold text-[8px] flex items-center justify-center border border-white">
+                          <div className="w-5 h-5 rounded-full bg-neutral-200 text-[#0A0A0A] font-bold text-[8px] flex items-center justify-center border border-white">
                             {order.extraItemsBadge}
                           </div>
                         )}
@@ -816,7 +815,7 @@ export default function AdminPage() {
                         </span>
                         <button
                           onClick={() => setSelectedOrderDetails(order)}
-                          className="p-1 rounded-lg text-[#C8105D] hover:bg-pink-100"
+                          className="p-1 rounded-lg text-[#0A0A0A] hover:bg-neutral-200"
                           title="Ver detalhes"
                         >
                           <Eye className="w-3.5 h-3.5" />
@@ -844,7 +843,7 @@ export default function AdminPage() {
                     {adminOrders.map((order) => (
                       <tr
                         key={order.id}
-                        className="hover:bg-pink-50/40 transition-colors"
+                        className="hover:bg-neutral-100/40 transition-colors"
                       >
                         <td className="py-3 px-4 font-bold text-gray-900">
                           {order.id}
@@ -857,7 +856,7 @@ export default function AdminPage() {
                             {PRODUCTS.slice(0, 3).map((p, i) => (
                               <div
                                 key={i}
-                                className="relative w-6 h-6 rounded-full overflow-hidden border border-white shadow-2xs bg-pink-100"
+                                className="relative w-6 h-6 rounded-full overflow-hidden border border-white shadow-2xs bg-neutral-200"
                               >
                                 <Image
                                   src={p.image}
@@ -868,7 +867,7 @@ export default function AdminPage() {
                               </div>
                             ))}
                             {order.extraItemsBadge && (
-                              <div className="w-6 h-6 rounded-full bg-pink-100 text-[#C8105D] font-bold text-[9px] flex items-center justify-center border border-white shadow-2xs">
+                              <div className="w-6 h-6 rounded-full bg-neutral-200 text-[#0A0A0A] font-bold text-[9px] flex items-center justify-center border border-white shadow-2xs">
                                 {order.extraItemsBadge}
                               </div>
                             )}
@@ -886,7 +885,7 @@ export default function AdminPage() {
                                 e.target.value as AdminOrder['status']
                               )
                             }
-                            className={`text-[11px] font-bold px-2.5 py-1 rounded-full border-none focus:ring-1 focus:ring-[#C8105D] cursor-pointer ${order.statusBadge}`}
+                            className={`text-[11px] font-bold px-2.5 py-1 rounded-full border-none focus:ring-1 focus:ring-[#0A0A0A] cursor-pointer ${order.statusBadge}`}
                           >
                             <option value="Pago">● Pago</option>
                             <option value="Em Atendimento">● Em Atendimento</option>
@@ -897,7 +896,7 @@ export default function AdminPage() {
                         <td className="py-3 px-4 text-right">
                           <button
                             onClick={() => setSelectedOrderDetails(order)}
-                            className="inline-flex items-center gap-1 text-[11px] font-bold text-[#C8105D] hover:bg-pink-100 px-3 py-1 rounded-full border border-pink-200 transition-colors"
+                            className="inline-flex items-center gap-1 text-[11px] font-bold text-[#0A0A0A] hover:bg-neutral-200 px-3 py-1 rounded-full border border-neutral-300 transition-colors"
                           >
                             <Eye className="w-3 h-3" />
                             <span>Ver Detalhes</span>
@@ -915,7 +914,7 @@ export default function AdminPage() {
               {ADMIN_DASHBOARD_DATA.bottomCounters.map((counter, idx) => (
                 <div
                   key={idx}
-                  className="bg-white rounded-2xl p-3 sm:p-4 border border-[#F3D6E2] shadow-xs flex flex-col justify-between"
+                  className="bg-white rounded-2xl p-3 sm:p-4 border border-[#E4E4E7] shadow-xs flex flex-col justify-between"
                 >
                   <div>
                     <span className="text-[10px] sm:text-[11px] text-gray-500 font-medium truncate block">
@@ -937,7 +936,7 @@ export default function AdminPage() {
                         `Módulo de gerenciamento para ${counter.label}. Dados sincronizados com o estoque físico em Manaus.`
                       )
                     }
-                    className="mt-2 text-left text-[10px] sm:text-[11px] font-bold text-[#C8105D] hover:underline flex items-center justify-between"
+                    className="mt-2 text-left text-[10px] sm:text-[11px] font-bold text-[#0A0A0A] hover:underline flex items-center justify-between"
                   >
                     <span className="truncate">{counter.actionLabel}</span>
                     <ChevronRight className="w-3 h-3 shrink-0" />
@@ -948,9 +947,9 @@ export default function AdminPage() {
 
             {/* Promo Banner & Live Status Footer */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-4">
-              <div className="md:col-span-2 bg-gradient-to-r from-pink-50 via-pink-100/50 to-white rounded-2xl p-4 sm:p-6 border border-pink-200 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-center sm:text-left">
+              <div className="md:col-span-2 bg-gradient-to-r from-pink-50 via-pink-100/50 to-white rounded-2xl p-4 sm:p-6 border border-neutral-300 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 text-center sm:text-left">
                 <div className="space-y-1">
-                  <span className="text-[10px] sm:text-xs font-bold text-[#C8105D] uppercase tracking-wider">
+                  <span className="text-[10px] sm:text-xs font-bold text-[#0A0A0A] uppercase tracking-wider">
                     Sucesso em Vendas
                   </span>
                   <h4 className="font-bold text-sm sm:text-base text-gray-900">
@@ -962,7 +961,7 @@ export default function AdminPage() {
                 </div>
                 <button
                   onClick={() => handleTabChange('relatorios')}
-                  className="shrink-0 bg-[#C8105D] hover:bg-[#A8084A] text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-xs transition-all"
+                  className="shrink-0 bg-[#0A0A0A] hover:bg-[#262626] text-white font-bold text-xs px-5 py-2.5 rounded-full shadow-xs transition-all"
                 >
                   Ver Relatórios
                 </button>
@@ -1000,7 +999,7 @@ export default function AdminPage() {
                     'Insira fotos, selecione as grades Plus Size (G, GG, G1, G2, G3), cores e defina o valor com cálculo de oferta.'
                   )
                 }
-                className="self-start sm:self-auto inline-flex items-center gap-1.5 bg-[#C8105D] text-white text-xs font-bold px-4 py-2 rounded-full shadow-md hover:bg-[#A8084A]"
+                className="self-start sm:self-auto inline-flex items-center gap-1.5 bg-[#0A0A0A] text-white text-xs font-bold px-4 py-2 rounded-full shadow-md hover:bg-[#262626]"
               >
                 <Plus className="w-4 h-4" />
                 <span>Novo Produto</span>
@@ -1011,9 +1010,9 @@ export default function AdminPage() {
               {PRODUCTS.map((prod) => (
                 <div
                   key={prod.id}
-                  className="bg-white rounded-2xl border border-[#F3D6E2] p-3 sm:p-4 flex gap-3 sm:gap-4 shadow-xs"
+                  className="bg-white rounded-2xl border border-[#E4E4E7] p-3 sm:p-4 flex gap-3 sm:gap-4 shadow-xs"
                 >
-                  <div className="relative w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden bg-pink-50 shrink-0">
+                  <div className="relative w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden bg-neutral-100 shrink-0">
                     <Image
                       src={prod.image}
                       alt={prod.name}
@@ -1023,7 +1022,7 @@ export default function AdminPage() {
                   </div>
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
-                      <span className="text-[9px] sm:text-[10px] font-bold text-[#C8105D] bg-pink-50 px-2 py-0.5 rounded-full">
+                      <span className="text-[9px] sm:text-[10px] font-bold text-[#0A0A0A] bg-neutral-100 px-2 py-0.5 rounded-full">
                         {prod.badge}
                       </span>
                       <h4 className="font-bold text-xs sm:text-sm text-gray-900 mt-1 line-clamp-1">
@@ -1052,7 +1051,7 @@ export default function AdminPage() {
         {activeTab === 'pedidos' && (
           <div className="p-4 sm:p-6 space-y-4 sm:space-y-6">
             <h2 className="text-lg sm:text-xl font-bold text-gray-900">Todos os Pedidos</h2>
-            <div className="bg-white rounded-2xl p-4 sm:p-6 border border-[#F3D6E2]">
+            <div className="bg-white rounded-2xl p-4 sm:p-6 border border-[#E4E4E7]">
               <p className="text-xs text-gray-500 mb-4">
                 Monitore em tempo real as compras feitas através da loja e confirmadas via WhatsApp.
               </p>
@@ -1087,8 +1086,8 @@ export default function AdminPage() {
           activeTab === 'relatorios' ||
           activeTab === 'configuracoes') && (
           <div className="p-4 sm:p-6">
-            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#F3D6E2] text-center max-w-lg mx-auto space-y-4">
-              <div className="w-12 h-12 rounded-full bg-pink-100 text-[#C8105D] flex items-center justify-center mx-auto">
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-[#E4E4E7] text-center max-w-lg mx-auto space-y-4">
+              <div className="w-12 h-12 rounded-full bg-neutral-200 text-[#0A0A0A] flex items-center justify-center mx-auto">
                 <Sparkles className="w-6 h-6" />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-gray-900 capitalize">
@@ -1099,7 +1098,7 @@ export default function AdminPage() {
               </p>
               <button
                 onClick={() => handleTabChange('dashboard')}
-                className="px-6 py-2 rounded-full bg-[#C8105D] text-white text-xs font-bold hover:bg-[#A8084A] transition-colors"
+                className="px-6 py-2 rounded-full bg-[#0A0A0A] text-white text-xs font-bold hover:bg-[#262626] transition-colors"
               >
                 Retornar ao Dashboard Principal
               </button>
@@ -1109,12 +1108,12 @@ export default function AdminPage() {
       </main>
 
       {/* 4. Mobile Fixed Bottom Admin Navigation Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#F3D6E2] py-2 px-3 shadow-[0_-4px_16px_rgba(200,16,93,0.08)]">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white border-t border-[#E4E4E7] py-2 px-3 shadow-[0_-4px_16px_rgba(200,16,93,0.08)]">
         <div className="flex items-center justify-around">
           <button
             onClick={() => handleTabChange('dashboard')}
             className={`flex flex-col items-center gap-1 focus:outline-none ${
-              activeTab === 'dashboard' ? 'text-[#C8105D] font-bold' : 'text-gray-500'
+              activeTab === 'dashboard' ? 'text-[#0A0A0A] font-bold' : 'text-gray-500'
             }`}
           >
             <LayoutDashboard className="w-5 h-5" />
@@ -1124,7 +1123,7 @@ export default function AdminPage() {
           <button
             onClick={() => handleTabChange('produtos')}
             className={`flex flex-col items-center gap-1 focus:outline-none ${
-              activeTab === 'produtos' ? 'text-[#C8105D] font-bold' : 'text-gray-500'
+              activeTab === 'produtos' ? 'text-[#0A0A0A] font-bold' : 'text-gray-500'
             }`}
           >
             <Shirt className="w-5 h-5" />
@@ -1134,12 +1133,12 @@ export default function AdminPage() {
           <button
             onClick={() => handleTabChange('pedidos')}
             className={`relative flex flex-col items-center gap-1 focus:outline-none ${
-              activeTab === 'pedidos' ? 'text-[#C8105D] font-bold' : 'text-gray-500'
+              activeTab === 'pedidos' ? 'text-[#0A0A0A] font-bold' : 'text-gray-500'
             }`}
           >
             <div className="relative">
               <ShoppingBag className="w-5 h-5" />
-              <span className="absolute -top-1 -right-2 w-3.5 h-3.5 rounded-full bg-[#C8105D] text-white text-[8px] font-bold flex items-center justify-center">
+              <span className="absolute -top-1 -right-2 w-3.5 h-3.5 rounded-full bg-[#0A0A0A] text-white text-[8px] font-bold flex items-center justify-center">
                 24
               </span>
             </div>
@@ -1169,10 +1168,10 @@ export default function AdminPage() {
       {/* Order Detail Modal */}
       {selectedOrderDetails && (
         <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="bg-white rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 max-w-md w-full shadow-2xl border border-[#F3D6E2] space-y-4 max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom duration-250">
+          <div className="bg-white rounded-t-3xl sm:rounded-3xl p-5 sm:p-6 max-w-md w-full shadow-2xl border border-[#E4E4E7] space-y-4 max-h-[90vh] overflow-y-auto animate-in slide-in-from-bottom duration-250">
             <div className="flex justify-between items-start">
               <div>
-                <span className="text-xs font-bold text-[#C8105D]">
+                <span className="text-xs font-bold text-[#0A0A0A]">
                   Pedido {selectedOrderDetails.id}
                 </span>
                 <h3 className="font-bold text-base sm:text-lg text-gray-900">
@@ -1188,7 +1187,7 @@ export default function AdminPage() {
               </button>
             </div>
 
-            <div className="bg-pink-50/60 p-4 rounded-2xl space-y-2 text-xs">
+            <div className="bg-neutral-100/60 p-4 rounded-2xl space-y-2 text-xs">
               <div className="flex justify-between">
                 <span className="text-gray-500">Total do Pedido:</span>
                 <span className="font-bold text-gray-900">

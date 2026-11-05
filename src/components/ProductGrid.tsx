@@ -10,10 +10,7 @@ import {
   Sparkles,
   Flame,
   Crown,
-  Clock,
-  ShieldCheck,
   Truck,
-  Percent,
 } from 'lucide-react';
 import { PRODUCTS, Product, formatCurrencyBRL } from '@/data/mockData';
 import { useStore } from '@/store/useStore';
@@ -60,12 +57,12 @@ export const ProductGrid: React.FC = () => {
     return (
       <div
         key={product.id}
-        className="group bg-white rounded-2xl border border-[#F3D6E2] overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1.5"
+        className="group bg-white rounded-2xl border border-neutral-200 overflow-hidden flex flex-col justify-between shadow-sm hover:shadow-xl hover:border-black transition-all duration-300 hover:-translate-y-1.5"
       >
         {/* Image Area with Badges & Wishlist */}
         <div
           onClick={() => openDetail(product)}
-          className="relative aspect-[3/4] w-full overflow-hidden bg-pink-50/50 cursor-pointer"
+          className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 cursor-pointer"
         >
           <Image
             src={product.image}
@@ -78,22 +75,22 @@ export const ProductGrid: React.FC = () => {
           {/* Status Badge */}
           <div className="absolute top-2.5 left-2.5 z-10">
             {product.badge === 'Novo' && (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#C8105D] text-white uppercase tracking-wider shadow-sm">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black text-white uppercase tracking-wider shadow-sm">
                 Novo
               </span>
             )}
             {product.badge === 'Oferta' && (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#6B0833] text-white uppercase tracking-wider shadow-sm">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-800 text-white uppercase tracking-wider shadow-sm border border-neutral-700">
                 Oferta
               </span>
             )}
             {product.badge === 'Destaque' && (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#2E7D32] text-white uppercase tracking-wider shadow-sm">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-900 text-white uppercase tracking-wider shadow-sm">
                 Destaque
               </span>
             )}
             {product.badge === 'Festa' && (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-gradient-to-r from-[#9E0B4B] to-[#C8105D] text-white uppercase tracking-wider shadow-sm">
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black text-white uppercase tracking-wider shadow-sm border border-neutral-700">
                 Festa ✨
               </span>
             )}
@@ -105,12 +102,12 @@ export const ProductGrid: React.FC = () => {
               e.stopPropagation();
               toggleFavorite(product.id);
             }}
-            className="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-gray-400 hover:text-[#C8105D] flex items-center justify-center transition-all shadow-sm hover:scale-110 active:scale-95"
+            className="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-neutral-400 hover:text-black flex items-center justify-center transition-all shadow-sm hover:scale-110 active:scale-95"
             aria-label="Adicionar aos favoritos"
           >
             <Heart
               className={`w-4 h-4 ${
-                isFav ? 'fill-[#C8105D] text-[#C8105D]' : 'stroke-current'
+                isFav ? 'fill-black text-black' : 'stroke-current'
               }`}
             />
           </button>
@@ -122,33 +119,33 @@ export const ProductGrid: React.FC = () => {
             onClick={() => openDetail(product)}
             className="cursor-pointer space-y-1"
           >
-            <h3 className="font-semibold text-xs sm:text-sm text-gray-800 line-clamp-1 group-hover:text-[#C8105D] transition-colors">
+            <h3 className="font-semibold text-xs sm:text-sm text-neutral-900 line-clamp-1 group-hover:text-black transition-colors">
               {product.name}
             </h3>
 
             {/* Price Area */}
             <div className="flex items-baseline gap-1.5 flex-wrap">
-              <span className="text-sm sm:text-base font-bold text-gray-900">
+              <span className="text-sm sm:text-base font-bold text-neutral-900">
                 {formatCurrencyBRL(product.price)}
               </span>
               {product.originalPrice && (
-                <span className="text-[11px] text-gray-400 line-through">
+                <span className="text-[11px] text-neutral-400 line-through">
                   {formatCurrencyBRL(product.originalPrice)}
                 </span>
               )}
             </div>
 
             {/* Sizes Indicator */}
-            <div className="flex items-center gap-1 text-[10px] text-gray-400">
+            <div className="flex items-center gap-1 text-[10px] text-neutral-500">
               <span>Grades:</span>
-              <span className="font-semibold text-gray-600">G ao G3</span>
+              <span className="font-semibold text-neutral-800">G ao G3</span>
             </div>
           </div>
 
-          {/* WhatsApp Purchase Button */}
+          {/* WhatsApp Purchase Button with Smooth Green Transition */}
           <button
             onClick={() => openDetail(product)}
-            className="w-full mt-1 flex items-center justify-center gap-1.5 bg-[#C8105D] hover:bg-[#A8084A] text-white text-[11px] sm:text-xs font-bold py-2 px-3 rounded-full shadow-sm hover:shadow-md transition-all hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full mt-1 flex items-center justify-center gap-1.5 bg-black hover:bg-[#25D366] text-white text-[11px] sm:text-xs font-bold py-2 px-3 rounded-full shadow-sm hover:shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
           >
             <MessageCircle className="w-3.5 h-3.5 fill-white shrink-0" />
             <span className="truncate">Comprar pelo WhatsApp</span>
@@ -165,17 +162,17 @@ export const ProductGrid: React.FC = () => {
         <section id="novidades-section">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
             <div>
-              <h2 className="font-script text-4xl sm:text-5xl font-bold text-[#C8105D]">
+              <h2 className="font-script text-4xl sm:text-5xl font-bold text-black">
                 Resultados da Busca
               </h2>
               <div className="mt-2 flex items-center gap-2">
                 {selectedCategory && (
-                  <span className="text-xs bg-pink-100 text-[#C8105D] px-3 py-1 rounded-full font-bold">
+                  <span className="text-xs bg-black text-white px-3 py-1 rounded-full font-bold">
                     Categoria: {selectedCategory.toUpperCase()}
                   </span>
                 )}
                 {searchQuery && (
-                  <span className="text-xs bg-pink-100 text-[#C8105D] px-3 py-1 rounded-full font-bold">
+                  <span className="text-xs bg-neutral-200 text-black px-3 py-1 rounded-full font-bold">
                     Termo: &ldquo;{searchQuery}&rdquo;
                   </span>
                 )}
@@ -183,7 +180,7 @@ export const ProductGrid: React.FC = () => {
                   onClick={() => {
                     setSelectedCategory(null);
                   }}
-                  className="text-xs text-gray-500 hover:text-[#C8105D] underline font-semibold ml-2"
+                  className="text-xs text-neutral-600 hover:text-black underline font-semibold ml-2"
                 >
                   Limpar Filtros e Ver Tudo
                 </button>
@@ -192,13 +189,13 @@ export const ProductGrid: React.FC = () => {
           </div>
 
           {filteredProducts.length === 0 ? (
-            <div className="bg-white rounded-3xl p-12 text-center border border-[#F3D6E2] max-w-md mx-auto">
-              <p className="text-gray-600 font-medium">
+            <div className="bg-white rounded-3xl p-12 text-center border border-neutral-200 max-w-md mx-auto shadow-sm">
+              <p className="text-neutral-700 font-medium">
                 Nenhum produto encontrado com os filtros atuais.
               </p>
               <button
                 onClick={() => setSelectedCategory(null)}
-                className="mt-4 px-6 py-2.5 rounded-full bg-[#C8105D] text-white text-xs font-bold shadow-md hover:bg-[#A8084A]"
+                className="mt-4 px-6 py-2.5 rounded-full bg-black text-white text-xs font-bold shadow-md hover:bg-neutral-800 transition-colors"
               >
                 Ver Todas as Coleções
               </button>
@@ -216,19 +213,19 @@ export const ProductGrid: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-script text-4xl sm:text-5xl lg:text-6xl font-bold text-[#C8105D] leading-tight">
+                  <h2 className="font-script text-4xl sm:text-5xl lg:text-6xl font-bold text-black leading-tight">
                     Novidades
                   </h2>
-                  <Sparkles className="w-6 h-6 text-[#C8105D]" />
+                  <Sparkles className="w-6 h-6 text-neutral-800" />
                 </div>
-                <p className="text-gray-600 text-sm sm:text-base mt-1">
+                <p className="text-neutral-600 text-sm sm:text-base mt-1">
                   As últimas tendências da moda plus size para você arrasar!
                 </p>
               </div>
 
               <button
                 onClick={() => setSelectedCategory(null)}
-                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#C8105D] hover:text-[#A8084A] transition-colors group self-start sm:self-auto"
+                className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-black hover:text-neutral-600 transition-colors group self-start sm:self-auto"
               >
                 <span>Ver todas as novidades</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -241,26 +238,26 @@ export const ProductGrid: React.FC = () => {
           </section>
 
           {/* BANNER INTERMEDIÁRIO DE MANAUS & ATENDIMENTO EXPRESS */}
-          <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#6B0833] via-[#9E0B4B] to-[#6B0833] text-white p-6 sm:p-10 shadow-lg border border-pink-400/20">
+          <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#0C0C0E] via-[#17171A] to-[#0C0C0E] text-white p-6 sm:p-10 shadow-xl border border-neutral-800">
             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
               <div className="space-y-2 max-w-2xl">
-                <span className="inline-block px-3 py-1 rounded-full bg-white/20 text-[11px] font-bold uppercase tracking-wider text-pink-200">
+                <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-[11px] font-bold uppercase tracking-wider text-neutral-200 border border-white/15">
                   📍 Atendimento Exclusivo em Manaus
                 </span>
                 <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight">
                   Entrega Rápida em Manaus em até 24 Horas!
                 </h3>
-                <p className="text-xs sm:text-sm text-pink-100/90 leading-relaxed">
+                <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed">
                   Escolha suas peças, tire dúvidas sobre tamanhos e tecidos com nossas consultoras e receba no mesmo dia no conforto da sua casa.
                 </p>
               </div>
 
               <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
                 <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/20 text-xs">
-                  <Truck className="w-5 h-5 text-pink-300" />
+                  <Truck className="w-5 h-5 text-neutral-300" />
                   <div className="text-left">
                     <span className="block font-bold text-white">Frete Grátis</span>
-                    <span className="text-[10px] text-pink-200">Acima de R$ 199</span>
+                    <span className="text-[10px] text-neutral-300">Acima de R$ 199</span>
                   </div>
                 </div>
 
@@ -280,19 +277,19 @@ export const ProductGrid: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-script text-4xl sm:text-5xl lg:text-6xl font-bold text-[#C8105D] leading-tight">
+                  <h2 className="font-script text-4xl sm:text-5xl lg:text-6xl font-bold text-black leading-tight">
                     Mais Vendidos
                   </h2>
-                  <Flame className="w-6 h-6 text-amber-500 fill-amber-500" />
+                  <Flame className="w-6 h-6 text-neutral-800" />
                 </div>
-                <p className="text-gray-600 text-sm sm:text-base mt-1">
+                <p className="text-neutral-600 text-sm sm:text-base mt-1">
                   Os queridinhos e campeões de elogios das nossas clientes!
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs bg-amber-50 text-amber-700 px-3 py-1 rounded-full font-bold border border-amber-200 flex items-center gap-1">
-                  <Star className="w-3.5 h-3.5 fill-amber-500" />
+                <span className="text-xs bg-neutral-100 text-neutral-900 px-3 py-1 rounded-full font-bold border border-neutral-300 flex items-center gap-1">
+                  <Star className="w-3.5 h-3.5 fill-black text-black" />
                   Avaliação Média 4.9 ★★★★★
                 </span>
               </div>
@@ -308,18 +305,18 @@ export const ProductGrid: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-script text-4xl sm:text-5xl lg:text-6xl font-bold text-[#C8105D] leading-tight">
+                  <h2 className="font-script text-4xl sm:text-5xl lg:text-6xl font-bold text-black leading-tight">
                     Coleção Festa & Noite
                   </h2>
-                  <Crown className="w-6 h-6 text-[#9E0B4B]" />
+                  <Crown className="w-6 h-6 text-neutral-800" />
                 </div>
-                <p className="text-gray-600 text-sm sm:text-base mt-1">
+                <p className="text-neutral-600 text-sm sm:text-base mt-1">
                   Brilho, glamour e sofisticação em modelagens que valorizam cada curva.
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs bg-pink-100 text-[#C8105D] px-3 py-1 rounded-full font-bold border border-pink-200">
+                <span className="text-xs bg-black text-white px-3 py-1 rounded-full font-bold border border-neutral-800">
                   Edição Limitada
                 </span>
               </div>

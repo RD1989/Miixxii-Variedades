@@ -3,39 +3,39 @@
 @tailwind utilities;
 
 :root {
-  --primary: #C8105D;
-  --primary-light: #D81B60;
-  --burgundy-dark: #6B0833;
-  --burgundy-main: #9E0B4B;
-  --bg-soft: #FDF4F7;
-  --bg-card-border: #F3D6E2;
+  --primary: #0A0A0A;
+  --primary-light: #1F1F1F;
+  --dark-header: #0C0C0E;
+  --dark-sub: #161618;
+  --bg-soft: #F8F8FA;
+  --bg-card-border: #E4E4E7;
   --whatsapp: #25D366;
 }
 
 body {
-  color: #1F1F1F;
+  color: #111111;
   background-color: var(--bg-soft);
   font-family: var(--font-jakarta), system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
-/* Custom Scrollbar */
+/* Custom Scrollbar - Modern Monochrome */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
 }
 ::-webkit-scrollbar-track {
-  background: #fdf4f7;
+  background: #f1f1f3;
 }
 ::-webkit-scrollbar-thumb {
-  background: #f3c2d4;
+  background: #c4c4c8;
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #c8105d;
+  background: #111111;
 }
 
-/* Pulse animation for WhatsApp CTA button */
+/* Subtle Pulse animation for WhatsApp CTA button */
 @keyframes pulse-subtle {
   0%, 100% {
     transform: scale(1);
@@ -51,11 +51,11 @@ body {
   animation: pulse-subtle 3s infinite ease-in-out;
 }
 
-/* Floating shadow */
-.shadow-pink-glow {
-  box-shadow: 0 8px 24px -4px rgba(200, 16, 93, 0.22);
+/* Modern Glowing Shadows */
+.shadow-modern-glow {
+  box-shadow: 0 10px 30px -4px rgba(0, 0, 0, 0.22);
 }
 
 .shadow-admin-card {
-  box-shadow: 0 4px 20px rgba(107, 8, 51, 0.05);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
 }

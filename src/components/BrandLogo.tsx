@@ -2,10 +2,11 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 interface BrandLogoProps {
   variant?: 'light' | 'dark' | 'white';
-  size?: 'sm' | 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   showSubtitle?: boolean;
   className?: string;
 }
@@ -17,72 +18,39 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
   className = '',
 }) => {
   const isWhite = variant === 'white';
-  const textColor = isWhite ? 'text-white' : 'text-[#1F1F1F]';
-  const scriptColor = isWhite ? 'text-pink-200' : 'text-[#C8105D]';
-  const subtitleColor = isWhite ? 'text-pink-100' : 'text-[#1F1F1F]';
 
-  const scaleClasses = {
-    sm: {
-      title: 'text-xl sm:text-2xl tracking-[0.2em]',
-      heart: 'w-4 h-4 -top-3',
-      script: 'text-lg sm:text-xl -mt-1',
-      subtitle: 'text-[9px] tracking-[0.22em]',
-    },
-    md: {
-      title: 'text-2xl sm:text-3xl tracking-[0.22em]',
-      heart: 'w-5 h-5 -top-3.5',
-      script: 'text-xl sm:text-2xl -mt-1.5',
-      subtitle: 'text-[10px] tracking-[0.25em]',
-    },
-    lg: {
-      title: 'text-3xl sm:text-4xl tracking-[0.25em]',
-      heart: 'w-6 h-6 -top-4',
-      script: 'text-2xl sm:text-3xl -mt-2',
-      subtitle: 'text-[11px] tracking-[0.28em]',
-    },
+  const dimensions = {
+    sm: { width: 130, height: 49, subtitle: 'text-[8px] tracking-[0.24em]' },
+    md: { width: 175, height: 66, subtitle: 'text-[9px] tracking-[0.28em]' },
+    lg: { width: 220, height: 83, subtitle: 'text-[10px] tracking-[0.3em]' },
+    xl: { width: 260, height: 98, subtitle: 'text-[11px] tracking-[0.32em]' },
   }[size];
+
+  const logoSrc = isWhite ? '/images/logo-white.png' : '/images/logo-black.png';
 
   return (
     <Link
       href="/"
-      className={`inline-flex flex-col items-center justify-center text-center group select-none ${className}`}
+      className={`inline-flex flex-col items-center justify-center text-center group select-none transition-transform duration-200 hover:opacity-90 ${className}`}
     >
-      {/* Brand Main Title with Centered Heart over XX */}
-      <div className="relative inline-block">
-        {/* Heart Icon centered over the middle XX */}
-        <div className={`absolute left-1/2 -translate-x-1/2 ${scaleClasses.heart} pointer-events-none transition-transform duration-300 group-hover:scale-125`}>
-          <svg
-            viewBox="0 0 24 24"
-            className="w-full h-full fill-none stroke-[#C8105D] stroke-[2.2]"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-          </svg>
-        </div>
-
-        <span className={`font-brand font-bold uppercase ${textColor} ${scaleClasses.title} block transition-colors`}>
-          MIIXXIIE
-        </span>
+      <div className="relative flex items-center justify-center">
+        <Image
+          src={logoSrc}
+          alt="MIIXXIIE Variedades"
+          width={dimensions.width}
+          height={dimensions.height}
+          priority
+          className="h-auto w-auto max-h-[46px] sm:max-h-[58px] object-contain transition-transform duration-300 group-hover:scale-105 drop-shadow-sm"
+        />
       </div>
 
-      {/* Script Subtitle: Variedades ♡ */}
-      <div className="flex items-center gap-1">
-        <span className={`font-script ${scriptColor} ${scaleClasses.script} italic font-semibold`}>
-          Variedades
-        </span>
-        <svg
-          viewBox="0 0 24 24"
-          className={`w-3.5 h-3.5 fill-none stroke-[#C8105D] stroke-[2] ${isWhite ? 'stroke-pink-200' : ''}`}
-        >
-          <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-        </svg>
-      </div>
-
-      {/* Category Niche */}
       {showSubtitle && (
-        <span className={`font-sans font-semibold uppercase ${subtitleColor} ${scaleClasses.subtitle} mt-0.5 opacity-90`}>
-          MODA PLUS SIZE FEMININA
+        <span
+          className={`mt-0.5 font-bold uppercase ${dimensions.subtitle} ${
+            isWhite ? 'text-neutral-300' : 'text-neutral-600'
+          }`}
+        >
+          Moda Plus Size Feminina
         </span>
       )}
     </Link>
