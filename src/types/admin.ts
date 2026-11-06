@@ -73,3 +73,16 @@ export interface AdminAuthUser {
   avatar: string;
   lastLogin: string;
 }
+
+export interface CarouselSlide {
+  id: string;
+  title: string;
+  subtitle: string;
+  badge: string;
+  categoryTarget: string; // 'todos' | 'Vestidos' | 'Conjuntos' | 'Bermudas' | string
+  ctaText: string;
+  imageUrl: string;
+  isActive: boolean;
+  order: number;
+}
+

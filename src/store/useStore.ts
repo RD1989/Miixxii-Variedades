@@ -20,10 +20,19 @@ import {
   ActivityLog,
   StoreCMSConfig,
   AdminAuthUser,
+  CarouselSlide,
 } from '@/types/admin';
 import { getSupabaseClient } from '@/lib/supabase';
 
-export { type KanbanStatus, type AdminOrder, type LeadClickEvent, type ActivityLog, type StoreCMSConfig, type AdminAuthUser };
+export {
+  type KanbanStatus,
+  type AdminOrder,
+  type LeadClickEvent,
+  type ActivityLog,
+  type StoreCMSConfig,
+  type AdminAuthUser,
+  type CarouselSlide,
+};
 export { type Product, type ColorOption } from '@/data/mockData';
 
 export const KANBAN_BADGE_MAP: Record<KanbanStatus, string> = {
@@ -229,6 +238,53 @@ const INITIAL_CMS: StoreCMSConfig = {
   whatsappCarlos: '(92) 98606-4005',
 };
 
+const INITIAL_CAROUSEL_SLIDES: CarouselSlide[] = [
+  {
+    id: 'slide-1',
+    title: 'MIIXXIIE Variedades',
+    subtitle: 'Moda Plus Size Feminina com elegância sem medidas do G ao G3. Exclusividade e sofisticação em Manaus.',
+    badge: 'Identidade Oficial',
+    categoryTarget: 'todos',
+    ctaText: 'Ver Coleção 2026',
+    imageUrl: '/images/banners/banner-slide-1-marca.jpg',
+    isActive: true,
+    order: 1,
+  },
+  {
+    id: 'slide-2',
+    title: 'Vestidos Plus Size',
+    subtitle: 'Modelagens fluidas, tecidos nobres e caimento anatômico pensados para valorizar suas curvas.',
+    badge: 'Coleção Festa & Noite',
+    categoryTarget: 'Vestidos',
+    ctaText: 'Ver Vestidos',
+    imageUrl: '/images/banners/banner-slide-2-vestidos.jpg',
+    isActive: true,
+    order: 2,
+  },
+  {
+    id: 'slide-3',
+    title: 'Conjuntos & Alfaiataria',
+    subtitle: 'Peças coordenadas em alfaiataria premium e viscose leve para o clima de Manaus.',
+    badge: 'Destaque Manaus',
+    categoryTarget: 'Conjuntos',
+    ctaText: 'Ver Conjuntos',
+    imageUrl: '/images/banners/banner-slide-3-conjuntos.jpg',
+    isActive: true,
+    order: 3,
+  },
+  {
+    id: 'slide-4',
+    title: 'Calças, Bermudas & Shorts',
+    subtitle: 'Cintura alta estruturada, tecidos nobres e liberdade total para compor seus looks diários.',
+    badge: 'Casual Chic',
+    categoryTarget: 'Bermudas',
+    ctaText: 'Ver Calças & Bermudas',
+    imageUrl: '/images/banners/banner-slide-4-calcas.jpg',
+    isActive: true,
+    order: 4,
+  },
+];
+
 interface StoreState {
   // Admin Auth
   isAdminLoggedIn: boolean;
@@ -286,6 +342,19 @@ interface StoreState {
   // Store CMS Customization
   storeCMS: StoreCMSConfig;
   updateStoreCMS: (data: Partial<StoreCMSConfig>) => void;
+
+  // Carousel Slides & Config
+  carouselSlides: CarouselSlide[];
+  carouselAutoPlay: boolean;
+  carouselIntervalSeconds: number;
+  setCarouselSlides: (slides: CarouselSlide[]) => void;
+  addCarouselSlide: (slide: Omit<CarouselSlide, 'id'>) => void;
+  updateCarouselSlide: (slide: CarouselSlide) => void;
+  deleteCarouselSlide: (id: string) => void;
+  toggleCarouselSlideActive: (id: string) => void;
+  setCarouselAutoPlay: (auto: boolean) => void;
+  setCarouselIntervalSeconds: (sec: number) => void;
+  resetCarouselToDefaults: () => void;
 
   // Product Detail Modal
   selectedProduct: Product | null;
@@ -748,6 +817,47 @@ export const useStore = create<StoreState>()(
         }
       },
 
+      // Carousel Config & Slides
+      carouselSlides: INITIAL_CAROUSEL_SLIDES,
+      carouselAutoPlay: true,
+      carouselIntervalSeconds: 5,
+      setCarouselSlides: (slides) => set({ carouselSlides: slides }),
+      addCarouselSlide: (slideData) => {
+        const newSlide: CarouselSlide = {
+          ...slideData,
+          id: `slide-${Date.now()}`,
+          order: get().carouselSlides.length + 1,
+        };
+        set((state) => ({ carouselSlides: [...state.carouselSlides, newSlide] }));
+        get().addActivityLog('Novo Slide Carrossel', `Slide "${newSlide.title}" adicionado.`);
+      },
+      updateCarouselSlide: (updated) => {
+        set((state) => ({
+          carouselSlides: state.carouselSlides.map((s) => (s.id === updated.id ? updated : s)),
+        }));
+        get().addActivityLog('Slide Editado', `Slide "${updated.title}" atualizado.`);
+      },
+      deleteCarouselSlide: (id) => {
+        set((state) => ({
+          carouselSlides: state.carouselSlides.filter((s) => s.id !== id),
+        }));
+        get().addActivityLog('Slide Removido', `Slide removido do carrossel.`);
+      },
+      toggleCarouselSlideActive: (id) => {
+        set((state) => ({
+          carouselSlides: state.carouselSlides.map((s) =>
+            s.id === id ? { ...s, isActive: !s.isActive } : s
+          ),
+        }));
+      },
+      setCarouselAutoPlay: (auto) => set({ carouselAutoPlay: auto }),
+      setCarouselIntervalSeconds: (sec) =>
+        set({ carouselIntervalSeconds: Math.max(2, Math.min(15, sec)) }),
+      resetCarouselToDefaults: () => {
+        set({ carouselSlides: INITIAL_CAROUSEL_SLIDES, carouselAutoPlay: true, carouselIntervalSeconds: 5 });
+        get().addActivityLog('Carrossel Restaurado', 'Slides do carrossel restaurados para os modelos de alta definição.');
+      },
+
       // Product Detail Modal
       selectedProduct: null,
       isDetailOpen: false,
@@ -807,6 +917,9 @@ export const useStore = create<StoreState>()(
         leadClicks: state.leadClicks,
         activityLogs: state.activityLogs,
         storeCMS: state.storeCMS,
+        carouselSlides: state.carouselSlides,
+        carouselAutoPlay: state.carouselAutoPlay,
+        carouselIntervalSeconds: state.carouselIntervalSeconds,
       }),
     }
   )
