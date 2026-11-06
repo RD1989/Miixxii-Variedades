@@ -268,25 +268,41 @@ export const WhatsAppCheckoutModal: React.FC = () => {
           )}
 
           {/* Order Summary Box */}
-          <div className="bg-neutral-50 rounded-2xl p-4 border border-neutral-200 space-y-2">
+          <div className="bg-[#FAFAFC] rounded-2xl p-4 border border-neutral-200 space-y-2.5">
             <div className="flex items-center justify-between text-xs font-bold text-neutral-800 pb-2 border-b border-neutral-200">
               <span className="flex items-center gap-1.5">
-                <ShoppingBag className="w-3.5 h-3.5 text-neutral-700" />
-                <span>Resumo ({cart.length} itens)</span>
+                <ShoppingBag className="w-4 h-4 text-neutral-700" />
+                <span>Resumo do Pedido ({cart.length} {cart.length === 1 ? 'item' : 'itens'})</span>
               </span>
-              <span className="text-base font-extrabold text-black">
+              <span className="text-base font-black text-black">
                 {formatCurrencyBRL(total)}
               </span>
             </div>
 
             {/* Items scroll */}
-            <div className="max-h-24 overflow-y-auto space-y-1 text-[11px] text-neutral-600 pr-1">
+            <div className="max-h-36 overflow-y-auto space-y-2 text-xs text-neutral-700 pr-1">
               {cart.map((item, idx) => (
-                <div key={idx} className="flex justify-between items-center">
-                  <span className="truncate max-w-[240px]">
-                    {item.quantity}x {item.product.name} ({item.selectedSize} - {item.selectedColor.name})
-                  </span>
-                  <span className="font-semibold text-neutral-900">
+                <div key={idx} className="flex items-center justify-between gap-2.5">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="relative w-9 h-11 rounded-lg overflow-hidden bg-neutral-200 shrink-0 border border-neutral-200">
+                      <Image
+                        src={item.selectedColor.image || item.product.image}
+                        alt={item.product.name}
+                        fill
+                        sizes="36px"
+                        className="object-cover object-top"
+                      />
+                    </div>
+                    <div className="min-w-0">
+                      <p className="font-bold text-neutral-900 truncate leading-tight">
+                        {item.quantity}x {item.product.name}
+                      </p>
+                      <p className="text-[11px] text-neutral-500 leading-tight">
+                        Tam: <strong>{item.selectedSize}</strong> • Cor: {item.selectedColor.name}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="font-extrabold text-neutral-900 shrink-0">
                     {formatCurrencyBRL(item.product.price * item.quantity)}
                   </span>
                 </div>
@@ -294,10 +310,10 @@ export const WhatsAppCheckoutModal: React.FC = () => {
             </div>
 
             {/* Delivery Fee Line */}
-            <div className="pt-2 border-t border-neutral-200 flex justify-between text-xs text-neutral-700">
-              <span>
+            <div className="pt-2.5 border-t border-neutral-200 flex justify-between text-xs text-neutral-700">
+              <span className="font-medium">
                 {deliverySelection.type === 'retirada'
-                  ? 'Retirada no Showroom:'
+                  ? 'Retirada no Showroom Manaus:'
                   : `Frete Motoboy (${deliverySelection.neighborhood?.name?.split('/')[0] || 'Manaus'}):`}
               </span>
               <span className="font-bold text-black">

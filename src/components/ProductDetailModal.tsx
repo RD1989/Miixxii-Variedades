@@ -2,9 +2,33 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { X, Star, Heart, ShoppingBag, Check, ShieldCheck, Truck, Store, Tag, MessageCircle } from 'lucide-react';
+import {
+  X,
+  Star,
+  Heart,
+  ShoppingBag,
+  Check,
+  ShieldCheck,
+  Truck,
+  Store,
+  Tag,
+  MessageCircle,
+  Maximize2,
+  Ruler,
+  ChevronRight,
+  ArrowLeft,
+  Sparkles,
+} from 'lucide-react';
 import { useStore } from '@/store/useStore';
 import { ColorOption, formatCurrencyBRL } from '@/data/mockData';
+
+const PLUS_SIZE_MEASUREMENTS = [
+  { size: 'G (44)', busto: '100 - 106 cm', cintura: '86 - 92 cm', quadril: '110 - 116 cm' },
+  { size: 'GG (46/48)', busto: '108 - 114 cm', cintura: '94 - 100 cm', quadril: '118 - 124 cm' },
+  { size: 'G1 (50)', busto: '116 - 122 cm', cintura: '102 - 108 cm', quadril: '126 - 132 cm' },
+  { size: 'G2 (52)', busto: '124 - 130 cm', cintura: '110 - 116 cm', quadril: '134 - 140 cm' },
+  { size: 'G3 (54)', busto: '132 - 138 cm', cintura: '118 - 124 cm', quadril: '142 - 148 cm' },
+];
 
 export const ProductDetailModal: React.FC = () => {
   const {
@@ -21,6 +45,8 @@ export const ProductDetailModal: React.FC = () => {
   const [selectedColor, setSelectedColor] = useState<ColorOption | null>(null);
   const [activeImage, setActiveImage] = useState<string>('');
   const [quantity, setQuantity] = useState(1);
+  const [showSizeGuide, setShowSizeGuide] = useState(false);
+  const [isFullscreenImage, setIsFullscreenImage] = useState(false);
 
   useEffect(() => {
     if (selectedProduct) {
@@ -34,6 +60,8 @@ export const ProductDetailModal: React.FC = () => {
         setActiveImage(selectedProduct.image);
       }
       setQuantity(1);
+      setShowSizeGuide(false);
+      setIsFullscreenImage(false);
     }
   }, [selectedProduct]);
 
@@ -62,304 +90,493 @@ export const ProductDetailModal: React.FC = () => {
     closeDetail();
   };
 
-  // Stock for current size
+  const handleDirectWhatsAppOrder = () => {
+    if (!selectedColor || !selectedSize) return;
+    addToCart(selectedProduct, selectedSize, selectedColor, quantity);
+    closeDetail();
+    openWhatsAppModal();
+  };
+
   const currentSizeStock = selectedProduct.sizeStock?.[selectedSize] ?? 3;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
-      {/* Background Backdrop tap to close */}
-      <div className="absolute inset-0" onClick={closeDetail} />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-6 bg-black/85 backdrop-blur-md animate-in fade-in duration-200">
+      {/* Background Click to Close (Desktop) */}
+      <div className="hidden md:block absolute inset-0" onClick={closeDetail} />
 
+      {/* Main Container: Fullscreen on Mobile, Luxury Floating Card on Desktop */}
       <div
-        className="relative w-full max-w-3xl bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden border border-neutral-200 max-h-[94vh] sm:max-h-[90vh] flex flex-col md:flex-row animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200 z-10"
+        className="relative w-full h-full md:h-auto md:max-h-[92vh] md:max-w-4xl lg:max-w-5xl bg-white md:rounded-3xl shadow-2xl flex flex-col md:flex-row overflow-hidden z-10 animate-in slide-in-from-bottom duration-250 md:zoom-in-95"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Mobile Handle Bar */}
-        <div className="sm:hidden w-12 h-1.5 bg-neutral-300 rounded-full mx-auto my-2 shrink-0" />
+        {/* ========================================================
+            MOBILE TOP APP BAR (< md) — Fixed, Minimal & Clean
+            ======================================================== */}
+        <div className="md:hidden flex items-center justify-between px-4 py-3 bg-white border-b border-neutral-200 shrink-0 z-20">
+          <button
+            onClick={closeDetail}
+            className="w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-800 active:scale-95"
+            aria-label="Voltar"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
 
-        {/* Close Button */}
+          <div className="text-center px-2 flex-1 truncate">
+            <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest block">
+              {selectedProduct.subcategory}
+            </span>
+            <h2 className="text-xs font-bold text-neutral-900 truncate">
+              {selectedProduct.name}
+            </h2>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => toggleFavorite(selectedProduct.id)}
+              className="w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-600 active:scale-95"
+              aria-label="Favoritar"
+            >
+              <Heart className={`w-4 h-4 ${isFav ? 'fill-black text-black' : ''}`} />
+            </button>
+            <button
+              onClick={closeDetail}
+              className="w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-800 active:scale-95"
+              aria-label="Fechar"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Desktop Close Button */}
         <button
           onClick={closeDetail}
-          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-30 w-8 h-8 rounded-full bg-white/90 hover:bg-white text-neutral-700 hover:text-black flex items-center justify-center shadow-md transition-all active:scale-95"
+          className="hidden md:flex absolute top-4 right-4 z-30 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-neutral-700 hover:text-black items-center justify-center shadow-md transition-all hover:scale-105 active:scale-95 border border-neutral-200"
           aria-label="Fechar modal"
         >
           <X className="w-5 h-5" />
         </button>
 
-        {/* Left: Product Images & Gallery */}
-        <div className="w-full md:w-1/2 flex flex-col bg-neutral-100 shrink-0">
-          {/* Main Photo with Dynamic Color Switch */}
-          <div className="relative aspect-[4/3] sm:aspect-[3/4] md:aspect-auto md:h-[420px] w-full overflow-hidden bg-neutral-200">
-            <Image
-              src={activeImage || selectedProduct.image}
-              alt={selectedProduct.name}
-              fill
-              priority
-              sizes="(max-width: 768px) 100vw, 50vw"
-              className="object-cover object-top transition-all duration-300"
-            />
-
-            {/* Badges */}
-            <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">
-              <span className="px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold bg-black text-white shadow-md uppercase tracking-wider">
-                {selectedProduct.badge}
-              </span>
-              {selectedProduct.comboOffer && (
-                <span className="px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold bg-neutral-900 text-amber-300 shadow-md border border-neutral-700">
-                  {selectedProduct.comboOffer}
-                </span>
-              )}
-            </div>
-
-            {/* Wishlist toggle */}
-            <button
-              onClick={() => toggleFavorite(selectedProduct.id)}
-              className="absolute bottom-3 right-3 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-neutral-500 hover:text-black flex items-center justify-center shadow-md transition-all active:scale-90"
-              aria-label="Favoritar"
-            >
-              <Heart
-                className={`w-5 h-5 ${
-                  isFav ? 'fill-black text-black' : 'stroke-current'
-                }`}
+        {/* ========================================================
+            UNIFIED SCROLL BODY FOR MOBILE & DESKTOP SPLIT
+            ======================================================== */}
+        <div className="flex-1 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden">
+          {/* ========================================================
+              LEFT COLUMN: FULL-LENGTH PRODUCT IMAGE & GALLERY
+              ======================================================== */}
+          <div className="w-full md:w-[50%] lg:w-[48%] flex flex-col bg-[#F6F6F8] shrink-0 border-b md:border-b-0 md:border-r border-neutral-200">
+            {/* Main Visual Display (Shows Whole Body & Full Dress) */}
+            <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] md:aspect-auto md:h-[520px] lg:h-[580px] bg-neutral-100 overflow-hidden flex items-center justify-center">
+              <Image
+                src={activeImage || selectedProduct.image}
+                alt={selectedProduct.name}
+                fill
+                priority
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-contain sm:object-cover sm:object-top transition-all duration-300"
               />
-            </button>
-          </div>
 
-          {/* Thumbnail Strip Gallery */}
-          {selectedProduct.gallery && selectedProduct.gallery.length > 1 && (
-            <div className="p-2 sm:p-2.5 bg-neutral-50 border-t border-neutral-200 flex items-center gap-2 overflow-x-auto no-scrollbar">
-              {selectedProduct.gallery.map((imgUrl, idx) => {
-                const isActive = activeImage === imgUrl;
-                return (
-                  <button
-                    key={idx}
-                    onClick={() => handleThumbnailClick(imgUrl)}
-                    className={`relative w-11 sm:w-12 h-13 sm:h-14 rounded-lg overflow-hidden shrink-0 border-2 transition-all ${
-                      isActive
-                        ? 'border-black ring-1 ring-black scale-105 shadow-sm'
-                        : 'border-transparent opacity-70 hover:opacity-100 hover:border-neutral-300'
-                    }`}
-                  >
-                    <Image
-                      src={imgUrl}
-                      alt={`Foto ${idx + 1}`}
-                      fill
-                      sizes="48px"
-                      className="object-cover object-top"
-                    />
-                  </button>
-                );
-              })}
-            </div>
-          )}
-        </div>
-
-        {/* Right: Product Specs & Sticky Mobile Controls */}
-        <div className="w-full md:w-1/2 flex flex-col justify-between overflow-y-auto max-h-[50vh] sm:max-h-[60vh] md:max-h-[550px]">
-          {/* Scrollable details container */}
-          <div className="p-4 sm:p-6 space-y-3.5 sm:space-y-4">
-            {/* Category Subtitle & Title */}
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-[10px] font-bold tracking-widest uppercase text-neutral-800 bg-neutral-100 px-2.5 py-0.5 rounded-full border border-neutral-200">
-                  {selectedProduct.subcategory}
+              {/* Badges on Image */}
+              <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
+                <span className="px-3 py-1 rounded-full text-[11px] font-extrabold bg-black text-white shadow-md uppercase tracking-wider">
+                  {selectedProduct.badge}
                 </span>
-                <span className="text-[10px] font-medium text-neutral-500">
-                  Manaus - AM
-                </span>
-              </div>
-
-              <h2 className="text-lg sm:text-2xl font-bold text-neutral-900 mt-1 leading-snug">
-                {selectedProduct.name}
-              </h2>
-
-              {/* Rating */}
-              <div className="flex items-center gap-1.5 mt-1">
-                <div className="flex text-amber-500">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                  ))}
-                </div>
-                <span className="text-xs font-bold text-neutral-900">
-                  {selectedProduct.rating}
-                </span>
-                <span className="text-xs text-neutral-500">
-                  ({selectedProduct.reviewsCount} avaliações)
-                </span>
-              </div>
-            </div>
-
-            {/* Price Area */}
-            <div className="p-2.5 sm:p-3 rounded-2xl bg-neutral-50 border border-neutral-200 flex flex-col gap-1">
-              <div className="flex items-baseline gap-2">
-                <span className="text-xl sm:text-3xl font-extrabold text-black">
-                  {formatCurrencyBRL(selectedProduct.price)}
-                </span>
-                {selectedProduct.originalPrice && (
-                  <span className="text-xs sm:text-sm text-neutral-400 line-through">
-                    {formatCurrencyBRL(selectedProduct.originalPrice)}
+                {selectedProduct.comboOffer && (
+                  <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-900 text-amber-300 shadow-md border border-neutral-700">
+                    {selectedProduct.comboOffer}
                   </span>
                 )}
               </div>
-              {selectedProduct.comboOffer && (
-                <div className="flex items-center gap-1.5 text-xs font-bold text-neutral-900">
-                  <Tag className="w-3.5 h-3.5 text-neutral-700" />
-                  <span>{selectedProduct.comboOffer}</span>
-                </div>
-              )}
+
+              {/* Zoom & Fullscreen Button */}
+              <button
+                onClick={() => setIsFullscreenImage(true)}
+                className="absolute top-3 right-3 md:right-16 z-10 w-9 h-9 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center backdrop-blur-xs transition-all active:scale-90 shadow-md"
+                title="Ampliar foto em tela cheia"
+              >
+                <Maximize2 className="w-4 h-4" />
+              </button>
+
+              {/* Desktop Wishlist Button */}
+              <button
+                onClick={() => toggleFavorite(selectedProduct.id)}
+                className="hidden md:flex absolute bottom-3 right-3 z-10 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-neutral-600 hover:text-black items-center justify-center shadow-md transition-all active:scale-90 border border-neutral-200"
+                aria-label="Favoritar"
+              >
+                <Heart className={`w-5 h-5 ${isFav ? 'fill-black text-black' : ''}`} />
+              </button>
             </div>
 
-            {/* Description & Material */}
-            <div className="space-y-1">
-              <p className="text-xs sm:text-sm text-neutral-600 leading-relaxed">
-                {selectedProduct.description}
-              </p>
-              {selectedProduct.material && (
-                <p className="text-[11px] text-neutral-500 font-medium pt-0.5">
-                  <strong>Tecido / Material:</strong> {selectedProduct.material}
-                </p>
-              )}
-            </div>
-
-            {/* Modern Color Selector */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-bold text-neutral-900">
-                  Cor:{' '}
-                  <span className="text-black font-extrabold">
-                    {selectedColor?.name || 'Selecione'}
-                  </span>
-                </label>
-                <span className="text-[11px] text-neutral-500 font-medium">
-                  {selectedProduct.colors.length} opções
+            {/* Thumbnail Strip Gallery (Horizontal Scroll) */}
+            {selectedProduct.gallery && selectedProduct.gallery.length > 1 && (
+              <div className="p-3 bg-white border-t border-neutral-200 flex items-center gap-2 overflow-x-auto no-scrollbar">
+                <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider shrink-0 pl-1">
+                  Fotos:
                 </span>
-              </div>
-
-              <div className="flex flex-wrap gap-2.5">
-                {selectedProduct.colors.map((color) => {
-                  const isSelected = selectedColor?.name === color.name;
+                {selectedProduct.gallery.map((imgUrl, idx) => {
+                  const isActive = activeImage === imgUrl;
                   return (
                     <button
-                      key={color.name}
-                      onClick={() => handleSelectColor(color)}
-                      style={{ backgroundColor: color.hex }}
-                      className={`relative w-8 sm:w-9 h-8 sm:h-9 rounded-full transition-all duration-200 border-2 ${
-                        isSelected
-                          ? 'ring-2 ring-black ring-offset-2 scale-110 shadow-md border-white'
-                          : 'border-neutral-300 hover:scale-105 opacity-85 hover:opacity-100'
+                      key={idx}
+                      onClick={() => handleThumbnailClick(imgUrl)}
+                      className={`relative w-12 h-14 rounded-xl overflow-hidden shrink-0 border-2 transition-all ${
+                        isActive
+                          ? 'border-black ring-2 ring-black/20 scale-105 shadow-sm'
+                          : 'border-neutral-200 opacity-60 hover:opacity-100 hover:border-neutral-400'
                       }`}
-                      title={color.name}
+                      aria-label={`Ver foto ${idx + 1}`}
                     >
-                      {isSelected && (
-                        <Check className="w-4 h-4 text-white absolute inset-0 m-auto drop-shadow-md stroke-[3]" />
-                      )}
+                      <Image
+                        src={imgUrl}
+                        alt={`Foto ${idx + 1}`}
+                        fill
+                        sizes="48px"
+                        className="object-cover object-top"
+                      />
                     </button>
                   );
                 })}
               </div>
-            </div>
-
-            {/* Size Selector */}
-            <div>
-              <div className="flex items-center justify-between mb-1.5">
-                <label className="text-xs font-bold text-neutral-900">
-                  Tamanho:{' '}
-                  <span className="text-black font-extrabold">{selectedSize}</span>
-                </label>
-                <span className="text-[11px] text-emerald-700 font-semibold">
-                  {currentSizeStock > 0 ? `${currentSizeStock} peças em Manaus` : 'Sob encomenda'}
-                </span>
-              </div>
-
-              <div className="flex flex-wrap gap-2">
-                {selectedProduct.sizes.map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`min-w-10 sm:min-w-11 h-9 sm:h-10 px-3 rounded-xl text-xs font-bold transition-all ${
-                      selectedSize === size
-                        ? 'bg-black text-white shadow-md scale-105'
-                        : 'bg-neutral-100 text-neutral-800 hover:bg-neutral-200 border border-neutral-200'
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Quantity Selector */}
-            <div className="flex items-center gap-3 pt-0.5">
-              <span className="text-xs font-bold text-neutral-900">Quantidade:</span>
-              <div className="flex items-center border border-neutral-300 rounded-full bg-neutral-50 overflow-hidden">
-                <button
-                  onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                  className="w-8 h-8 flex items-center justify-center text-neutral-700 hover:bg-neutral-200 font-bold active:scale-95"
-                >
-                  -
-                </button>
-                <span className="w-8 text-center text-xs font-bold text-neutral-900">
-                  {quantity}
-                </span>
-                <button
-                  onClick={() => setQuantity((q) => q + 1)}
-                  className="w-8 h-8 flex items-center justify-center text-neutral-700 hover:bg-neutral-200 font-bold active:scale-95"
-                >
-                  +
-                </button>
-              </div>
-            </div>
+            )}
           </div>
 
-          {/* Sticky Bottom Actions Container for instant mobile thumb tap */}
-          <div className="sticky bottom-0 left-0 right-0 p-3 sm:p-5 bg-white/95 backdrop-blur-md border-t border-neutral-200 z-30 md:static md:bg-transparent md:border-0 md:p-0 md:pt-4 md:px-6 space-y-2">
-            <button
-              onClick={() => {
-                if (selectedProduct && selectedColor && selectedSize) {
-                  addToCart(selectedProduct, selectedSize, selectedColor, quantity);
-                  closeDetail();
-                  openWhatsAppModal();
-                }
-              }}
-              className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-md hover:shadow-xl transition-all active:scale-[0.98] text-xs sm:text-sm min-h-[44px]"
-            >
-              <MessageCircle className="w-4 h-4 fill-white" />
-              <span>Pedir Direto pelo WhatsApp</span>
-            </button>
+          {/* ========================================================
+              RIGHT COLUMN: SPACIOUS, FLUID PRODUCT CONFIGURATION
+              ======================================================== */}
+          <div className="w-full md:w-[50%] lg:w-[52%] flex flex-col justify-between overflow-y-auto bg-white">
+            <div className="p-4 sm:p-6 lg:p-8 space-y-5">
+              {/* Top Subcategory & Stock Status */}
+              <div>
+                <div className="flex items-center justify-between gap-2 mb-1.5">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-black bg-neutral-100 px-3 py-1 rounded-full border border-neutral-200">
+                    {selectedProduct.subcategory}
+                  </span>
 
-            <button
-              onClick={handleAddToCart}
-              className="w-full flex items-center justify-center gap-2 bg-neutral-900 hover:bg-black text-white font-bold py-2.5 sm:py-3 px-6 rounded-2xl shadow-xs transition-all active:scale-[0.98] text-xs min-h-[40px]"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span>Adicionar à Sacola de Compras</span>
-            </button>
+                  <span className="text-xs text-emerald-700 font-bold flex items-center gap-1.5 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                    Estoque em Manaus
+                  </span>
+                </div>
 
-            {/* Manaus Local Shipping Notice */}
-            <div className="p-2 sm:p-2.5 bg-neutral-50 rounded-xl border border-neutral-200/80 space-y-0.5 text-[10px] sm:text-[11px] text-neutral-600">
-              <div className="flex items-center gap-1.5 font-bold text-neutral-900">
-                <Truck className="w-3.5 h-3.5 text-neutral-800" />
-                <span>Entregas em Toda Manaus (Motoboy) ou Retirada</span>
+                <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-neutral-900 leading-tight">
+                  {selectedProduct.name}
+                </h1>
+
+                {/* Rating & Location */}
+                <div className="flex items-center gap-2 mt-1.5">
+                  <div className="flex text-amber-500">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3.5 h-3.5 fill-current" />
+                    ))}
+                  </div>
+                  <span className="text-xs font-bold text-neutral-900">
+                    {selectedProduct.rating}
+                  </span>
+                  <span className="text-xs text-neutral-400">
+                    ({selectedProduct.reviewsCount} avaliações de clientes em Manaus)
+                  </span>
+                </div>
               </div>
-              <p className="leading-tight text-neutral-500">
-                Taxa combinada por distância/bairro ou retirada grátis no showroom em Manaus.
-              </p>
-            </div>
 
-            <div className="flex items-center justify-center gap-3 text-[10px] text-neutral-400 pt-0.5 pb-1">
-              <span className="flex items-center gap-1">
-                <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                Compra Segura
-              </span>
-              <span>•</span>
-              <span className="flex items-center gap-1">
-                <Store className="w-3 h-3 text-neutral-600" />
-                Showroom com Agendamento
-              </span>
+              {/* Price Area */}
+              <div className="p-3.5 sm:p-4 rounded-2xl bg-[#FAFAFC] border border-neutral-200 flex flex-col gap-1.5">
+                <div className="flex items-baseline gap-2.5">
+                  <span className="text-2xl sm:text-3xl font-black text-black">
+                    {formatCurrencyBRL(selectedProduct.price)}
+                  </span>
+                  {selectedProduct.originalPrice && (
+                    <span className="text-sm text-neutral-400 line-through">
+                      {formatCurrencyBRL(selectedProduct.originalPrice)}
+                    </span>
+                  )}
+                  <span className="text-[11px] text-emerald-700 font-bold ml-auto">
+                    À vista ou no cartão
+                  </span>
+                </div>
+
+                {selectedProduct.comboOffer && (
+                  <div className="flex items-center gap-1.5 text-xs font-bold text-neutral-900 pt-1 border-t border-neutral-200/80">
+                    <Tag className="w-3.5 h-3.5 text-neutral-700" />
+                    <span>{selectedProduct.comboOffer}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* ========================================================
+                  COLOR SELECTOR: CLEAN, PROMINENT & INTERACTIVE
+                  ======================================================== */}
+              <div className="space-y-2.5 pt-1">
+                <div className="flex items-center justify-between">
+                  <label className="text-xs sm:text-sm font-bold text-neutral-900">
+                    Cor Selecionada:{' '}
+                    <span className="text-black font-extrabold underline decoration-neutral-400 decoration-2">
+                      {selectedColor?.name || 'Selecione uma cor'}
+                    </span>
+                  </label>
+                  <span className="text-xs text-neutral-500 font-medium">
+                    {selectedProduct.colors.length} cores disponíveis
+                  </span>
+                </div>
+
+                <div className="flex flex-wrap gap-2.5">
+                  {selectedProduct.colors.map((color) => {
+                    const isSelected = selectedColor?.name === color.name;
+                    return (
+                      <button
+                        key={color.name}
+                        onClick={() => handleSelectColor(color)}
+                        className={`flex items-center gap-2 px-3 py-2 rounded-2xl border-2 transition-all active:scale-95 ${
+                          isSelected
+                            ? 'border-black bg-neutral-50 shadow-sm scale-102 ring-1 ring-black/10'
+                            : 'border-neutral-200 hover:border-neutral-300 bg-white'
+                        }`}
+                      >
+                        <span
+                          style={{ backgroundColor: color.hex }}
+                          className="w-4 h-4 rounded-full border border-black/20 shrink-0 shadow-inner flex items-center justify-center"
+                        >
+                          {isSelected && <Check className="w-2.5 h-2.5 text-white stroke-[3]" />}
+                        </span>
+                        <span
+                          className={`text-xs ${
+                            isSelected ? 'font-extrabold text-black' : 'font-medium text-neutral-700'
+                          }`}
+                        >
+                          {color.name}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* ========================================================
+                  SIZE SELECTOR: GENEROUS TARGETS & SIZE GUIDE ACCORDION
+                  ======================================================== */}
+              <div className="space-y-2.5 pt-1">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <label className="text-xs sm:text-sm font-bold text-neutral-900">
+                      Tamanho:{' '}
+                      <span className="text-black font-extrabold">{selectedSize}</span>
+                    </label>
+                    <span className="text-[11px] text-emerald-700 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md">
+                      {currentSizeStock > 0 ? `${currentSizeStock} peças prontas` : 'Sob encomenda'}
+                    </span>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setShowSizeGuide(!showSizeGuide)}
+                    className="text-xs text-neutral-700 hover:text-black font-bold flex items-center gap-1 underline transition-colors"
+                  >
+                    <Ruler className="w-3.5 h-3.5" />
+                    <span>{showSizeGuide ? 'Ocultar Medidas' : 'Guia de Medidas'}</span>
+                  </button>
+                </div>
+
+                {/* Size Chips */}
+                <div className="flex flex-wrap gap-2.5">
+                  {selectedProduct.sizes.map((size) => {
+                    const isSelected = selectedSize === size;
+                    return (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`min-w-14 sm:min-w-16 h-11 px-3.5 rounded-2xl text-xs sm:text-sm font-bold transition-all active:scale-95 flex items-center justify-center ${
+                          isSelected
+                            ? 'bg-black text-white shadow-md scale-105 border-2 border-black'
+                            : 'bg-neutral-100 hover:bg-neutral-200 text-neutral-800 border border-neutral-200'
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Expandable Plus-Size Measurements Table */}
+                {showSizeGuide && (
+                  <div className="p-3.5 bg-neutral-50 rounded-2xl border border-neutral-200 space-y-2 animate-in fade-in-50 text-xs">
+                    <div className="flex items-center justify-between pb-1.5 border-b border-neutral-200">
+                      <span className="font-extrabold text-neutral-900 flex items-center gap-1.5">
+                        <Ruler className="w-3.5 h-3.5 text-neutral-800" />
+                        Tabela de Medidas Anatômica Plus Size (cm)
+                      </span>
+                      <span className="text-[10px] text-neutral-500 font-medium">Manaus - AM</span>
+                    </div>
+
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-[11px]">
+                        <thead>
+                          <tr className="text-neutral-400 border-b border-neutral-200">
+                            <th className="py-1">Tamanho</th>
+                            <th className="py-1">Busto</th>
+                            <th className="py-1">Cintura</th>
+                            <th className="py-1">Quadril</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-neutral-100 font-medium text-neutral-700">
+                          {PLUS_SIZE_MEASUREMENTS.map((m) => (
+                            <tr
+                              key={m.size}
+                              className={selectedSize.startsWith(m.size.split(' ')[0]) ? 'bg-amber-50 font-bold text-black' : ''}
+                            >
+                              <td className="py-1.5 font-bold">{m.size}</td>
+                              <td className="py-1.5">{m.busto}</td>
+                              <td className="py-1.5">{m.cintura}</td>
+                              <td className="py-1.5">{m.quadril}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Quantity Selector */}
+              <div className="flex items-center gap-3 pt-1">
+                <span className="text-xs font-bold text-neutral-900">Quantidade:</span>
+                <div className="flex items-center border border-neutral-300 rounded-full bg-neutral-50 overflow-hidden">
+                  <button
+                    onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                    className="w-9 h-9 flex items-center justify-center text-neutral-700 hover:bg-neutral-200 font-bold active:scale-95 text-sm"
+                  >
+                    -
+                  </button>
+                  <span className="w-10 text-center text-xs font-bold text-neutral-900">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity((q) => q + 1)}
+                    className="w-9 h-9 flex items-center justify-center text-neutral-700 hover:bg-neutral-200 font-bold active:scale-95 text-sm"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              {/* Description & Material Details */}
+              <div className="space-y-1.5 pt-2 border-t border-neutral-100 text-xs sm:text-sm">
+                <h4 className="font-bold text-neutral-900">Sobre a Peça:</h4>
+                <p className="text-neutral-600 leading-relaxed text-xs sm:text-sm">
+                  {selectedProduct.description}
+                </p>
+                {selectedProduct.material && (
+                  <p className="text-xs text-neutral-500 font-semibold pt-1">
+                    <strong>Tecido / Material:</strong> {selectedProduct.material}
+                  </p>
+                )}
+              </div>
+
+              {/* Manaus Local Shipping Notice */}
+              <div className="p-3 bg-neutral-50 rounded-2xl border border-neutral-200 space-y-1 text-xs text-neutral-600">
+                <div className="flex items-center gap-1.5 font-bold text-neutral-900">
+                  <Truck className="w-4 h-4 text-neutral-800" />
+                  <span>Entregas em Manaus (Motoboy) ou Retirada</span>
+                </div>
+                <p className="text-[11px] text-neutral-500 leading-tight">
+                  Taxa combinada por bairro/distância no ato do atendimento. Opção de retirada gratuita no showroom com agendamento.
+                </p>
+              </div>
+
+              {/* Desktop Action Buttons */}
+              <div className="hidden md:block pt-3 space-y-2.5">
+                <button
+                  onClick={handleDirectWhatsAppOrder}
+                  className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-md hover:shadow-xl transition-all hover:scale-[1.01] active:scale-[0.99] text-sm"
+                >
+                  <MessageCircle className="w-5 h-5 fill-white" />
+                  <span>Pedir Direto pelo WhatsApp</span>
+                </button>
+
+                <button
+                  onClick={handleAddToCart}
+                  className="w-full flex items-center justify-center gap-2 bg-black hover:bg-neutral-800 text-white font-bold py-3 px-6 rounded-2xl shadow-xs transition-all hover:scale-[1.01] active:scale-[0.99] text-xs"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>Adicionar à Sacola de Compras</span>
+                </button>
+
+                <div className="flex items-center justify-center gap-3 text-[11px] text-neutral-400 pt-1">
+                  <span className="flex items-center gap-1">
+                    <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                    Compra Segura
+                  </span>
+                  <span>•</span>
+                  <span>Pagamento no Recebimento (PIX ou Cartão)</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* ========================================================
+            STREAMLINED STICKY BOTTOM BAR FOR MOBILE (< md)
+            Low profile (only 64px), leaves 90% of screen free!
+            ======================================================== */}
+        <div className="md:hidden sticky bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur-md border-t border-neutral-200 flex items-center justify-between gap-2.5 z-30 shrink-0">
+          <div>
+            <span className="text-[10px] text-neutral-400 block font-semibold leading-tight">
+              Total ({quantity}x):
+            </span>
+            <span className="text-lg font-black text-black leading-tight">
+              {formatCurrencyBRL(selectedProduct.price * quantity)}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 flex-1 justify-end">
+            <button
+              onClick={handleAddToCart}
+              className="w-11 h-11 rounded-2xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 flex items-center justify-center border border-neutral-300 active:scale-95 shrink-0"
+              title="Adicionar à Sacola"
+            >
+              <ShoppingBag className="w-5 h-5" />
+            </button>
+
+            <button
+              onClick={handleDirectWhatsAppOrder}
+              className="flex-1 max-w-[240px] h-11 rounded-2xl bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-transform"
+            >
+              <MessageCircle className="w-4 h-4 fill-white" />
+              <span>Pedir no WhatsApp</span>
+            </button>
+          </div>
+        </div>
       </div>
+
+      {/* ========================================================
+          FULLSCREEN IMAGE LIGHTBOX (ZOOM MODAL)
+          ======================================================== */}
+      {isFullscreenImage && (
+        <div
+          className="fixed inset-0 z-60 bg-black/95 flex flex-col items-center justify-center p-3 animate-in fade-in duration-200"
+          onClick={() => setIsFullscreenImage(false)}
+        >
+          <button
+            onClick={() => setIsFullscreenImage(false)}
+            className="absolute top-4 right-4 z-70 w-10 h-10 rounded-full bg-white/20 hover:bg-white/40 text-white flex items-center justify-center transition-all"
+            aria-label="Fechar tela cheia"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          <div className="relative w-full h-[85vh] max-w-2xl">
+            <Image
+              src={activeImage || selectedProduct.image}
+              alt={selectedProduct.name}
+              fill
+              sizes="100vw"
+              className="object-contain"
+            />
+          </div>
+
+          <p className="text-white/70 text-xs font-medium mt-3">
+            Toque em qualquer lugar para voltar ao produto
+          </p>
+        </div>
+      )}
     </div>
   );
 };
