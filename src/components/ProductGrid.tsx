@@ -13,7 +13,6 @@ import {
   Truck,
   Store,
   Tag,
-  Check,
 } from 'lucide-react';
 import { Product, formatCurrencyBRL } from '@/data/mockData';
 import { useStore } from '@/store/useStore';
@@ -91,9 +90,9 @@ export const ProductGrid: React.FC = () => {
           />
 
           {/* Status Badge */}
-          <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1 items-start">
+          <div className="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 z-10 flex flex-col gap-1 items-start">
             {product.badge && (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-black text-white uppercase tracking-wider shadow-xs">
+              <span className="px-2 sm:px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-extrabold bg-black text-white uppercase tracking-wider shadow-xs">
                 {product.badge}
               </span>
             )}
@@ -105,7 +104,7 @@ export const ProductGrid: React.FC = () => {
               e.stopPropagation();
               toggleFavorite(product.id);
             }}
-            className="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-neutral-400 hover:text-black flex items-center justify-center transition-all shadow-xs hover:scale-110 active:scale-95"
+            className="absolute top-2 right-2 sm:top-2.5 sm:right-2.5 z-10 w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/90 hover:bg-white text-neutral-400 hover:text-black flex items-center justify-center transition-all shadow-xs hover:scale-110 active:scale-95"
             aria-label="Adicionar aos favoritos"
           >
             <Heart
@@ -117,12 +116,12 @@ export const ProductGrid: React.FC = () => {
         </div>
 
         {/* Product Details */}
-        <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between gap-2">
+        <div className="p-2.5 sm:p-3.5 flex flex-col flex-1 justify-between gap-1.5 sm:gap-2">
           <div
             onClick={() => openDetail(product)}
-            className="cursor-pointer space-y-1"
+            className="cursor-pointer space-y-0.5 sm:space-y-1"
           >
-            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">
+            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-neutral-400 block truncate">
               {product.subcategory}
             </span>
 
@@ -131,12 +130,12 @@ export const ProductGrid: React.FC = () => {
             </h3>
 
             {/* Price Area */}
-            <div className="flex items-baseline gap-2 pt-0.5">
-              <span className="text-sm sm:text-base font-black text-neutral-900">
+            <div className="flex items-baseline gap-1.5 pt-0.5">
+              <span className="text-xs sm:text-base font-black text-neutral-900">
                 {formatCurrencyBRL(product.price)}
               </span>
               {product.originalPrice && (
-                <span className="text-[11px] text-neutral-400 line-through">
+                <span className="text-[10px] sm:text-[11px] text-neutral-400 line-through">
                   {formatCurrencyBRL(product.originalPrice)}
                 </span>
               )}
@@ -144,7 +143,7 @@ export const ProductGrid: React.FC = () => {
 
             {/* Combo Notice if present */}
             {product.comboOffer && (
-              <div className="inline-flex items-center gap-1 text-[9px] font-bold text-neutral-800 bg-neutral-100 px-2 py-0.5 rounded-md mt-1">
+              <div className="inline-flex items-center gap-1 text-[8px] sm:text-[9px] font-bold text-neutral-800 bg-neutral-100 px-1.5 py-0.5 rounded-md mt-0.5">
                 <Tag className="w-2.5 h-2.5 text-neutral-600" />
                 <span className="truncate">{product.comboOffer}</span>
               </div>
@@ -152,20 +151,20 @@ export const ProductGrid: React.FC = () => {
 
             {/* Interactive Color Dots Preview */}
             {product.colors && product.colors.length > 0 && (
-              <div className="flex items-center gap-1 pt-1.5">
-                <span className="text-[10px] text-neutral-400 mr-0.5">Cores:</span>
+              <div className="flex items-center gap-1 pt-1">
+                <span className="text-[9px] sm:text-[10px] text-neutral-400 mr-0.5">Cores:</span>
                 <div className="flex items-center gap-1">
                   {product.colors.slice(0, 4).map((c, idx) => (
                     <button
                       key={idx}
                       onClick={(e) => handleColorSwatchClick(e, product.id, c.image)}
                       style={{ backgroundColor: c.hex }}
-                      className="w-3 h-3 rounded-full border border-neutral-300 hover:scale-125 transition-transform"
+                      className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border border-neutral-300 hover:scale-125 transition-transform"
                       title={c.name}
                     />
                   ))}
                   {product.colors.length > 4 && (
-                    <span className="text-[9px] text-neutral-400 font-medium">
+                    <span className="text-[8px] sm:text-[9px] text-neutral-400 font-medium">
                       +{product.colors.length - 4}
                     </span>
                   )}
@@ -177,10 +176,10 @@ export const ProductGrid: React.FC = () => {
           {/* Action Button */}
           <button
             onClick={() => openDetail(product)}
-            className="w-full mt-2 flex items-center justify-center gap-1.5 bg-black hover:bg-neutral-800 text-white text-[11px] sm:text-xs font-bold py-2.5 px-3 rounded-xl shadow-xs transition-all hover:scale-[1.01] active:scale-[0.99]"
+            className="w-full mt-1.5 flex items-center justify-center gap-1.5 bg-black hover:bg-neutral-800 text-white text-[11px] sm:text-xs font-bold py-2 sm:py-2.5 px-2 rounded-xl shadow-xs transition-all active:scale-95"
           >
             <MessageCircle className="w-3.5 h-3.5 fill-white shrink-0" />
-            <span className="truncate">Pedir no WhatsApp</span>
+            <span className="truncate">Pedir no Whats</span>
           </button>
         </div>
       </div>
@@ -188,11 +187,11 @@ export const ProductGrid: React.FC = () => {
   };
 
   return (
-    <div className="w-full px-4 sm:px-8 lg:px-12 2xl:px-16 py-8 sm:py-12 space-y-16">
+    <div className="w-full px-2.5 sm:px-8 lg:px-12 2xl:px-16 py-6 sm:py-12 space-y-10 sm:space-y-16">
       {/* Search or Category Filter Active View */}
       {isFiltering ? (
         <section id="novidades-section">
-          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-6 sm:mb-8">
             <div>
               <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-1">
                 Catálogo Filtrado
@@ -217,14 +216,14 @@ export const ProductGrid: React.FC = () => {
                   }}
                   className="text-xs text-neutral-600 hover:text-black underline font-semibold ml-2"
                 >
-                  Limpar Filtros e Ver Todos ({products.length} peças)
+                  Limpar Filtros ({products.length} peças)
                 </button>
               </div>
             </div>
           </div>
 
           {filteredProducts.length === 0 ? (
-            <div className="bg-white rounded-3xl p-12 text-center border border-neutral-200 max-w-md mx-auto shadow-xs space-y-3">
+            <div className="bg-white rounded-3xl p-8 sm:p-12 text-center border border-neutral-200 max-w-md mx-auto shadow-xs space-y-3">
               <p className="text-neutral-700 font-medium text-sm">
                 Nenhum produto encontrado com os filtros atuais.
               </p>
@@ -236,7 +235,7 @@ export const ProductGrid: React.FC = () => {
               </button>
             </div>
           ) : (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-4 md:gap-5">
               {filteredProducts.map(renderProductCard)}
             </div>
           )}
@@ -245,9 +244,9 @@ export const ProductGrid: React.FC = () => {
         <>
           {/* SEÇÃO 1: NOVIDADES & LANÇAMENTOS */}
           <section id="novidades-section">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5 sm:mb-8">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-1">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-0.5">
                   Coleção Manaus 2026
                 </span>
                 <div className="flex items-center gap-2">
@@ -256,8 +255,8 @@ export const ProductGrid: React.FC = () => {
                   </h2>
                   <Sparkles className="w-5 h-5 text-neutral-800" />
                 </div>
-                <p className="text-neutral-600 text-xs sm:text-sm mt-1">
-                  Peças reais exclusivas direto do nosso mostruário oficial de Manaus!
+                <p className="text-neutral-600 text-xs sm:text-sm mt-0.5">
+                  Peças reais exclusivas direto do nosso mostruário de Manaus!
                 </p>
               </div>
 
@@ -270,15 +269,15 @@ export const ProductGrid: React.FC = () => {
               </button>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-4 md:gap-5">
               {novidadesProducts.map(renderProductCard)}
             </div>
           </section>
 
           {/* BANNER INTERMEDIÁRIO DE MANAUS — LOCAL SHIPPING & PICKUP */}
-          <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#0C0C0E] via-[#17171A] to-[#0C0C0E] text-white p-6 sm:p-10 shadow-xl border border-neutral-800">
-            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
-              <div className="space-y-2 max-w-2xl">
+          <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#0C0C0E] via-[#17171A] to-[#0C0C0E] text-white p-5 sm:p-10 shadow-xl border border-neutral-800">
+            <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-5 text-center lg:text-left">
+              <div className="space-y-1.5 max-w-2xl">
                 <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-[10px] font-bold uppercase tracking-wider text-neutral-200 border border-white/15">
                   📍 Atendimento Exclusivo em Manaus - AM
                 </span>
@@ -286,30 +285,30 @@ export const ProductGrid: React.FC = () => {
                   Entregas em Toda a Capital via Motoboy
                 </h3>
                 <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed">
-                  Frete calculado conforme a distância do seu bairro ou retirada gratuita com agendamento na nossa loja física. Atendimento rápido e atencioso via WhatsApp.
+                  Frete calculado conforme a distância do seu bairro ou retirada gratuita no showroom. Atendimento rápido via WhatsApp.
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
-                <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/20 text-xs">
-                  <Store className="w-5 h-5 text-neutral-300" />
+              <div className="flex flex-col sm:flex-row items-center gap-2.5 shrink-0 w-full sm:w-auto">
+                <div className="flex items-center justify-center gap-2.5 bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/20 text-xs w-full sm:w-auto">
+                  <Store className="w-4 h-4 text-neutral-300" />
                   <div className="text-left">
-                    <span className="block font-bold text-white">Retirada na Loja</span>
-                    <span className="text-[10px] text-neutral-300">Grátis em Manaus</span>
+                    <span className="block font-bold text-white text-[11px]">Retirada no Showroom</span>
+                    <span className="text-[9px] text-neutral-300">Grátis em Manaus</span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/20 text-xs">
-                  <Truck className="w-5 h-5 text-neutral-300" />
+                <div className="flex items-center justify-center gap-2.5 bg-white/10 backdrop-blur-md px-3.5 py-2 rounded-xl border border-white/20 text-xs w-full sm:w-auto">
+                  <Truck className="w-4 h-4 text-neutral-300" />
                   <div className="text-left">
-                    <span className="block font-bold text-white">Motoboy Express</span>
-                    <span className="text-[10px] text-neutral-300">Frete por Bairro</span>
+                    <span className="block font-bold text-white text-[11px]">Motoboy Express</span>
+                    <span className="text-[9px] text-neutral-300">Frete por Bairro</span>
                   </div>
                 </div>
 
                 <button
                   onClick={openWhatsAppModal}
-                  className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95"
+                  className="w-full sm:w-auto flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all active:scale-95"
                 >
                   <MessageCircle className="w-4 h-4 fill-white" />
                   <span>Chamar no WhatsApp</span>
@@ -320,9 +319,9 @@ export const ProductGrid: React.FC = () => {
 
           {/* SEÇÃO 2: MAIS VENDIDOS & DESTAQUES DE MANAUS */}
           <section id="mais-vendidos-section">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5 sm:mb-8">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-1">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-0.5">
                   Favoritos das Clientes
                 </span>
                 <div className="flex items-center gap-2">
@@ -331,8 +330,8 @@ export const ProductGrid: React.FC = () => {
                   </h2>
                   <Flame className="w-5 h-5 text-neutral-800" />
                 </div>
-                <p className="text-neutral-600 text-xs sm:text-sm mt-1">
-                  Os queridinhos e campeões de elogios das nossas clientes em Manaus!
+                <p className="text-neutral-600 text-xs sm:text-sm mt-0.5">
+                  Os queridinhos e campeões de elogios em Manaus!
                 </p>
               </div>
 
@@ -344,16 +343,16 @@ export const ProductGrid: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-4 md:gap-5">
               {maisVendidosProducts.map(renderProductCard)}
             </div>
           </section>
 
           {/* SEÇÃO 3: COLEÇÃO FESTA & NOITE */}
           <section id="festa-section">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-5 sm:mb-8">
               <div>
-                <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-1">
+                <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-0.5">
                   Moda Festa Plus Size
                 </span>
                 <div className="flex items-center gap-2">
@@ -362,7 +361,7 @@ export const ProductGrid: React.FC = () => {
                   </h2>
                   <Crown className="w-5 h-5 text-neutral-800" />
                 </div>
-                <p className="text-neutral-600 text-xs sm:text-sm mt-1">
+                <p className="text-neutral-600 text-xs sm:text-sm mt-0.5">
                   Brilho, glamour e sofisticação em modelagens que valorizam cada curva.
                 </p>
               </div>
@@ -374,7 +373,7 @@ export const ProductGrid: React.FC = () => {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-4 md:gap-5">
               {festaProducts.map(renderProductCard)}
             </div>
           </section>

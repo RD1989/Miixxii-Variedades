@@ -274,7 +274,7 @@ export const CartDrawer: React.FC = () => {
                         );
                         if (neigh) setSelectedNeighborhood(neigh);
                       }}
-                      className="w-full text-xs font-medium bg-white border border-neutral-300 rounded-xl px-3 py-2 text-neutral-900 focus:outline-none focus:border-black"
+                      className="w-full text-base sm:text-xs font-medium bg-white border border-neutral-300 rounded-xl px-3 py-2.5 text-neutral-900 focus:outline-none focus:border-black"
                     >
                       {MANAUS_NEIGHBORHOODS_LIST.map((n) => (
                         <option key={n.name} value={n.name}>

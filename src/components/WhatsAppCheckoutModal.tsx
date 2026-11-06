@@ -103,13 +103,19 @@ export const WhatsAppCheckoutModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
+      {/* Background click to close */}
+      <div className="absolute inset-0" onClick={closeWhatsAppModal} />
+
       <div
-        className="relative w-full max-w-lg bg-white rounded-3xl shadow-2xl overflow-hidden border border-neutral-200 max-h-[92vh] flex flex-col animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-lg bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden border border-neutral-200 max-h-[94vh] sm:max-h-[90vh] flex flex-col animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200 z-10"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Mobile Drag Indicator */}
+        <div className="sm:hidden w-12 h-1.5 bg-neutral-300 rounded-full mx-auto my-2 shrink-0" />
+
         {/* Header */}
-        <div className="flex items-center justify-between px-5 py-4 border-b border-neutral-100 bg-neutral-50/50">
+        <div className="flex items-center justify-between px-5 py-3.5 border-b border-neutral-100 bg-neutral-50/50">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 rounded-full bg-[#25D366] text-white flex items-center justify-center shadow-xs">
               <MessageCircle className="w-4 h-4 fill-white" />
@@ -126,7 +132,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
 
           <button
             onClick={closeWhatsAppModal}
-            className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-black flex items-center justify-center transition-colors"
+            className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-black flex items-center justify-center transition-colors active:scale-95"
             aria-label="Fechar"
           >
             <X className="w-4 h-4" />
@@ -134,7 +140,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
         </div>
 
         {/* Modal Body */}
-        <div className="p-5 sm:p-6 overflow-y-auto space-y-4 text-xs">
+        <div className="p-4 sm:p-6 overflow-y-auto space-y-4 text-xs">
           {/* Active Attendant Card */}
           <div className="w-full bg-neutral-50 rounded-2xl p-3 border border-neutral-200 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
@@ -170,7 +176,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
               value={customerName}
               onChange={(e) => setCustomerName(e.target.value)}
               placeholder="Ex: Amanda Silva"
-              className="w-full px-3.5 py-2.5 text-xs rounded-xl border border-neutral-300 focus:outline-none focus:border-black bg-neutral-50/70"
+              className="w-full px-3.5 py-2.5 text-base sm:text-xs rounded-xl border border-neutral-300 focus:outline-none focus:border-black bg-neutral-50/70 font-medium"
             />
           </div>
 
@@ -183,7 +189,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setDeliveryType('motoboy')}
-                className={`p-3 rounded-2xl border text-left flex items-center gap-2 transition-all ${
+                className={`p-3 rounded-2xl border text-left flex items-center gap-2 transition-all active:scale-95 ${
                   deliverySelection.type === 'motoboy'
                     ? 'bg-black text-white border-black shadow-xs'
                     : 'bg-neutral-50 text-neutral-700 border-neutral-200 hover:bg-neutral-100'
@@ -201,7 +207,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setDeliveryType('retirada')}
-                className={`p-3 rounded-2xl border text-left flex items-center gap-2 transition-all ${
+                className={`p-3 rounded-2xl border text-left flex items-center gap-2 transition-all active:scale-95 ${
                   deliverySelection.type === 'retirada'
                     ? 'bg-black text-white border-black shadow-xs'
                     : 'bg-neutral-50 text-neutral-700 border-neutral-200 hover:bg-neutral-100'
@@ -236,7 +242,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
                     const neigh = MANAUS_NEIGHBORHOODS_LIST.find((n) => n.name === e.target.value);
                     if (neigh) setSelectedNeighborhood(neigh);
                   }}
-                  className="w-full px-3 py-2 text-xs bg-white border border-neutral-300 rounded-xl focus:outline-none focus:border-black font-medium"
+                  className="w-full px-3 py-2.5 text-base sm:text-xs bg-white border border-neutral-300 rounded-xl focus:outline-none focus:border-black font-medium"
                 >
                   {MANAUS_NEIGHBORHOODS_LIST.map((n) => (
                     <option key={n.name} value={n.name}>
@@ -255,7 +261,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
                   value={deliverySelection.deliveryAddress || ''}
                   onChange={(e) => setDeliveryAddress(e.target.value)}
                   placeholder="Ex: Rua Maceió, condomínio tal, apto 302..."
-                  className="w-full px-3 py-2 text-xs bg-white border border-neutral-300 rounded-xl focus:outline-none focus:border-black"
+                  className="w-full px-3 py-2.5 text-base sm:text-xs bg-white border border-neutral-300 rounded-xl focus:outline-none focus:border-black font-medium"
                 />
               </div>
             </div>
