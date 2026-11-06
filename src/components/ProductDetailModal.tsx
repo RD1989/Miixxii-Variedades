@@ -306,15 +306,7 @@ export const ProductDetailModal: React.FC = () => {
           </div>
 
           {/* Action Buttons & Local Manaus Shipping Info */}
-          <div className="pt-6 space-y-3">
-            <button
-              onClick={handleAddToCart}
-              className="w-full flex items-center justify-center gap-2 bg-black hover:bg-neutral-800 text-white font-bold py-3.5 px-6 rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98]"
-            >
-              <ShoppingBag className="w-4 h-4" />
-              <span>Adicionar ao Carrinho</span>
-            </button>
-
+          <div className="pt-4 space-y-2.5">
             <button
               onClick={() => {
                 if (selectedProduct && selectedColor && selectedSize) {
@@ -323,31 +315,40 @@ export const ProductDetailModal: React.FC = () => {
                   openWhatsAppModal();
                 }
               }}
-              className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold py-3.5 px-6 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] text-xs sm:text-sm"
+              className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold py-3.5 px-6 rounded-2xl shadow-md hover:shadow-xl transition-all hover:scale-[1.01] active:scale-[0.99] text-xs sm:text-sm"
             >
               <MessageCircle className="w-4 h-4 fill-white" />
               <span>Pedir Direto pelo WhatsApp</span>
             </button>
 
+            <button
+              onClick={handleAddToCart}
+              className="w-full flex items-center justify-center gap-2 bg-neutral-900 hover:bg-black text-white font-bold py-3 px-6 rounded-2xl shadow-xs transition-all hover:scale-[1.01] active:scale-[0.99] text-xs"
+            >
+              <ShoppingBag className="w-4 h-4" />
+              <span>Adicionar à Sacola de Compras</span>
+            </button>
+
             {/* Manaus Local Shipping Notice */}
-            <div className="p-3 bg-neutral-50 rounded-2xl border border-neutral-200 space-y-1.5 text-[11px] text-neutral-600">
+            <div className="p-3 bg-neutral-50 rounded-2xl border border-neutral-200/80 space-y-1 text-[11px] text-neutral-600">
               <div className="flex items-center gap-1.5 font-bold text-neutral-900">
-                <Truck className="w-4 h-4 text-neutral-800" />
-                <span>Entrega em Toda Manaus (Motoboy)</span>
+                <Truck className="w-3.5 h-3.5 text-neutral-800" />
+                <span>Entregas em Toda Manaus (Motoboy) ou Retirada</span>
               </div>
               <p className="leading-tight text-neutral-500">
-                Frete a combinar por distância/bairro ou retirada grátis na loja física em Manaus.
+                Taxa combinada por distância/bairro ou retirada grátis na loja física em Manaus.
               </p>
             </div>
 
-            <div className="flex items-center justify-center gap-4 text-[10px] text-neutral-500 pt-0.5">
+            <div className="flex items-center justify-center gap-4 text-[10px] text-neutral-400 pt-0.5">
               <span className="flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                <ShieldCheck className="w-3 h-3 text-emerald-600" />
                 Compra 100% Segura
               </span>
+              <span>•</span>
               <span className="flex items-center gap-1">
-                <Store className="w-3.5 h-3.5 text-neutral-700" />
-                Retirada Presencial Disponível
+                <Store className="w-3 h-3 text-neutral-600" />
+                Showroom com Agendamento
               </span>
             </div>
           </div>

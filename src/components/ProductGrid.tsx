@@ -13,6 +13,7 @@ import {
   Truck,
   Store,
   Tag,
+  Check,
 } from 'lucide-react';
 import { Product, formatCurrencyBRL } from '@/data/mockData';
 import { useStore } from '@/store/useStore';
@@ -74,9 +75,9 @@ export const ProductGrid: React.FC = () => {
     return (
       <div
         key={product.id}
-        className="group bg-white rounded-2xl border border-neutral-200 overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-xl hover:border-black transition-all duration-300 hover:-translate-y-1"
+        className="group bg-white rounded-2xl border border-neutral-200/80 overflow-hidden flex flex-col justify-between shadow-xs hover:shadow-xl hover:border-black transition-all duration-300 hover:-translate-y-1"
       >
-        {/* Image Area with Badges & Wishlist */}
+        {/* Image Area with Badge & Wishlist */}
         <div
           onClick={() => openDetail(product)}
           className="relative aspect-[3/4] w-full overflow-hidden bg-neutral-100 cursor-pointer"
@@ -89,31 +90,11 @@ export const ProductGrid: React.FC = () => {
             className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
           />
 
-          {/* Status Badges */}
+          {/* Status Badge */}
           <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1 items-start">
-            {product.badge === 'Novo' && (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black text-white uppercase tracking-wider shadow-sm">
-                Novo
-              </span>
-            )}
-            {product.badge === 'Oferta' && (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-900 text-white uppercase tracking-wider shadow-sm border border-neutral-700">
-                Oferta
-              </span>
-            )}
-            {product.badge === 'Destaque' && (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-900 text-white uppercase tracking-wider shadow-sm">
-                Destaque
-              </span>
-            )}
-            {product.badge === 'Festa' && (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black text-white uppercase tracking-wider shadow-sm border border-neutral-700">
-                Festa ✨
-              </span>
-            )}
-            {product.badge === 'Mais Vendido' && (
-              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-neutral-800 text-amber-300 uppercase tracking-wider shadow-sm">
-                Mais Vendido
+            {product.badge && (
+              <span className="px-2.5 py-0.5 rounded-full text-[10px] font-extrabold bg-black text-white uppercase tracking-wider shadow-xs">
+                {product.badge}
               </span>
             )}
           </div>
@@ -124,37 +105,34 @@ export const ProductGrid: React.FC = () => {
               e.stopPropagation();
               toggleFavorite(product.id);
             }}
-            className="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-neutral-400 hover:text-black flex items-center justify-center transition-all shadow-sm hover:scale-110 active:scale-95"
+            className="absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full bg-white/90 hover:bg-white text-neutral-400 hover:text-black flex items-center justify-center transition-all shadow-xs hover:scale-110 active:scale-95"
             aria-label="Adicionar aos favoritos"
           >
             <Heart
-              className={`w-4 h-4 ${
+              className={`w-3.5 h-3.5 ${
                 isFav ? 'fill-black text-black' : 'stroke-current'
               }`}
             />
           </button>
-
-          {/* Subcategory Pill */}
-          <div className="absolute bottom-2 left-2 z-10">
-            <span className="px-2 py-0.5 rounded-md text-[9px] font-semibold bg-white/90 backdrop-blur-sm text-neutral-800 border border-neutral-200 shadow-2xs">
-              {product.subcategory}
-            </span>
-          </div>
         </div>
 
-        {/* Product Content Footer */}
-        <div className="p-3 sm:p-4 flex flex-col flex-1 justify-between gap-2.5">
+        {/* Product Details */}
+        <div className="p-3 sm:p-3.5 flex flex-col flex-1 justify-between gap-2">
           <div
             onClick={() => openDetail(product)}
-            className="cursor-pointer space-y-1.5"
+            className="cursor-pointer space-y-1"
           >
-            <h3 className="font-semibold text-xs sm:text-sm text-neutral-900 line-clamp-1 group-hover:text-black transition-colors">
+            <span className="text-[10px] font-bold uppercase tracking-wider text-neutral-400 block">
+              {product.subcategory}
+            </span>
+
+            <h3 className="font-bold text-xs sm:text-sm text-neutral-900 line-clamp-1 group-hover:text-black transition-colors">
               {product.name}
             </h3>
 
             {/* Price Area */}
-            <div className="flex items-baseline gap-1.5 flex-wrap">
-              <span className="text-sm sm:text-base font-bold text-neutral-900">
+            <div className="flex items-baseline gap-2 pt-0.5">
+              <span className="text-sm sm:text-base font-black text-neutral-900">
                 {formatCurrencyBRL(product.price)}
               </span>
               {product.originalPrice && (
@@ -166,16 +144,16 @@ export const ProductGrid: React.FC = () => {
 
             {/* Combo Notice if present */}
             {product.comboOffer && (
-              <div className="flex items-center gap-1 text-[10px] font-bold text-neutral-900 bg-neutral-100 px-2 py-0.5 rounded-md">
-                <Tag className="w-3 h-3 text-neutral-700" />
+              <div className="inline-flex items-center gap-1 text-[9px] font-bold text-neutral-800 bg-neutral-100 px-2 py-0.5 rounded-md mt-1">
+                <Tag className="w-2.5 h-2.5 text-neutral-600" />
                 <span className="truncate">{product.comboOffer}</span>
               </div>
             )}
 
             {/* Interactive Color Dots Preview */}
             {product.colors && product.colors.length > 0 && (
-              <div className="flex items-center gap-1 pt-0.5">
-                <span className="text-[10px] text-neutral-400 mr-1">Cores:</span>
+              <div className="flex items-center gap-1 pt-1.5">
+                <span className="text-[10px] text-neutral-400 mr-0.5">Cores:</span>
                 <div className="flex items-center gap-1">
                   {product.colors.slice(0, 4).map((c, idx) => (
                     <button
@@ -187,31 +165,22 @@ export const ProductGrid: React.FC = () => {
                     />
                   ))}
                   {product.colors.length > 4 && (
-                    <span className="text-[9px] text-neutral-500 font-medium">
+                    <span className="text-[9px] text-neutral-400 font-medium">
                       +{product.colors.length - 4}
                     </span>
                   )}
                 </div>
               </div>
             )}
-
-            {/* Sizes Indicator */}
-            <div className="flex items-center gap-1 text-[10px] text-neutral-500">
-              <span>Grades:</span>
-              <span className="font-semibold text-neutral-800 truncate">
-                {product.sizes.slice(0, 4).join(', ')}
-                {product.sizes.length > 4 ? '...' : ''}
-              </span>
-            </div>
           </div>
 
-          {/* WhatsApp Purchase Button with Smooth Green Transition */}
+          {/* Action Button */}
           <button
             onClick={() => openDetail(product)}
-            className="w-full mt-1 flex items-center justify-center gap-1.5 bg-black hover:bg-[#25D366] text-white text-[11px] sm:text-xs font-bold py-2 px-3 rounded-full shadow-xs hover:shadow-md transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+            className="w-full mt-2 flex items-center justify-center gap-1.5 bg-black hover:bg-neutral-800 text-white text-[11px] sm:text-xs font-bold py-2.5 px-3 rounded-xl shadow-xs transition-all hover:scale-[1.01] active:scale-[0.99]"
           >
             <MessageCircle className="w-3.5 h-3.5 fill-white shrink-0" />
-            <span className="truncate">Comprar pelo WhatsApp</span>
+            <span className="truncate">Pedir no WhatsApp</span>
           </button>
         </div>
       </div>
@@ -219,13 +188,16 @@ export const ProductGrid: React.FC = () => {
   };
 
   return (
-    <div className="w-full px-3 sm:px-6 lg:px-10 2xl:px-12 py-8 sm:py-12 space-y-16">
+    <div className="w-full px-4 sm:px-8 lg:px-12 2xl:px-16 py-8 sm:py-12 space-y-16">
       {/* Search or Category Filter Active View */}
       {isFiltering ? (
         <section id="novidades-section">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
             <div>
-              <h2 className="font-script text-4xl sm:text-5xl font-bold text-black">
+              <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-1">
+                Catálogo Filtrado
+              </span>
+              <h2 className="font-script text-3xl sm:text-4xl lg:text-5xl font-bold text-black">
                 Resultados da Busca
               </h2>
               <div className="mt-2 flex flex-wrap items-center gap-2">
@@ -236,7 +208,7 @@ export const ProductGrid: React.FC = () => {
                 )}
                 {searchQuery && (
                   <span className="text-xs bg-neutral-200 text-black px-3 py-1 rounded-full font-bold">
-                    Termo: &ldquo;{searchQuery}&rdquo;
+                    Busca: &ldquo;{searchQuery}&rdquo;
                   </span>
                 )}
                 <button
@@ -252,13 +224,13 @@ export const ProductGrid: React.FC = () => {
           </div>
 
           {filteredProducts.length === 0 ? (
-            <div className="bg-white rounded-3xl p-12 text-center border border-neutral-200 max-w-md mx-auto shadow-sm">
-              <p className="text-neutral-700 font-medium">
+            <div className="bg-white rounded-3xl p-12 text-center border border-neutral-200 max-w-md mx-auto shadow-xs space-y-3">
+              <p className="text-neutral-700 font-medium text-sm">
                 Nenhum produto encontrado com os filtros atuais.
               </p>
               <button
                 onClick={() => setSelectedCategory(null)}
-                className="mt-4 px-6 py-2.5 rounded-full bg-black text-white text-xs font-bold shadow-md hover:bg-neutral-800 transition-colors"
+                className="px-6 py-2.5 rounded-full bg-black text-white text-xs font-bold shadow-xs hover:bg-neutral-800 transition-colors"
               >
                 Ver Todas as Coleções
               </button>
@@ -273,15 +245,18 @@ export const ProductGrid: React.FC = () => {
         <>
           {/* SEÇÃO 1: NOVIDADES & LANÇAMENTOS */}
           <section id="novidades-section">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
               <div>
+                <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-1">
+                  Coleção Manaus 2026
+                </span>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-script text-4xl sm:text-5xl lg:text-6xl font-bold text-black leading-tight">
-                    Novidades
+                  <h2 className="font-script text-3xl sm:text-4xl lg:text-5xl font-bold text-black leading-tight">
+                    Novidades da Semana
                   </h2>
-                  <Sparkles className="w-6 h-6 text-neutral-800" />
+                  <Sparkles className="w-5 h-5 text-neutral-800" />
                 </div>
-                <p className="text-neutral-600 text-sm sm:text-base mt-1">
+                <p className="text-neutral-600 text-xs sm:text-sm mt-1">
                   Peças reais exclusivas direto do nosso mostruário oficial de Manaus!
                 </p>
               </div>
@@ -304,10 +279,10 @@ export const ProductGrid: React.FC = () => {
           <section className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-[#0C0C0E] via-[#17171A] to-[#0C0C0E] text-white p-6 sm:p-10 shadow-xl border border-neutral-800">
             <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6 text-center lg:text-left">
               <div className="space-y-2 max-w-2xl">
-                <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-[11px] font-bold uppercase tracking-wider text-neutral-200 border border-white/15">
+                <span className="inline-block px-3 py-1 rounded-full bg-white/10 text-[10px] font-bold uppercase tracking-wider text-neutral-200 border border-white/15">
                   📍 Atendimento Exclusivo em Manaus - AM
                 </span>
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white tracking-tight leading-tight">
+                <h3 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight">
                   Entregas em Toda a Capital via Motoboy
                 </h3>
                 <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed">
@@ -315,7 +290,7 @@ export const ProductGrid: React.FC = () => {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center gap-4 shrink-0">
+              <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
                 <div className="flex items-center gap-3 bg-white/10 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/20 text-xs">
                   <Store className="w-5 h-5 text-neutral-300" />
                   <div className="text-left">
@@ -334,7 +309,7 @@ export const ProductGrid: React.FC = () => {
 
                 <button
                   onClick={openWhatsAppModal}
-                  className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-sm px-6 py-3.5 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95"
+                  className="flex items-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-xs sm:text-sm px-6 py-3 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105 active:scale-95"
                 >
                   <MessageCircle className="w-4 h-4 fill-white" />
                   <span>Chamar no WhatsApp</span>
@@ -345,21 +320,24 @@ export const ProductGrid: React.FC = () => {
 
           {/* SEÇÃO 2: MAIS VENDIDOS & DESTAQUES DE MANAUS */}
           <section id="mais-vendidos-section">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
               <div>
+                <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-1">
+                  Favoritos das Clientes
+                </span>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-script text-4xl sm:text-5xl lg:text-6xl font-bold text-black leading-tight">
+                  <h2 className="font-script text-3xl sm:text-4xl lg:text-5xl font-bold text-black leading-tight">
                     Mais Vendidos
                   </h2>
-                  <Flame className="w-6 h-6 text-neutral-800" />
+                  <Flame className="w-5 h-5 text-neutral-800" />
                 </div>
-                <p className="text-neutral-600 text-sm sm:text-base mt-1">
+                <p className="text-neutral-600 text-xs sm:text-sm mt-1">
                   Os queridinhos e campeões de elogios das nossas clientes em Manaus!
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs bg-neutral-100 text-neutral-900 px-3 py-1 rounded-full font-bold border border-neutral-300 flex items-center gap-1">
+                <span className="text-xs bg-neutral-100 text-neutral-900 px-3 py-1 rounded-full font-bold border border-neutral-200 flex items-center gap-1 shadow-2xs">
                   <Star className="w-3.5 h-3.5 fill-black text-black" />
                   Avaliação Média 4.9 ★★★★★
                 </span>
@@ -373,21 +351,24 @@ export const ProductGrid: React.FC = () => {
 
           {/* SEÇÃO 3: COLEÇÃO FESTA & NOITE */}
           <section id="festa-section">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
+            <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-6 sm:mb-8">
               <div>
+                <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-1">
+                  Moda Festa Plus Size
+                </span>
                 <div className="flex items-center gap-2">
-                  <h2 className="font-script text-4xl sm:text-5xl lg:text-6xl font-bold text-black leading-tight">
+                  <h2 className="font-script text-3xl sm:text-4xl lg:text-5xl font-bold text-black leading-tight">
                     Coleção Festa & Noite
                   </h2>
-                  <Crown className="w-6 h-6 text-neutral-800" />
+                  <Crown className="w-5 h-5 text-neutral-800" />
                 </div>
-                <p className="text-neutral-600 text-sm sm:text-base mt-1">
+                <p className="text-neutral-600 text-xs sm:text-sm mt-1">
                   Brilho, glamour e sofisticação em modelagens que valorizam cada curva.
                 </p>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="text-xs bg-black text-white px-3 py-1 rounded-full font-bold border border-neutral-800">
+                <span className="text-xs bg-black text-white px-3 py-1 rounded-full font-bold">
                   Alta Costura Plus Size
                 </span>
               </div>

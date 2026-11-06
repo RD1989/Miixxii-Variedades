@@ -6,146 +6,99 @@ import {
   ShieldCheck,
   Truck,
   Shirt,
-  HeartHandshake,
-  CreditCard,
-  Headphones,
   MessageCircle,
   MapPin,
+  RefreshCw,
+  CreditCard,
+  Lock,
 } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 import { useStore } from '@/store/useStore';
 
 export const Footer: React.FC = () => {
-  const { openWhatsAppModal, openInfoModal } = useStore();
+  const { openWhatsAppLead, openInfoModal } = useStore();
 
   return (
-    <footer className="mt-12 w-full">
-      {/* 4 Trust & Local Authority Cards */}
-      <div className="w-full px-3 sm:px-6 lg:px-10 2xl:px-12 mb-8">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
-          {/* Card 1 */}
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-neutral-200 shadow-sm flex items-center gap-3.5 hover:shadow-md transition-shadow">
-            <div className="w-11 h-11 rounded-xl bg-neutral-100 border border-neutral-200 flex items-center justify-center text-black shrink-0">
-              <ShieldCheck className="w-6 h-6" />
+    <footer className="mt-12 w-full border-t border-neutral-200 bg-white">
+      {/* 4 Refined Brand Pillars (Consolidated & Clutter-free) */}
+      <div className="w-full px-4 sm:px-8 lg:px-12 2xl:px-16 py-8 border-b border-neutral-100 bg-[#FAFAFC]">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          {/* Pillar 1 */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-neutral-100 flex items-center justify-center text-black shrink-0 border border-neutral-200/80">
+              <Truck className="w-5 h-5" />
             </div>
             <div>
               <h4 className="text-xs sm:text-sm font-bold text-neutral-900 leading-tight">
-                Compra Segura
+                Entregas em Manaus
               </h4>
-              <p className="text-[11px] text-neutral-500 mt-0.5">e 100% Confiável</p>
+              <p className="text-[11px] text-neutral-500 mt-0.5">Motoboy ou Retirada na Loja</p>
             </div>
           </div>
 
-          {/* Card 2 */}
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-neutral-200 shadow-sm flex items-center gap-3.5 hover:shadow-md transition-shadow">
-            <div className="w-11 h-11 rounded-xl bg-neutral-100 border border-neutral-200 flex items-center justify-center text-black shrink-0">
-              <Truck className="w-6 h-6" />
+          {/* Pillar 2 */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-neutral-100 flex items-center justify-center text-black shrink-0 border border-neutral-200/80">
+              <Shirt className="w-5 h-5" />
             </div>
             <div>
               <h4 className="text-xs sm:text-sm font-bold text-neutral-900 leading-tight">
-                Atendimento Local
+                Modelagem Plus Size
               </h4>
-              <p className="text-[11px] text-neutral-500 mt-0.5">em Manaus - AM</p>
+              <p className="text-[11px] text-neutral-500 mt-0.5">Do tamanho G ao G3</p>
             </div>
           </div>
 
-          {/* Card 3 */}
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-neutral-200 shadow-sm flex items-center gap-3.5 hover:shadow-md transition-shadow">
-            <div className="w-11 h-11 rounded-xl bg-neutral-100 border border-neutral-200 flex items-center justify-center text-black shrink-0">
-              <Shirt className="w-6 h-6" />
+          {/* Pillar 3 */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-neutral-100 flex items-center justify-center text-black shrink-0 border border-neutral-200/80">
+              <RefreshCw className="w-5 h-5" />
             </div>
             <div>
               <h4 className="text-xs sm:text-sm font-bold text-neutral-900 leading-tight">
-                Moda Plus Size
+                Troca Garantida
               </h4>
-              <p className="text-[11px] text-neutral-500 mt-0.5">com muito Estilo</p>
+              <p className="text-[11px] text-neutral-500 mt-0.5">Até 7 dias para troca</p>
             </div>
           </div>
 
-          {/* Card 4 */}
-          <div className="bg-white p-4 sm:p-5 rounded-2xl border border-neutral-200 shadow-sm flex items-center gap-3.5 hover:shadow-md transition-shadow">
-            <div className="w-11 h-11 rounded-xl bg-neutral-100 border border-neutral-200 flex items-center justify-center text-black shrink-0">
-              <HeartHandshake className="w-6 h-6" />
+          {/* Pillar 4 */}
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-2xl bg-neutral-100 flex items-center justify-center text-black shrink-0 border border-neutral-200/80">
+              <ShieldCheck className="w-5 h-5" />
             </div>
             <div>
               <h4 className="text-xs sm:text-sm font-bold text-neutral-900 leading-tight">
-                Atendimento VIP
+                Compra 100% Segura
               </h4>
-              <p className="text-[11px] text-neutral-500 mt-0.5">Exclusivo pelo Whats</p>
+              <p className="text-[11px] text-neutral-500 mt-0.5">PIX ou Cartão na entrega</p>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Dark Graphite Trust Banner (with WhatsApp CTA) */}
-      <div className="bg-gradient-to-r from-[#0C0C0E] via-[#17171A] to-[#0C0C0E] text-white py-6 px-4 sm:px-8 lg:px-12 2xl:px-16 border-y border-neutral-800">
-        <div className="w-full flex flex-col lg:flex-row items-center justify-between gap-6">
-          {/* Trust Icons Row */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 text-xs text-neutral-200 w-full lg:w-auto">
-            <div className="flex items-center gap-2.5">
-              <ShieldCheck className="w-5 h-5 text-neutral-400 shrink-0" />
-              <div>
-                <span className="font-bold block text-white">Compra Segura</span>
-                <span className="text-[10px] text-neutral-400">Seus dados protegidos</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2.5">
-              <Truck className="w-5 h-5 text-neutral-400 shrink-0" />
-              <div>
-                <span className="font-bold block text-white">Entrega Rápida</span>
-                <span className="text-[10px] text-neutral-400">Somente em Manaus - AM</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2.5">
-              <Headphones className="w-5 h-5 text-neutral-400 shrink-0" />
-              <div>
-                <span className="font-bold block text-white">Atendimento</span>
-                <span className="text-[10px] text-neutral-400">Personalizado</span>
-              </div>
-            </div>
-
-            <div className="flex items-center gap-2.5">
-              <CreditCard className="w-5 h-5 text-neutral-400 shrink-0" />
-              <div>
-                <span className="font-bold block text-white">Diversas Formas</span>
-                <span className="text-[10px] text-neutral-400">de Pagamento (PIX/Cartão)</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Direct Green WhatsApp CTA */}
-          <button
-            onClick={openWhatsAppModal}
-            className="w-full sm:w-auto shrink-0 flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-sm sm:text-base px-6 py-3.5 rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 active:scale-95 animate-pulse-subtle border border-white/20"
-          >
-            <MessageCircle className="w-5 h-5 fill-white" />
-            <span>Compre Agora pelo WhatsApp</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Institutional Footer */}
-      <div className="bg-white border-t border-neutral-200 py-8 px-4 sm:px-8 lg:px-12 2xl:px-16 text-center sm:text-left">
-        <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="space-y-2 text-center md:text-left">
+      {/* Main Footer Container */}
+      <div className="w-full px-4 sm:px-8 lg:px-12 2xl:px-16 py-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+          {/* Brand Info */}
+          <div className="space-y-3 max-w-sm">
             <BrandLogo size="md" />
-            <p className="text-xs text-neutral-500 max-w-sm">
-              Moda Plus Size elegante é aqui! Coleções exclusivas do tamanho G ao G3.
+            <p className="text-xs text-neutral-500 leading-relaxed">
+              Moda Plus Size feminina elegante e contemporânea em Manaus - AM. Estilo, conforto e autoestima para todas as curvas.
             </p>
-            <div className="flex items-center justify-center md:justify-start gap-1 text-xs text-neutral-700 font-medium pt-1">
-              <MapPin className="w-3.5 h-3.5 text-neutral-900" />
-              <span>Manaus - AM • Beleza em todas as formas!</span>
+            <div className="flex items-center justify-center md:justify-start gap-1.5 text-xs text-neutral-700 font-medium">
+              <MapPin className="w-3.5 h-3.5 text-black" />
+              <span>Manaus - AM • Showroom & Entregas</span>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-neutral-600">
+          {/* Institutional Fast Links */}
+          <div className="flex flex-wrap items-center justify-center gap-5 text-xs text-neutral-600 font-medium">
             <button
               onClick={() =>
                 openInfoModal(
                   'Política de Trocas e Devoluções',
-                  'Garantimos a troca de peças em até 7 dias corridos após o recebimento, garantindo que o look fique perfeito em você.'
+                  'Garantimos a troca de peças em até 7 dias corridos após o recebimento em Manaus para que seu look fique impecável.'
                 )
               }
               className="hover:text-black transition-colors"
@@ -156,8 +109,8 @@ export const Footer: React.FC = () => {
             <button
               onClick={() =>
                 openInfoModal(
-                  'Guia de Medidas Plus Size',
-                  'Nossa tabela atende do G ao G3 com foco em busto, cintura e quadril para você acertar de primeira.'
+                  'Tabela de Medidas Plus Size',
+                  'Nossa modelagem atende do G ao G3 com foco em proporções reais (busto, cintura e quadril).'
                 )
               }
               className="hover:text-black transition-colors"
@@ -165,20 +118,33 @@ export const Footer: React.FC = () => {
               Tabela de Medidas
             </button>
             <span>•</span>
+            <button
+              onClick={() =>
+                openWhatsAppLead(
+                  'Olá! Gostaria de atendimento de vendas na MIIXXIIE em Manaus.',
+                  'footer_link'
+                )
+              }
+              className="hover:text-black transition-colors flex items-center gap-1"
+            >
+              <MessageCircle className="w-3.5 h-3.5 text-[#25D366]" />
+              <span>Falar com Consultora</span>
+            </button>
+            <span>•</span>
             <Link
               href="/admin"
-              className="font-bold text-black hover:text-neutral-700 transition-colors underline"
+              className="text-neutral-500 hover:text-black transition-colors text-[11px] flex items-center gap-1"
             >
-              Acesso Administrativo
+              <Lock className="w-3 h-3" />
+              <span>Acesso Lojista</span>
             </Link>
           </div>
         </div>
 
-        <div className="max-w-7xl mx-auto mt-6 pt-6 border-t border-neutral-100 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-neutral-400">
+        {/* Bottom Copyright */}
+        <div className="mt-8 pt-6 border-t border-neutral-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-neutral-400">
           <p>© 2026 MIIXXIIE Variedades. Todos os direitos reservados.</p>
-          <p className="flex items-center gap-1">
-            Feito para a mulher brasileira.
-          </p>
+          <p>Manaus - AM • Beleza em todas as formas.</p>
         </div>
       </div>
     </footer>

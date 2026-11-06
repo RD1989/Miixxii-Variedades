@@ -107,11 +107,10 @@ export const CartDrawer: React.FC = () => {
                 Explore o mostruário real de Manaus e adicione seus looks favoritos!
               </p>
               <button
-                onClick={resetToDemoCart}
-                className="mt-2 inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-neutral-100 text-black text-xs font-bold hover:bg-neutral-200 transition-colors"
+                onClick={() => setIsCartOpen(false)}
+                className="mt-3 inline-flex items-center gap-2 px-6 py-2.5 rounded-full bg-black text-white text-xs font-bold hover:bg-neutral-800 transition-colors shadow-sm"
               >
-                <RefreshCw className="w-3.5 h-3.5" />
-                <span>Restaurar Carrinho de Demonstração</span>
+                <span>Explorar Coleção</span>
               </button>
             </div>
           ) : (
