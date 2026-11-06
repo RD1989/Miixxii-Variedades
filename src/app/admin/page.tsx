@@ -5,90 +5,53 @@ import Link from 'next/link';
 import Image from 'next/image';
 import {
   LayoutDashboard,
-  Shirt,
-  Grid,
+  Kanban,
   ShoppingBag,
-  Users,
-  Ticket,
-  Image as ImageIcon,
   BarChart3,
   Settings,
   LogOut,
-  Bell,
-  Search,
-  MessageCircle,
   ExternalLink,
   ChevronRight,
   TrendingUp,
-  Star,
-  CheckCircle2,
-  Clock,
-  Eye,
-  Filter,
-  Plus,
-  Minus,
-  ArrowUpRight,
+  Store,
   Sparkles,
   Menu,
   X,
   Phone,
   ArrowLeft,
   Truck,
-  Store,
-  Tag,
-  Palette,
-  Check,
-  AlertTriangle,
+  Database,
+  CheckCircle2,
+  Users,
 } from 'lucide-react';
-import {
-  ADMIN_DASHBOARD_DATA,
-  formatCurrencyBRL,
-  CATEGORIES,
-  ColorOption,
-  Product,
-  MANAUS_NEIGHBORHOODS_LIST,
-  STORE_CONFIG,
-} from '@/data/mockData';
-import { useStore, AdminOrder } from '@/store/useStore';
+import { useStore } from '@/store/useStore';
+import { AdminLogin } from '@/components/admin/AdminLogin';
+import { AdminKanbanBoard } from '@/components/admin/AdminKanbanBoard';
+import { AdminProductManager } from '@/components/admin/AdminProductManager';
+import { AdminMetricsAndClicks } from '@/components/admin/AdminMetricsAndClicks';
+import { AdminStoreCustomizer } from '@/components/admin/AdminStoreCustomizer';
+import { formatCurrencyBRL } from '@/data/mockData';
 
 export default function AdminPage() {
   const {
+    isAdminLoggedIn,
+    adminUser,
+    logoutAdmin,
     products,
-    updateStock,
-    updateSizeStock,
-    updateProductColors,
-    updateProductPrice,
-    toggleProductActive,
     adminOrders,
-    updateOrderStatus,
-    openInfoModal,
     attendants,
-    currentAttendantIndex,
-    openWhatsAppLead,
+    storeCMS,
   } = useStore();
 
   const [activeTab, setActiveTab] = useState<
-    'dashboard' | 'produtos' | 'pedidos' | 'clientes' | 'relatorios' | 'cupons' | 'configuracoes'
+    'dashboard' | 'kanban' | 'produtos' | 'metricas' | 'customizacao'
   >('dashboard');
-  const [isStoreOnline, setIsStoreOnline] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [selectedOrderDetails, setSelectedOrderDetails] = useState<AdminOrder | null>(null);
 
-  // Product Management Filters & Search
-  const [productSearch, setProductSearch] = useState('');
-  const [productCategoryFilter, setProductCategoryFilter] = useState<string>('all');
-  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
-
-  // Color Manager local state when editing a product
-  const [tempColors, setTempColors] = useState<ColorOption[]>([]);
-  const [newColorName, setNewColorName] = useState('');
-  const [newColorHex, setNewColorHex] = useState('#000000');
-  const [tempPrice, setTempPrice] = useState<number>(0);
-  const [tempSizeStock, setTempSizeStock] = useState<Record<string, number>>({});
-
-  const [selectedChartPoint, setSelectedChartPoint] = useState(
-    ADMIN_DASHBOARD_DATA.salesChart30Days.find((p) => p.highlight) || ADMIN_DASHBOARD_DATA.salesChart30Days[8]
-  );
+  // If not authenticated, show professional login screen
+  if (!isAdminLoggedIn) {
+    return <AdminLogin />;
+  }
 
   const handleTabChange = (tab: typeof activeTab) => {
     setActiveTab(tab);
@@ -96,1003 +59,402 @@ export default function AdminPage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const openProductEditor = (prod: Product) => {
-    setEditingProduct(prod);
-    setTempColors([...prod.colors]);
-    setTempPrice(prod.price);
-    setTempSizeStock({ ...(prod.sizeStock || {}) });
-  };
-
-  const handleSaveProductEditor = () => {
-    if (!editingProduct) return;
-    updateProductColors(editingProduct.id, tempColors);
-    updateProductPrice(editingProduct.id, tempPrice, editingProduct.originalPrice);
-
-    // Update size stocks
-    Object.entries(tempSizeStock).forEach(([sz, qty]) => {
-      updateSizeStock(editingProduct.id, sz, qty);
-    });
-
-    setEditingProduct(null);
-  };
-
-  const handleAddColor = () => {
-    if (!newColorName.trim()) return;
-    const newColor: ColorOption = {
-      name: newColorName.trim(),
-      hex: newColorHex,
-      image: editingProduct?.image,
-      stock: 4,
-    };
-    setTempColors((prev) => [...prev, newColor]);
-    setNewColorName('');
-    setNewColorHex('#000000');
-  };
-
-  const handleRemoveColor = (colorName: string) => {
-    setTempColors((prev) => prev.filter((c) => c.name !== colorName));
-  };
-
-  // Filtered products list for the Products tab
-  const filteredAdminProducts = products.filter((p) => {
-    const matchesCat =
-      productCategoryFilter === 'all' || p.category === productCategoryFilter;
-    const matchesSearch = productSearch
-      ? p.name.toLowerCase().includes(productSearch.toLowerCase()) ||
-        p.subcategory.toLowerCase().includes(productSearch.toLowerCase())
-      : true;
-    return matchesCat && matchesSearch;
-  });
+  const mariaLeads = attendants.find((a) => a.id === 'maria')?.clicksCount || 0;
+  const carlosLeads = attendants.find((a) => a.id === 'carlos')?.clicksCount || 0;
+  const totalRevenue = adminOrders.reduce((sum, o) => sum + o.total, 0);
 
   return (
-    <div className="min-h-screen bg-[#F8F8FA] flex flex-col md:flex-row text-gray-800 pb-20 md:pb-0">
-      {/* 1. Desktop Permanent Sidebar */}
-      <aside className="hidden md:flex md:w-64 bg-gradient-to-b from-[#0A0A0C] via-[#121214] to-[#17171A] text-white flex-col justify-between shrink-0 shadow-2xl z-30 min-h-screen sticky top-0">
-        <div>
-          {/* Logo Header */}
-          <div className="p-6 border-b border-white/10 flex flex-col items-center text-center">
-            <Link href="/" className="group flex flex-col items-center">
-              <div className="w-16 h-16 rounded-full bg-white p-1.5 shadow-lg flex items-center justify-center border-2 border-neutral-700 transition-transform group-hover:scale-105">
+    <div className="min-h-screen bg-[#F8F8FA] flex flex-col md:flex-row text-neutral-900 font-sans selection:bg-black selection:text-white">
+      {/* 1. SIDEBAR (Desktop) */}
+      <aside className="hidden md:flex flex-col w-64 lg:w-72 bg-[#09090B] text-neutral-300 border-r border-neutral-800 p-5 space-y-6 shrink-0 justify-between">
+        <div className="space-y-6">
+          {/* Brand Logo in Admin */}
+          <div className="space-y-2 pb-4 border-b border-neutral-800/80">
+            <Link href="/" className="inline-block group">
+              <div className="relative w-44 h-12">
                 <Image
-                  src="/images/logo-circle.png"
-                  alt="MIIXXIIE"
-                  width={56}
-                  height={56}
-                  className="rounded-full object-contain"
+                  src="/images/logo-white.png"
+                  alt="MIIXXIIE Variedades"
+                  fill
+                  priority
+                  className="object-contain"
                 />
               </div>
-              <span className="text-[10px] tracking-[0.24em] uppercase font-bold text-neutral-300 mt-2.5">
-                Moda Plus Size Manaus
-              </span>
             </Link>
+            <div className="flex items-center justify-between text-[11px] pt-1">
+              <span className="text-neutral-400 font-medium">Gestão Manaus - AM</span>
+              <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.2 rounded-full font-bold flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                Online
+              </span>
+            </div>
           </div>
 
           {/* Navigation Links */}
-          <nav className="p-4 space-y-1">
+          <nav className="space-y-1.5 text-xs font-semibold">
             <button
               onClick={() => handleTabChange('dashboard')}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
                 activeTab === 'dashboard'
-                  ? 'bg-white text-black font-extrabold shadow-md'
-                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
+                  ? 'bg-white text-black font-bold shadow-md'
+                  : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
               }`}
             >
-              <LayoutDashboard className="w-4 h-4" />
-              <span>Dashboard</span>
+              <div className="flex items-center gap-2.5">
+                <LayoutDashboard className="w-4 h-4" />
+                <span>Visão Geral</span>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 opacity-60" />
             </button>
 
             <button
-              onClick={() => handleTabChange('produtos')}
-              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
-                activeTab === 'produtos'
-                  ? 'bg-white text-black font-extrabold shadow-md'
-                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
+              onClick={() => handleTabChange('kanban')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
+                activeTab === 'kanban'
+                  ? 'bg-white text-black font-bold shadow-md'
+                  : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
               }`}
             >
-              <div className="flex items-center gap-3">
-                <Shirt className="w-4 h-4" />
-                <span>Estoque & Produtos</span>
+              <div className="flex items-center gap-2.5">
+                <Kanban className="w-4 h-4" />
+                <span>Kanban de Pedidos</span>
               </div>
-              <span className="bg-neutral-800 text-white text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/20">
-                {products.length}
-              </span>
-            </button>
-
-            <button
-              onClick={() => handleTabChange('pedidos')}
-              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
-                activeTab === 'pedidos'
-                  ? 'bg-white text-black font-extrabold shadow-md'
-                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <ShoppingBag className="w-4 h-4" />
-                <span>Pedidos & Entregas</span>
-              </div>
-              <span className="bg-[#25D366] text-white text-[10px] font-bold px-2 py-0.5 rounded-full">
+              <span className="text-[10px] bg-neutral-800 text-neutral-300 px-2 py-0.2 rounded-full">
                 {adminOrders.length}
               </span>
             </button>
 
             <button
-              onClick={() => handleTabChange('clientes')}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
-                activeTab === 'clientes'
-                  ? 'bg-white text-black font-extrabold shadow-md'
-                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
+              onClick={() => handleTabChange('produtos')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
+                activeTab === 'produtos'
+                  ? 'bg-white text-black font-bold shadow-md'
+                  : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
               }`}
             >
-              <Users className="w-4 h-4" />
-              <span>Clientes Manaus</span>
+              <div className="flex items-center gap-2.5">
+                <ShoppingBag className="w-4 h-4" />
+                <span>Produtos & Fotos</span>
+              </div>
+              <span className="text-[10px] bg-neutral-800 text-neutral-300 px-2 py-0.2 rounded-full">
+                {products.length}
+              </span>
             </button>
 
             <button
-              onClick={() => handleTabChange('relatorios')}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
-                activeTab === 'relatorios'
-                  ? 'bg-white text-black font-extrabold shadow-md'
-                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
+              onClick={() => handleTabChange('metricas')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
+                activeTab === 'metricas'
+                  ? 'bg-white text-black font-bold shadow-md'
+                  : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
               }`}
             >
-              <BarChart3 className="w-4 h-4" />
-              <span>Relatórios</span>
+              <div className="flex items-center gap-2.5">
+                <BarChart3 className="w-4 h-4" />
+                <span>Métricas & Cliques</span>
+              </div>
+              <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.2 rounded-full">
+                {mariaLeads + carlosLeads} leads
+              </span>
             </button>
 
             <button
-              onClick={() => handleTabChange('configuracoes')}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-xs font-medium transition-all ${
-                activeTab === 'configuracoes'
-                  ? 'bg-white text-black font-extrabold shadow-md'
-                  : 'text-neutral-400 hover:bg-white/10 hover:text-white'
+              onClick={() => handleTabChange('customizacao')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
+                activeTab === 'customizacao'
+                  ? 'bg-white text-black font-bold shadow-md'
+                  : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
               }`}
             >
-              <Settings className="w-4 h-4" />
-              <span>Frete & Configurações</span>
+              <div className="flex items-center gap-2.5">
+                <Settings className="w-4 h-4" />
+                <span>Loja & Supabase</span>
+              </div>
+              <ChevronRight className="w-3.5 h-3.5 opacity-60" />
             </button>
           </nav>
         </div>
 
-        {/* Back to Storefront Link */}
-        <div className="p-4 border-t border-white/10 space-y-2">
-          <Link
-            href="/"
-            className="flex items-center gap-2.5 px-4 py-2 rounded-xl text-xs font-semibold text-neutral-300 hover:bg-white/10 hover:text-white transition-colors"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Voltar à Loja Virtual</span>
-          </Link>
-          <div className="px-4 py-2 text-[10px] text-neutral-400">
-            MIIXXIIE • Manaus - AM
+        {/* Sidebar Footer: User & Logout */}
+        <div className="pt-4 border-t border-neutral-800/80 space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-full bg-white text-black flex items-center justify-center font-bold text-xs shrink-0">
+              {adminUser?.name?.charAt(0) || 'M'}
+            </div>
+            <div className="truncate">
+              <span className="block text-xs font-bold text-white truncate">
+                {adminUser?.name || 'Administrador'}
+              </span>
+              <span className="block text-[10px] text-neutral-400 truncate">
+                {adminUser?.email || 'admin@miixxiie.com.br'}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 pt-1">
+            <Link
+              href="/"
+              target="_blank"
+              className="flex-1 py-1.5 px-2 bg-neutral-900 hover:bg-neutral-800 text-neutral-300 text-[11px] font-semibold rounded-lg flex items-center justify-center gap-1 transition-colors"
+            >
+              <ExternalLink className="w-3 h-3" />
+              <span>Ver Loja</span>
+            </Link>
+
+            <button
+              onClick={logoutAdmin}
+              className="p-1.5 bg-neutral-900 hover:bg-red-950 text-neutral-400 hover:text-red-400 rounded-lg transition-colors"
+              title="Sair do Painel"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </aside>
 
-      {/* 2. Main Content Area */}
-      <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
-        {/* Top Navbar Header */}
-        <header className="bg-white border-b border-[#E4E4E7] px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-20 shadow-2xs">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="md:hidden p-2 rounded-xl text-neutral-700 hover:bg-neutral-100"
-              aria-label="Abrir menu"
-            >
-              <Menu className="w-5 h-5" />
+      {/* 2. MOBILE TOPBAR */}
+      <div className="md:hidden bg-[#09090B] text-white p-4 flex items-center justify-between border-b border-neutral-800 sticky top-0 z-40">
+        <div className="relative w-36 h-10">
+          <Image
+            src="/images/logo-white.png"
+            alt="MIIXXIIE"
+            fill
+            priority
+            className="object-contain"
+          />
+        </div>
+
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="p-2 rounded-xl bg-neutral-800 text-white"
+        >
+          {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        </button>
+      </div>
+
+      {/* Mobile Drawer Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden bg-[#121214] border-b border-neutral-800 p-4 space-y-2 text-xs font-semibold text-neutral-300">
+          <button
+            onClick={() => handleTabChange('dashboard')}
+            className={`w-full p-2.5 rounded-xl text-left flex items-center gap-2 ${
+              activeTab === 'dashboard' ? 'bg-white text-black font-bold' : ''
+            }`}
+          >
+            <LayoutDashboard className="w-4 h-4" />
+            <span>Visão Geral</span>
+          </button>
+          <button
+            onClick={() => handleTabChange('kanban')}
+            className={`w-full p-2.5 rounded-xl text-left flex items-center gap-2 ${
+              activeTab === 'kanban' ? 'bg-white text-black font-bold' : ''
+            }`}
+          >
+            <Kanban className="w-4 h-4" />
+            <span>Kanban de Pedidos ({adminOrders.length})</span>
+          </button>
+          <button
+            onClick={() => handleTabChange('produtos')}
+            className={`w-full p-2.5 rounded-xl text-left flex items-center gap-2 ${
+              activeTab === 'produtos' ? 'bg-white text-black font-bold' : ''
+            }`}
+          >
+            <ShoppingBag className="w-4 h-4" />
+            <span>Produtos & Fotos ({products.length})</span>
+          </button>
+          <button
+            onClick={() => handleTabChange('metricas')}
+            className={`w-full p-2.5 rounded-xl text-left flex items-center gap-2 ${
+              activeTab === 'metricas' ? 'bg-white text-black font-bold' : ''
+            }`}
+          >
+            <BarChart3 className="w-4 h-4" />
+            <span>Métricas & Cliques</span>
+          </button>
+          <button
+            onClick={() => handleTabChange('customizacao')}
+            className={`w-full p-2.5 rounded-xl text-left flex items-center gap-2 ${
+              activeTab === 'customizacao' ? 'bg-white text-black font-bold' : ''
+            }`}
+          >
+            <Settings className="w-4 h-4" />
+            <span>Loja & Supabase</span>
+          </button>
+          <div className="pt-2 border-t border-neutral-800 flex justify-between items-center">
+            <Link href="/" className="text-xs text-neutral-400 underline">
+              Ver Loja Virtual
+            </Link>
+            <button onClick={logoutAdmin} className="text-xs text-red-400 font-bold">
+              Sair
             </button>
-            <h1 className="font-extrabold text-base sm:text-lg text-neutral-900 capitalize">
-              {activeTab === 'produtos' ? 'Gestão de Estoque & Cores' : activeTab}
+          </div>
+        </div>
+      )}
+
+      {/* 3. MAIN CONTENT WORKSPACE */}
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto">
+        {/* Workspace Top Header */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-6 border-b border-neutral-200 mb-6">
+          <div>
+            <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">
+              MIIXXIIE • Negócio Local Manaus
+            </span>
+            <h1 className="text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight capitalize">
+              {activeTab === 'dashboard' && 'Painel de Controle Executivo'}
+              {activeTab === 'kanban' && 'Quadro Kanban de Vendas & Pedidos'}
+              {activeTab === 'produtos' && 'Catálogo de Produtos & Gestão de Fotos'}
+              {activeTab === 'metricas' && 'Métricas Reais & Rastreio de Leads'}
+              {activeTab === 'customizacao' && 'Customização da Loja & Conexão Supabase'}
             </h1>
           </div>
 
-          <div className="flex items-center gap-3">
-            {/* Store Online / Offline Toggle */}
-            <div className="flex items-center gap-2 bg-neutral-100 px-3 py-1.5 rounded-full border border-neutral-200 text-xs">
-              <span
-                className={`w-2 h-2 rounded-full ${
-                  isStoreOnline ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'
-                }`}
-              />
-              <span className="font-bold text-neutral-800 text-[11px]">
-                {isStoreOnline ? 'Loja Online em Manaus' : 'Loja Pausada'}
-              </span>
+          {/* Quick Stats Pill */}
+          <div className="flex items-center gap-2 text-xs font-semibold">
+            <div className="bg-white px-3 py-1.5 rounded-xl border border-neutral-200 shadow-2xs flex items-center gap-1.5">
+              <Truck className="w-3.5 h-3.5 text-neutral-600" />
+              <span>Entregas Manaus Ativas</span>
             </div>
-
-            {/* Quick Link to WhatsApp Web */}
-            <button
-              onClick={() =>
-                window.open('https://web.whatsapp.com', '_blank', 'noopener,noreferrer')
-              }
-              className="hidden sm:flex items-center gap-1.5 bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-bold px-3.5 py-1.5 rounded-full shadow-xs transition-colors"
+            <Link
+              href="/"
+              target="_blank"
+              className="bg-black hover:bg-neutral-800 text-white px-3.5 py-1.5 rounded-xl transition-all shadow-xs flex items-center gap-1"
             >
-              <MessageCircle className="w-3.5 h-3.5 fill-white" />
-              <span>WhatsApp Web</span>
-            </button>
+              <span>Abrir Loja</span>
+              <ExternalLink className="w-3 h-3" />
+            </Link>
           </div>
-        </header>
+        </div>
 
-        {/* Tab 1: Dashboard Overview */}
+        {/* TAB 1: DASHBOARD */}
         {activeTab === 'dashboard' && (
-          <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-            {/* 4 KPIs Cards */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-              {ADMIN_DASHBOARD_DATA.kpis.map((kpi) => (
-                <div
-                  key={kpi.id}
-                  className="bg-white rounded-2xl p-4 sm:p-5 border border-[#E4E4E7] shadow-xs flex flex-col justify-between"
-                >
-                  <span className="text-xs text-neutral-500 font-medium">
-                    {kpi.label}
+          <div className="space-y-6">
+            {/* KPI Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-2">
+                <span className="text-xs font-semibold text-neutral-500">Pedidos no Kanban</span>
+                <div className="flex items-baseline justify-between">
+                  <span className="text-2xl sm:text-3xl font-extrabold text-neutral-900">
+                    {adminOrders.length}
                   </span>
-                  <div className="flex items-baseline justify-between mt-2">
-                    <span className="text-xl sm:text-2xl font-black text-neutral-900">
-                      {kpi.value}
-                    </span>
-                    {kpi.growth && (
-                      <span className="text-xs font-bold text-emerald-600">
-                        {kpi.growth}
-                      </span>
-                    )}
-                  </div>
+                  <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">
+                    Ativo
+                  </span>
                 </div>
-              ))}
-            </div>
-
-            {/* Quick Actions Bar */}
-            <div className="bg-white rounded-2xl p-4 border border-[#E4E4E7] flex flex-wrap items-center justify-between gap-3 shadow-xs">
-              <div className="flex items-center gap-2">
-                <Store className="w-4 h-4 text-neutral-700" />
-                <span className="text-xs font-bold text-neutral-900">
-                  Mostruário Real MIIXXIIE (WhatsApp Oficial)
-                </span>
-                <span className="text-[10px] bg-black text-white px-2 py-0.5 rounded-full font-bold">
-                  {products.length} Modelos Reais
-                </span>
+                <p className="text-[11px] text-neutral-400">Fluxo em tempo real</p>
               </div>
 
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={() => handleTabChange('produtos')}
-                  className="px-4 py-1.5 rounded-full bg-black text-white text-xs font-bold hover:bg-neutral-800 transition-colors"
-                >
-                  Ver Estoque Completo
-                </button>
-                <button
-                  onClick={() => handleTabChange('pedidos')}
-                  className="px-4 py-1.5 rounded-full bg-neutral-100 text-neutral-800 text-xs font-bold hover:bg-neutral-200 transition-colors"
-                >
-                  Acompanhar Pedidos
-                </button>
-              </div>
-            </div>
-
-            {/* Recent Orders Overview */}
-            <div className="bg-white rounded-2xl p-4 sm:p-6 border border-[#E4E4E7] shadow-xs space-y-3">
-              <div className="flex items-center justify-between">
-                <h3 className="font-bold text-sm sm:text-base text-neutral-900">
-                  Últimos Pedidos Recebidos ({adminOrders.length})
-                </h3>
-                <button
-                  onClick={() => handleTabChange('pedidos')}
-                  className="text-xs font-bold text-black hover:underline"
-                >
-                  Ver todos
-                </button>
+              <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-2">
+                <span className="text-xs font-semibold text-neutral-500">Faturamento do Fluxo</span>
+                <div className="flex items-baseline justify-between">
+                  <span className="text-xl sm:text-2xl font-extrabold text-neutral-900">
+                    {formatCurrencyBRL(totalRevenue)}
+                  </span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                    +19%
+                  </span>
+                </div>
+                <p className="text-[11px] text-neutral-400">Total em pedidos ativos</p>
               </div>
 
-              <div className="divide-y divide-neutral-100">
-                {adminOrders.map((ord) => (
-                  <div
-                    key={ord.id}
-                    className="py-3 flex items-center justify-between gap-2 text-xs"
-                  >
-                    <div>
-                      <span className="font-bold text-neutral-900">{ord.id}</span>
-                      <span className="font-medium text-neutral-700 ml-2">
-                        {ord.customer}
-                      </span>
-                      {ord.deliveryMethod && (
-                        <span className="text-[10px] text-neutral-400 block sm:inline sm:ml-2">
-                          • {ord.deliveryMethod}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-extrabold text-neutral-900">
-                        {formatCurrencyBRL(ord.total)}
-                      </span>
-                      <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold ${ord.statusBadge}`}>
-                        {ord.status}
-                      </span>
-                    </div>
-                  </div>
-                ))}
+              <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-2">
+                <span className="text-xs font-semibold text-neutral-500">Total de Produtos</span>
+                <div className="flex items-baseline justify-between">
+                  <span className="text-2xl sm:text-3xl font-extrabold text-neutral-900">
+                    {products.length}
+                  </span>
+                  <span className="text-[10px] bg-neutral-100 text-neutral-700 font-bold px-2 py-0.5 rounded-full">
+                    100% Reais
+                  </span>
+                </div>
+                <p className="text-[11px] text-neutral-400">Vestidos, Conjuntos, Calças...</p>
+              </div>
+
+              <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-2">
+                <span className="text-xs font-semibold text-neutral-500">Cliques no WhatsApp</span>
+                <div className="flex items-baseline justify-between">
+                  <span className="text-2xl sm:text-3xl font-extrabold text-neutral-900">
+                    {mariaLeads + carlosLeads}
+                  </span>
+                  <span className="text-[10px] bg-pink-100 text-pink-800 font-bold px-2 py-0.5 rounded-full">
+                    Maria & Carlos
+                  </span>
+                </div>
+                <p className="text-[11px] text-neutral-400">Alternância dinâmica 50/50</p>
               </div>
             </div>
-          </div>
-        )}
 
-        {/* Tab 2: Gestão de Produtos, Estoque e Cores */}
-        {activeTab === 'produtos' && (
-          <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-            {/* Header with Search & Category Filter */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-              <div>
-                <h2 className="text-xl font-extrabold text-neutral-900">
-                  Gestão de Estoque & Cores Disponíveis
-                </h2>
-                <p className="text-xs text-neutral-500 mt-0.5">
-                  Controle as {products.length} peças reais, ajuste quantidades por tamanho e configure paleta de cores.
+            {/* Quick Access Actions */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              <button
+                onClick={() => handleTabChange('kanban')}
+                className="bg-white p-5 rounded-2xl border border-neutral-200 text-left hover:border-black transition-all shadow-xs group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-neutral-100 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-colors mb-3">
+                  <Kanban className="w-5 h-5" />
+                </div>
+                <h4 className="font-bold text-sm text-neutral-900">Gerenciar Pedidos (Kanban)</h4>
+                <p className="text-xs text-neutral-500 mt-1">
+                  Mova pedidos pelas etapas: Novo Lead, Pagamento, Estoque e Entrega em Manaus.
                 </p>
-              </div>
-
-              {/* Search Bar */}
-              <div className="relative w-full md:w-72">
-                <Search className="w-4 h-4 text-neutral-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                <input
-                  type="text"
-                  value={productSearch}
-                  onChange={(e) => setProductSearch(e.target.value)}
-                  placeholder="Buscar peça ou categoria..."
-                  className="w-full pl-9 pr-4 py-2 text-xs bg-white border border-neutral-300 rounded-full focus:outline-none focus:border-black"
-                />
-              </div>
-            </div>
-
-            {/* Category Filter Pills */}
-            <div className="flex items-center gap-2 overflow-x-auto no-scrollbar py-1">
-              <button
-                onClick={() => setProductCategoryFilter('all')}
-                className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
-                  productCategoryFilter === 'all'
-                    ? 'bg-black text-white shadow-xs'
-                    : 'bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-100'
-                }`}
-              >
-                Todas as Categorias ({products.length})
               </button>
 
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setProductCategoryFilter(cat.slug)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-bold whitespace-nowrap transition-all ${
-                    productCategoryFilter === cat.slug
-                      ? 'bg-black text-white shadow-xs'
-                      : 'bg-white border border-neutral-200 text-neutral-700 hover:bg-neutral-100'
-                  }`}
-                >
-                  {cat.name} ({cat.count})
-                </button>
-              ))}
-            </div>
-
-            {/* Products Table */}
-            <div className="bg-white rounded-2xl border border-neutral-200 shadow-xs overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full text-left text-xs">
-                  <thead>
-                    <tr className="border-b border-neutral-200 bg-neutral-50 text-neutral-500 font-bold uppercase text-[10px] tracking-wider">
-                      <th className="py-3 px-4">Peça</th>
-                      <th className="py-3 px-4">Categoria</th>
-                      <th className="py-3 px-4">Preço</th>
-                      <th className="py-3 px-4">Cores Disponíveis</th>
-                      <th className="py-3 px-4">Estoque Total</th>
-                      <th className="py-3 px-4 text-right">Ações</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-neutral-100">
-                    {filteredAdminProducts.map((prod) => (
-                      <tr
-                        key={prod.id}
-                        className="hover:bg-neutral-50/70 transition-colors"
-                      >
-                        {/* Product Image & Name */}
-                        <td className="py-3 px-4">
-                          <div className="flex items-center gap-3">
-                            <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-neutral-100 border border-neutral-200 shrink-0">
-                              <Image
-                                src={prod.image}
-                                alt={prod.name}
-                                fill
-                                sizes="48px"
-                                className="object-cover object-top"
-                              />
-                            </div>
-                            <div>
-                              <span className="font-bold text-neutral-900 block line-clamp-1">
-                                {prod.name}
-                              </span>
-                              <span className="text-[10px] text-neutral-400">
-                                Tam: {prod.sizes.join(', ')}
-                              </span>
-                            </div>
-                          </div>
-                        </td>
-
-                        {/* Category */}
-                        <td className="py-3 px-4">
-                          <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold bg-neutral-100 text-neutral-800 border border-neutral-200 whitespace-nowrap">
-                            {prod.subcategory}
-                          </span>
-                        </td>
-
-                        {/* Price */}
-                        <td className="py-3 px-4 font-bold text-neutral-900">
-                          {formatCurrencyBRL(prod.price)}
-                          {prod.comboOffer && (
-                            <span className="block text-[9px] text-amber-600 font-semibold">
-                              {prod.comboOffer}
-                            </span>
-                          )}
-                        </td>
-
-                        {/* Colors with Color Swatches */}
-                        <td className="py-3 px-4">
-                          <div className="flex items-center gap-1.5 flex-wrap max-w-[200px]">
-                            {prod.colors.map((c, i) => (
-                              <span
-                                key={i}
-                                style={{ backgroundColor: c.hex }}
-                                className="w-3.5 h-3.5 rounded-full border border-neutral-300 inline-block shrink-0 shadow-2xs"
-                                title={c.name}
-                              />
-                            ))}
-                            <span className="text-[10px] text-neutral-500 font-semibold ml-1">
-                              ({prod.colors.length} cores)
-                            </span>
-                          </div>
-                        </td>
-
-                        {/* Stock with Quick Adjusters */}
-                        <td className="py-3 px-4">
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => updateStock(prod.id, prod.stockTotal - 1)}
-                              className="w-6 h-6 rounded-md bg-neutral-100 hover:bg-neutral-200 text-neutral-700 flex items-center justify-center font-bold"
-                              title="Reduzir 1 peça"
-                            >
-                              -
-                            </button>
-                            <span
-                              className={`font-black text-xs min-w-[24px] text-center ${
-                                prod.stockTotal <= 3
-                                  ? 'text-red-600'
-                                  : 'text-neutral-900'
-                              }`}
-                            >
-                              {prod.stockTotal}
-                            </span>
-                            <button
-                              onClick={() => updateStock(prod.id, prod.stockTotal + 1)}
-                              className="w-6 h-6 rounded-md bg-neutral-100 hover:bg-neutral-200 text-neutral-700 flex items-center justify-center font-bold"
-                              title="Adicionar 1 peça"
-                            >
-                              +
-                            </button>
-                          </div>
-                        </td>
-
-                        {/* Action: Edit Colors & Stock */}
-                        <td className="py-3 px-4 text-right">
-                          <button
-                            onClick={() => openProductEditor(prod)}
-                            className="inline-flex items-center gap-1 bg-black text-white text-[11px] font-bold px-3 py-1.5 rounded-full hover:bg-neutral-800 transition-colors shadow-2xs"
-                          >
-                            <Palette className="w-3 h-3" />
-                            <span>Editar Cores & Grade</span>
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tab 3: Pedidos & Entregas */}
-        {activeTab === 'pedidos' && (
-          <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h2 className="text-xl font-extrabold text-neutral-900">
-                  Controle de Pedidos & Logística Manaus
-                </h2>
-                <p className="text-xs text-neutral-500">
-                  Acompanhe os pedidos recebidos via WhatsApp, endereços e despachos por motoboy.
+              <button
+                onClick={() => handleTabChange('produtos')}
+                className="bg-white p-5 rounded-2xl border border-neutral-200 text-left hover:border-black transition-all shadow-xs group"
+              >
+                <div className="w-10 h-10 rounded-xl bg-neutral-100 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-colors mb-3">
+                  <ShoppingBag className="w-5 h-5" />
+                </div>
+                <h4 className="font-bold text-sm text-neutral-900">Upload de Fotos & Estoque</h4>
+                <p className="text-xs text-neutral-500 mt-1">
+                  Adicione novas fotos tiradas pelo celular direto para o catálogo da loja virtual.
                 </p>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl border border-neutral-200 p-4 sm:p-6 shadow-xs space-y-4">
-              <div className="divide-y divide-neutral-100">
-                {adminOrders.map((ord) => (
-                  <div
-                    key={ord.id}
-                    className="py-4 flex flex-col md:flex-row md:items-center justify-between gap-3 text-xs"
-                  >
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-black text-sm text-neutral-900">
-                          {ord.id}
-                        </span>
-                        <span className="font-bold text-neutral-800">
-                          {ord.customer}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 text-neutral-500 text-[11px]">
-                        <Truck className="w-3.5 h-3.5 text-neutral-600" />
-                        <span>{ord.deliveryMethod || 'A combinar em Manaus'}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center justify-between md:justify-end gap-3">
-                      <span className="text-sm font-black text-neutral-900">
-                        {formatCurrencyBRL(ord.total)}
-                      </span>
-
-                      <select
-                        value={ord.status}
-                        onChange={(e) =>
-                          updateOrderStatus(
-                            ord.id,
-                            e.target.value as AdminOrder['status']
-                          )
-                        }
-                        className={`text-[11px] font-bold px-3 py-1.5 rounded-full border-none cursor-pointer ${ord.statusBadge}`}
-                      >
-                        <option value="Pago">● Pago</option>
-                        <option value="Em Atendimento">● Em Atendimento</option>
-                        <option value="Pendente">● Pendente</option>
-                        <option value="Enviado">● Enviado (Motoboy)</option>
-                      </select>
-
-                      <button
-                        onClick={() => setSelectedOrderDetails(ord)}
-                        className="px-3 py-1.5 rounded-full border border-neutral-300 text-neutral-700 hover:bg-neutral-100 text-[11px] font-bold"
-                      >
-                        Ver Detalhes
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tab 4: Frete & Configurações de Manaus */}
-        {activeTab === 'configuracoes' && (
-          <div className="p-4 sm:p-6 lg:p-8 space-y-6">
-            <div>
-              <h2 className="text-xl font-extrabold text-neutral-900">
-                Políticas de Frete & Localização (Manaus - AM)
-              </h2>
-              <p className="text-xs text-neutral-500">
-                Configure as taxas por bairro para envio via motoboy e os pontos de retirada presencial.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Manaus Neighborhoods Delivery Table */}
-              <div className="bg-white rounded-2xl border border-neutral-200 p-5 shadow-xs space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-neutral-200">
-                  <div className="flex items-center gap-2">
-                    <Truck className="w-4 h-4 text-neutral-800" />
-                    <h3 className="font-bold text-sm text-neutral-900">
-                      Tabela de Frete por Bairros de Manaus
-                    </h3>
-                  </div>
-                  <span className="text-[10px] text-neutral-500">
-                    Varia por distância
-                  </span>
-                </div>
-
-                <div className="divide-y divide-neutral-100 max-h-80 overflow-y-auto">
-                  {MANAUS_NEIGHBORHOODS_LIST.map((n, i) => (
-                    <div
-                      key={i}
-                      className="py-2.5 flex items-center justify-between text-xs"
-                    >
-                      <div>
-                        <span className="font-bold text-neutral-900 block">
-                          {n.name}
-                        </span>
-                        <span className="text-[10px] text-neutral-400">
-                          Zona {n.zone} • {n.time}
-                        </span>
-                      </div>
-                      <span className="font-bold text-black bg-neutral-100 px-2.5 py-1 rounded-md">
-                        {formatCurrencyBRL(n.fee)}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Store & WhatsApp Settings */}
-              <div className="bg-white rounded-2xl border border-neutral-200 p-5 shadow-xs space-y-4">
-                <div className="flex items-center justify-between pb-2 border-b border-neutral-200">
-                  <div className="flex items-center gap-2">
-                    <Store className="w-4 h-4 text-neutral-800" />
-                    <h3 className="font-bold text-sm text-neutral-900">
-                      WhatsApp Oficial & Distribuição Dinâmica de Leads
-                    </h3>
-                  </div>
-                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
-                    Round-Robin 50/50 Ativo
-                  </span>
-                </div>
-
-                {/* Attendants Lead Distribution Cards */}
-                <div className="space-y-3">
-                  <p className="text-xs text-neutral-600">
-                    O tráfego de clientes é balanceado dinamicamente: cada clique no site alterna automaticamente entre as consultoras Maria e Carlos.
-                  </p>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {attendants?.map((att, idx) => {
-                      const isNext = (currentAttendantIndex || 0) % (attendants.length || 1) === idx;
-                      return (
-                        <div
-                          key={att.id}
-                          className={`p-3.5 rounded-xl border transition-all ${
-                            isNext
-                              ? 'border-black bg-neutral-50 shadow-sm'
-                              : 'border-neutral-200 bg-white'
-                          }`}
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex items-center gap-2">
-                              <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">
-                                {att.name.charAt(0)}
-                              </div>
-                              <div>
-                                <h4 className="font-bold text-xs text-neutral-900 flex items-center gap-1.5">
-                                  {att.name}
-                                  {isNext && (
-                                    <span className="text-[9px] bg-black text-white px-1.5 py-0.2 rounded font-semibold">
-                                      Próximo da fila
-                                    </span>
-                                  )}
-                                </h4>
-                                <span className="text-[10px] text-neutral-500 font-medium">
-                                  {att.role}
-                                </span>
-                              </div>
-                            </div>
-                            <span className="text-xs font-bold text-neutral-800 bg-neutral-100 px-2 py-0.5 rounded-lg border border-neutral-200">
-                              {att.clicksCount} leads
-                            </span>
-                          </div>
-
-                          <div className="mt-2.5 pt-2 border-t border-neutral-100 flex items-center justify-between text-[11px]">
-                            <span className="font-mono font-semibold text-neutral-700">
-                              {att.phoneDisplay}
-                            </span>
-                            <button
-                              onClick={() => {
-                                const url = `https://wa.me/${att.phoneNumber}?text=${encodeURIComponent(
-                                  `Olá, ${att.name}! Teste de encaminhamento de lead via painel da MIIXXIIE.`
-                                )}`;
-                                window.open(url, '_blank', 'noopener,noreferrer');
-                              }}
-                              className="text-[10px] font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
-                            >
-                              <MessageCircle className="w-3 h-3 fill-emerald-600" />
-                              <span>Testar Chat</span>
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                <div className="space-y-3 text-xs pt-2">
-                  <div>
-                    <label className="block text-neutral-500 font-semibold mb-1">
-                      Modalidade de Retirada Física:
-                    </label>
-                    <input
-                      type="text"
-                      disabled
-                      value="Retirada Grátis em Manaus - AM (Com agendamento prévio)"
-                      className="w-full bg-neutral-100 border border-neutral-200 px-3 py-2 rounded-xl text-neutral-900 font-bold"
-                    />
-                  </div>
-
-                  <div className="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-emerald-800 text-[11px] space-y-1">
-                    <p className="font-bold">✓ Negócio Local Manaus Ativo</p>
-                    <p>
-                      O catálogo online está sincronizado com o WhatsApp oficial da loja. Todos os pedidos são enviados com a escolha de bairro e forma de entrega.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tab 5: Clientes, Cupons, Relatorios */}
-        {(activeTab === 'clientes' ||
-          activeTab === 'cupons' ||
-          activeTab === 'relatorios') && (
-          <div className="p-4 sm:p-6 lg:p-8">
-            <div className="bg-white rounded-2xl p-6 sm:p-8 border border-neutral-200 text-center max-w-lg mx-auto space-y-4 shadow-xs">
-              <div className="w-12 h-12 rounded-full bg-neutral-100 text-black flex items-center justify-center mx-auto">
-                <Sparkles className="w-6 h-6" />
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-neutral-900 capitalize">
-                Módulo de {activeTab}
-              </h3>
-              <p className="text-xs text-neutral-500 leading-relaxed">
-                Este módulo está totalmente integrado à base de dados local de clientes e vendas da MIIXXIIE em Manaus.
-              </p>
-              <button
-                onClick={() => handleTabChange('dashboard')}
-                className="px-6 py-2 rounded-full bg-black text-white text-xs font-bold hover:bg-neutral-800 transition-colors"
-              >
-                Retornar ao Dashboard Principal
               </button>
-            </div>
-          </div>
-        )}
-      </main>
-
-      {/* 3. Modal de Edição de Cores & Grade de Estoque */}
-      {editingProduct && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200">
-          <div
-            className="bg-white rounded-3xl p-5 sm:p-6 max-w-xl w-full shadow-2xl border border-neutral-200 space-y-5 max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
-              <div className="flex items-center gap-3">
-                <div className="relative w-12 h-14 rounded-lg overflow-hidden bg-neutral-100 border border-neutral-200 shrink-0">
-                  <Image
-                    src={editingProduct.image}
-                    alt={editingProduct.name}
-                    fill
-                    className="object-cover object-top"
-                  />
-                </div>
-                <div>
-                  <span className="text-[10px] font-bold text-neutral-500 uppercase">
-                    Configurar Produto
-                  </span>
-                  <h3 className="font-extrabold text-sm sm:text-base text-neutral-900">
-                    {editingProduct.name}
-                  </h3>
-                </div>
-              </div>
 
               <button
-                onClick={() => setEditingProduct(null)}
-                className="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 text-neutral-500 hover:text-black flex items-center justify-center"
+                onClick={() => handleTabChange('customizacao')}
+                className="bg-white p-5 rounded-2xl border border-neutral-200 text-left hover:border-black transition-all shadow-xs group"
               >
-                <X className="w-4 h-4" />
+                <div className="w-10 h-10 rounded-xl bg-neutral-100 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-colors mb-3">
+                  <Database className="w-5 h-5" />
+                </div>
+                <h4 className="font-bold text-sm text-neutral-900">Conexão Supabase & CMS</h4>
+                <p className="text-xs text-neutral-500 mt-1">
+                  Configure a chave do Supabase e customize os textos do cabeçalho da loja.
+                </p>
               </button>
             </div>
 
-            {/* Price Edit */}
-            <div>
-              <label className="block text-xs font-bold text-neutral-800 mb-1">
-                Preço de Venda (R$):
-              </label>
-              <input
-                type="number"
-                step="0.10"
-                value={tempPrice}
-                onChange={(e) => setTempPrice(parseFloat(e.target.value) || 0)}
-                className="w-full text-xs font-bold bg-neutral-50 border border-neutral-300 rounded-xl px-3 py-2 text-neutral-900 focus:outline-none focus:border-black"
-              />
-            </div>
-
-            {/* Modern Color Management Section */}
+            {/* Kanban Preview */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <label className="text-xs font-bold text-neutral-900 flex items-center gap-1.5">
-                  <Palette className="w-3.5 h-3.5" />
-                  <span>Cores Disponíveis ({tempColors.length}):</span>
-                </label>
-              </div>
-
-              {/* Color Swatches Grid */}
-              <div className="flex flex-wrap gap-2 p-3 bg-neutral-50 rounded-2xl border border-neutral-200 max-h-40 overflow-y-auto">
-                {tempColors.map((color, idx) => (
-                  <div
-                    key={idx}
-                    className="flex items-center gap-1.5 bg-white px-2.5 py-1 rounded-full border border-neutral-300 text-xs shadow-2xs"
-                  >
-                    <span
-                      style={{ backgroundColor: color.hex }}
-                      className="w-3 h-3 rounded-full border border-neutral-300 inline-block"
-                    />
-                    <span className="font-semibold text-neutral-800 text-[11px]">
-                      {color.name}
-                    </span>
-                    <button
-                      onClick={() => handleRemoveColor(color.name)}
-                      className="text-neutral-400 hover:text-red-500 ml-1"
-                      title="Remover cor"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-
-              {/* Add New Color Input */}
-              <div className="p-3 bg-neutral-50 rounded-2xl border border-neutral-200 space-y-2">
-                <span className="text-[11px] font-bold text-neutral-700 block">
-                  Adicionar Nova Cor Disponível:
-                </span>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="color"
-                    value={newColorHex}
-                    onChange={(e) => setNewColorHex(e.target.value)}
-                    className="w-8 h-8 rounded-lg cursor-pointer border border-neutral-300 p-0.5 bg-white shrink-0"
-                    title="Seletor de cor visual"
-                  />
-                  <input
-                    type="text"
-                    value={newColorName}
-                    onChange={(e) => setNewColorName(e.target.value)}
-                    placeholder="Nome da cor (Ex: Verde Oliva, Fúcsia)"
-                    className="flex-1 text-xs bg-white border border-neutral-300 rounded-xl px-3 py-1.5 text-neutral-900 focus:outline-none focus:border-black"
-                  />
-                  <button
-                    onClick={handleAddColor}
-                    className="bg-black text-white text-xs font-bold px-3 py-1.5 rounded-xl hover:bg-neutral-800 shrink-0"
-                  >
-                    Adicionar
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Size Stock Breakdown Section */}
-            <div className="space-y-2">
-              <label className="text-xs font-bold text-neutral-900 block">
-                Estoque por Tamanho (Unidades em Manaus):
-              </label>
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
-                {editingProduct.sizes.map((sz) => (
-                  <div
-                    key={sz}
-                    className="p-2.5 bg-neutral-50 rounded-xl border border-neutral-200 text-center"
-                  >
-                    <span className="block font-bold text-xs text-neutral-800 mb-1">
-                      {sz}
-                    </span>
-                    <input
-                      type="number"
-                      min="0"
-                      value={tempSizeStock[sz] ?? 3}
-                      onChange={(e) =>
-                        setTempSizeStock((prev) => ({
-                          ...prev,
-                          [sz]: parseInt(e.target.value, 10) || 0,
-                        }))
-                      }
-                      className="w-full text-center text-xs font-bold bg-white border border-neutral-300 rounded-lg py-1 focus:outline-none focus:border-black"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Save Button */}
-            <div className="pt-3 border-t border-neutral-200 flex justify-end gap-2">
-              <button
-                onClick={() => setEditingProduct(null)}
-                className="px-4 py-2 rounded-full text-xs font-bold text-neutral-600 hover:bg-neutral-100"
-              >
-                Cancelar
-              </button>
-              <button
-                onClick={handleSaveProductEditor}
-                className="px-6 py-2 rounded-full text-xs font-bold bg-black text-white hover:bg-neutral-800 shadow-md transition-all"
-              >
-                Salvar Alterações
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Order Detail Modal */}
-      {selectedOrderDetails && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs animate-in fade-in duration-200">
-          <div className="bg-white rounded-3xl p-5 sm:p-6 max-w-md w-full shadow-2xl border border-[#E4E4E7] space-y-4 max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-200">
-            <div className="flex justify-between items-start">
-              <div>
-                <span className="text-xs font-bold text-neutral-900">
-                  Pedido {selectedOrderDetails.id}
-                </span>
-                <h3 className="font-bold text-base sm:text-lg text-gray-900">
-                  {selectedOrderDetails.customer}
+                <h3 className="font-bold text-sm sm:text-base text-neutral-900">
+                  Visão Rápida do Kanban de Pedidos
                 </h3>
+                <button
+                  onClick={() => handleTabChange('kanban')}
+                  className="text-xs font-bold text-black hover:underline"
+                >
+                  Abrir Kanban Completo →
+                </button>
               </div>
-              <button
-                onClick={() => setSelectedOrderDetails(null)}
-                className="p-1.5 rounded-full hover:bg-gray-100 text-gray-500"
-                aria-label="Fechar"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            <div className="bg-neutral-50 p-4 rounded-2xl space-y-2 text-xs border border-neutral-200">
-              <div className="flex justify-between">
-                <span className="text-gray-500">Total do Pedido:</span>
-                <span className="font-bold text-gray-900">
-                  {formatCurrencyBRL(selectedOrderDetails.total)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Forma de Entrega:</span>
-                <span className="font-bold text-neutral-900">
-                  {selectedOrderDetails.deliveryMethod || 'Motoboy Manaus'}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Status Atual:</span>
-                <span className={`font-bold px-2 py-0.5 rounded-full ${selectedOrderDetails.statusBadge}`}>
-                  {selectedOrderDetails.status}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-gray-500">Canal de Venda:</span>
-                <span className="font-bold text-emerald-700">WhatsApp Manaus (Maria & Carlos)</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row justify-end gap-2 pt-2">
-              <button
-                onClick={() => setSelectedOrderDetails(null)}
-                className="px-4 py-2 rounded-full text-xs font-semibold text-gray-600 hover:bg-gray-100"
-              >
-                Fechar
-              </button>
-              <button
-                onClick={() => {
-                  window.open(
-                    `https://wa.me/5592986137969?text=${encodeURIComponent(
-                      `Olá, ${selectedOrderDetails.customer}! Sou Maria da MIIXXIIE. Entro em contato referente ao seu pedido ${selectedOrderDetails.id}.`
-                    )}`,
-                    '_blank'
-                  );
-                }}
-                className="px-3.5 py-2 rounded-full text-xs font-bold bg-[#25D366] text-white hover:bg-[#1EBE5D] flex items-center justify-center gap-1.5"
-              >
-                <MessageCircle className="w-3.5 h-3.5 fill-white" />
-                <span>Maria (98613-7969)</span>
-              </button>
-              <button
-                onClick={() => {
-                  window.open(
-                    `https://wa.me/5592986064005?text=${encodeURIComponent(
-                      `Olá, ${selectedOrderDetails.customer}! Sou Carlos da MIIXXIIE. Entro em contato referente ao seu pedido ${selectedOrderDetails.id}.`
-                    )}`,
-                    '_blank'
-                  );
-                }}
-                className="px-3.5 py-2 rounded-full text-xs font-bold bg-[#075E54] text-white hover:bg-[#128C7E] flex items-center justify-center gap-1.5"
-              >
-                <MessageCircle className="w-3.5 h-3.5 fill-white" />
-                <span>Carlos (98606-4005)</span>
-              </button>
+              <AdminKanbanBoard />
             </div>
           </div>
-        </div>
-      )}
+        )}
+
+        {/* TAB 2: KANBAN */}
+        {activeTab === 'kanban' && <AdminKanbanBoard />}
+
+        {/* TAB 3: PRODUTOS */}
+        {activeTab === 'produtos' && <AdminProductManager />}
+
+        {/* TAB 4: MÉTRICAS & CLIQUES */}
+        {activeTab === 'metricas' && <AdminMetricsAndClicks />}
+
+        {/* TAB 5: CUSTOMIZAÇÃO & SUPABASE */}
+        {activeTab === 'customizacao' && <AdminStoreCustomizer />}
+      </main>
     </div>
   );
 }

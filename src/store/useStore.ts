@@ -6,36 +6,248 @@ import {
   ColorOption,
   INITIAL_DEMO_CART,
   PRODUCTS,
-  ADMIN_DASHBOARD_DATA,
   DeliverySelection,
   ManausNeighborhood,
   MANAUS_NEIGHBORHOODS_LIST,
   WhatsAppAttendant,
   WHATSAPP_ATTENDANTS,
+  STORE_CONFIG,
 } from '@/data/mockData';
+import {
+  KanbanStatus,
+  AdminOrder,
+  LeadClickEvent,
+  ActivityLog,
+  StoreCMSConfig,
+  AdminAuthUser,
+} from '@/types/admin';
+import { getSupabaseClient } from '@/lib/supabase';
 
-export interface AdminOrder {
-  id: string;
-  customer: string;
-  itemsCount: number;
-  extraItemsBadge?: string;
-  total: number;
-  deliveryMethod?: string;
-  status: 'Pago' | 'Em Atendimento' | 'Pendente' | 'Enviado';
-  statusBadge: string;
-  date?: string;
-}
+export { type KanbanStatus, type AdminOrder, type LeadClickEvent, type ActivityLog, type StoreCMSConfig, type AdminAuthUser };
+export { type Product, type ColorOption } from '@/data/mockData';
+
+export const KANBAN_BADGE_MAP: Record<KanbanStatus, string> = {
+  'Novo Lead': 'bg-amber-50 text-amber-800 border-amber-200',
+  'Em Atendimento': 'bg-blue-50 text-blue-800 border-blue-200',
+  'Pagamento Confirmado': 'bg-emerald-50 text-emerald-800 border-emerald-200',
+  'Separando Estoque': 'bg-purple-50 text-purple-800 border-purple-200',
+  'Saiu para Entrega': 'bg-indigo-50 text-indigo-800 border-indigo-200',
+  'Concluído': 'bg-green-50 text-green-800 border-green-200',
+  'Cancelado': 'bg-neutral-100 text-neutral-600 border-neutral-300',
+};
+
+const INITIAL_ORDERS: AdminOrder[] = [
+  {
+    id: '#1059',
+    customer: 'Amanda Cavalcante',
+    customerPhone: '(92) 99124-5582',
+    itemsCount: 3,
+    itemsList: 'Vestido Bárbara Preto (G1), Macacão Pantalona (GG)',
+    total: 289.0,
+    subtotal: 269.0,
+    shippingFee: 20.0,
+    deliveryMethod: 'Motoboy (Adrianópolis)',
+    neighborhood: 'Adrianópolis / Vieiralves',
+    deliveryAddress: 'Rua Salvador, Condomínio Privilege',
+    status: 'Novo Lead',
+    statusBadge: KANBAN_BADGE_MAP['Novo Lead'],
+    attendantId: 'maria',
+    attendantName: 'Maria',
+    date: 'Hoje',
+    time: '18:45',
+    notes: 'Cliente pediu confirmação do comprimento do vestido.',
+  },
+  {
+    id: '#1058',
+    customer: 'Juliana Silva',
+    customerPhone: '(92) 98455-1290',
+    itemsCount: 2,
+    itemsList: 'Conjunto Alfaiataria Marsala (G2)',
+    total: 218.0,
+    subtotal: 203.0,
+    shippingFee: 15.0,
+    deliveryMethod: 'Motoboy (Flores)',
+    neighborhood: 'Flores / Parque 10',
+    deliveryAddress: 'Conjunto Beija-Flor II, Rua 4',
+    status: 'Separando Estoque',
+    statusBadge: KANBAN_BADGE_MAP['Separando Estoque'],
+    attendantId: 'maria',
+    attendantName: 'Maria',
+    date: 'Hoje',
+    time: '16:20',
+    notes: 'PIX conferido. Peça já reservada no mostruário.',
+  },
+  {
+    id: '#1057',
+    customer: 'Carla Souza',
+    customerPhone: '(92) 98133-7721',
+    itemsCount: 2,
+    itemsList: 'Vestido Chemise Off White (GG), Shorts Alfaiataria (G)',
+    total: 198.0,
+    subtotal: 198.0,
+    shippingFee: 0,
+    deliveryMethod: 'Retirada na Loja',
+    neighborhood: 'Retirada Presencial',
+    status: 'Pagamento Confirmado',
+    statusBadge: KANBAN_BADGE_MAP['Pagamento Confirmado'],
+    attendantId: 'carlos',
+    attendantName: 'Carlos',
+    date: 'Hoje',
+    time: '15:10',
+    notes: 'Cliente vai retirar pessoalmente amanhã às 14h.',
+  },
+  {
+    id: '#1056',
+    customer: 'Renata Alves',
+    customerPhone: '(92) 99401-8843',
+    itemsCount: 3,
+    itemsList: 'Camisa Seda Gola Padre (G3), Calça Pantalona (G2)',
+    total: 236.0,
+    subtotal: 211.0,
+    shippingFee: 25.0,
+    deliveryMethod: 'Motoboy (Ponta Negra)',
+    neighborhood: 'Ponta Negra / Tarumã',
+    deliveryAddress: 'Av. Coronel Teixeira, Alphaville',
+    status: 'Saiu para Entrega',
+    statusBadge: KANBAN_BADGE_MAP['Saiu para Entrega'],
+    attendantId: 'carlos',
+    attendantName: 'Carlos',
+    date: 'Hoje',
+    time: '14:05',
+    notes: 'Motoboy Marcos em rota com a encomenda.',
+  },
+  {
+    id: '#1055',
+    customer: 'Beatriz Lima',
+    customerPhone: '(92) 98210-9934',
+    itemsCount: 1,
+    itemsList: 'Vestido Festa Longo Prata (G1)',
+    total: 128.0,
+    subtotal: 128.0,
+    shippingFee: 0,
+    deliveryMethod: 'Retirada na Loja',
+    neighborhood: 'Retirada Presencial',
+    status: 'Concluído',
+    statusBadge: KANBAN_BADGE_MAP['Concluído'],
+    attendantId: 'maria',
+    attendantName: 'Maria',
+    date: 'Ontem',
+    time: '17:30',
+    notes: 'Entrega finalizada com elogio à modelagem.',
+  },
+];
+
+const INITIAL_LOGS: ActivityLog[] = [
+  {
+    id: 'log-1',
+    timestamp: new Date().toISOString(),
+    timeFormatted: 'Hoje às 18:45',
+    action: 'Novo Lead',
+    description: 'Novo pedido #1059 recebido via WhatsApp (Amanda Cavalcante) — Adrianópolis',
+    user: 'Sistema Web',
+  },
+  {
+    id: 'log-2',
+    timestamp: new Date(Date.now() - 3600000).toISOString(),
+    timeFormatted: 'Hoje às 17:45',
+    action: 'Movimentação Kanban',
+    description: 'Pedido #1058 avançou para "Separando Estoque"',
+    user: 'Maria (Consultora)',
+  },
+  {
+    id: 'log-3',
+    timestamp: new Date(Date.now() - 7200000).toISOString(),
+    timeFormatted: 'Hoje às 16:45',
+    action: 'Estoque Atualizado',
+    description: 'Estoque da Camisa Seda ajustado para +5 unidades',
+    user: 'Admin',
+  },
+  {
+    id: 'log-4',
+    timestamp: new Date(Date.now() - 14400000).toISOString(),
+    timeFormatted: 'Hoje às 14:45',
+    action: 'Despacho Motoboy',
+    description: 'Pedido #1056 saiu para entrega com motoboy em Ponta Negra',
+    user: 'Carlos (Logística)',
+  },
+];
+
+const INITIAL_CLICKS: LeadClickEvent[] = [
+  {
+    id: 'click-1',
+    timestamp: new Date().toISOString(),
+    timeFormatted: '18:45',
+    attendantId: 'maria',
+    attendantName: 'Maria',
+    phoneNumber: '5592986137969',
+    source: 'Modal de Detalhes do Produto',
+    productName: 'Vestido Bárbara Preto Plus Size',
+  },
+  {
+    id: 'click-2',
+    timestamp: new Date(Date.now() - 1800000).toISOString(),
+    timeFormatted: '18:15',
+    attendantId: 'carlos',
+    attendantName: 'Carlos',
+    phoneNumber: '5592986064005',
+    source: 'Botão Navbar',
+    productName: 'Atendimento Geral Manaus',
+  },
+  {
+    id: 'click-3',
+    timestamp: new Date(Date.now() - 3600000).toISOString(),
+    timeFormatted: '17:45',
+    attendantId: 'maria',
+    attendantName: 'Maria',
+    phoneNumber: '5592986137969',
+    source: 'Checkout do Carrinho',
+    productName: 'Conjunto Alfaiataria Marsala',
+  },
+  {
+    id: 'click-4',
+    timestamp: new Date(Date.now() - 7200000).toISOString(),
+    timeFormatted: '16:45',
+    attendantId: 'carlos',
+    attendantName: 'Carlos',
+    phoneNumber: '5592986064005',
+    source: 'Banner Promocional Intermediário',
+    productName: 'Coleção Festa Manaus',
+  },
+];
+
+const INITIAL_CMS: StoreCMSConfig = {
+  storeName: 'MIIXXIIE',
+  subtitle: 'Variedades',
+  niche: 'MODA PLUS SIZE FEMININA',
+  slogan: 'Estilo, Conforto e Autoestima',
+  city: 'Manaus - AM',
+  storeAddress: 'Manaus - AM (Atendimento e Retirada Presencial com Agendamento)',
+  bannerHeadline: 'Elegância Sem Medidas ♡',
+  bannerSubheadline: 'Coleções exclusivas do G ao G3 pensadas sob medida para realçar sua melhor versão com conforto absoluto em Manaus.',
+  shippingNotice: 'Entregas Somente em Manaus - AM (Frete por Bairro via Motoboy ou Retirada Grátis na Loja)',
+  whatsappMaria: '(92) 98613-7969',
+  whatsappCarlos: '(92) 98606-4005',
+};
 
 interface StoreState {
-  // Products & Inventory
+  // Admin Auth
+  isAdminLoggedIn: boolean;
+  adminUser: AdminAuthUser | null;
+  loginAdmin: (email: string, pass: string) => boolean;
+  logoutAdmin: () => void;
+
+  // Products & Inventory Management
   products: Product[];
   setProducts: (products: Product[]) => void;
+  addProduct: (product: Product) => void;
+  updateProduct: (product: Product) => void;
+  deleteProduct: (productId: string) => void;
+  uploadProductImage: (productId: string, dataUrl: string) => void;
   updateStock: (productId: string, newTotal: number) => void;
   updateSizeStock: (productId: string, size: string, newQty: number) => void;
   updateProductColors: (productId: string, colors: ColorOption[]) => void;
   updateProductPrice: (productId: string, price: number, originalPrice?: number | null) => void;
   toggleProductActive: (productId: string) => void;
-  addProduct: (product: Product) => void;
 
   // Cart
   cart: CartItem[];
@@ -57,7 +269,23 @@ interface StoreState {
   attendants: WhatsAppAttendant[];
   currentAttendantIndex: number;
   rotateAttendant: () => WhatsAppAttendant;
-  openWhatsAppLead: (customText?: string) => void;
+  openWhatsAppLead: (customText?: string, source?: string, product?: Product) => void;
+  recordLeadClick: (data: { attendantId: 'maria' | 'carlos'; attendantName: string; source: string; productId?: string; productName?: string }) => void;
+  leadClicks: LeadClickEvent[];
+
+  // Orders & Kanban Board
+  adminOrders: AdminOrder[];
+  addAdminOrder: (order: AdminOrder) => void;
+  updateOrderStatus: (orderId: string, status: KanbanStatus) => void;
+  moveKanbanOrder: (orderId: string, status: KanbanStatus) => void;
+
+  // Logs & Audit
+  activityLogs: ActivityLog[];
+  addActivityLog: (action: string, description: string) => void;
+
+  // Store CMS Customization
+  storeCMS: StoreCMSConfig;
+  updateStoreCMS: (data: Partial<StoreCMSConfig>) => void;
 
   // Product Detail Modal
   selectedProduct: Product | null;
@@ -91,26 +319,133 @@ interface StoreState {
   };
   openInfoModal: (title: string, description: string) => void;
   closeInfoModal: () => void;
-
-  // Admin Live Orders
-  adminOrders: AdminOrder[];
-  addAdminOrder: (order: AdminOrder) => void;
-  updateOrderStatus: (orderId: string, status: AdminOrder['status']) => void;
 }
-
-const statusBadgeMap: Record<AdminOrder['status'], string> = {
-  Pago: 'bg-emerald-100 text-emerald-700',
-  'Em Atendimento': 'bg-blue-100 text-blue-700',
-  Pendente: 'bg-amber-100 text-amber-700',
-  Enviado: 'bg-purple-100 text-purple-700',
-};
 
 export const useStore = create<StoreState>()(
   persist(
     (set, get) => ({
-      // Products catalog initialized with 40 real products
+      // Admin Authentication
+      isAdminLoggedIn: false,
+      adminUser: null,
+
+      loginAdmin: (email: string, pass: string) => {
+        // Validação com credencial padrão ou aceita qualquer senha administrativa válida
+        const trimmedEmail = email.trim().toLowerCase();
+        if (
+          (trimmedEmail === 'admin@miixxiie.com.br' || trimmedEmail === 'loja@miixxiie.com.br' || trimmedEmail === 'admin') &&
+          pass.trim().length >= 4
+        ) {
+          const user: AdminAuthUser = {
+            email: trimmedEmail.includes('@') ? trimmedEmail : 'admin@miixxiie.com.br',
+            name: 'Gerência Geral MIIXXIIE',
+            role: 'Administrador da Loja',
+            avatar: '/images/logo-square.png',
+            lastLogin: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+          };
+
+          set({ isAdminLoggedIn: true, adminUser: user });
+          get().addActivityLog('Login no Painel', `Usuário ${user.email} autenticado no sistema.`);
+          return true;
+        }
+        return false;
+      },
+
+      logoutAdmin: () => {
+        get().addActivityLog('Logout', 'Sessão administrativa finalizada.');
+        set({ isAdminLoggedIn: false, adminUser: null });
+      },
+
+      // Products Catalog
       products: PRODUCTS,
       setProducts: (products) => set({ products }),
+
+      addProduct: (product) => {
+        set((state) => ({ products: [product, ...state.products] }));
+        get().addActivityLog('Novo Produto', `Produto "${product.name}" cadastrado com sucesso.`);
+
+        // Sincronização assíncrona com Supabase se configurado
+        const client = getSupabaseClient();
+        if (client) {
+          client.from('products').insert({
+            id: product.id,
+            name: product.name,
+            slug: product.slug,
+            category: product.category,
+            subcategory: product.subcategory,
+            price: product.price,
+            original_price: product.originalPrice,
+            combo_offer: product.comboOffer,
+            badge: product.badge,
+            sizes: product.sizes,
+            colors: product.colors,
+            image: product.image,
+            description: product.description,
+            material: product.material,
+            stock_total: product.stockTotal,
+            size_stock: product.sizeStock,
+            is_active: product.isActive ?? true,
+          }).then();
+        }
+      },
+
+      updateProduct: (product) => {
+        set((state) => ({
+          products: state.products.map((p) => (p.id === product.id ? product : p)),
+        }));
+        get().addActivityLog('Edição de Produto', `Dados do produto "${product.name}" foram atualizados.`);
+
+        const client = getSupabaseClient();
+        if (client) {
+          client.from('products').upsert({
+            id: product.id,
+            name: product.name,
+            slug: product.slug,
+            category: product.category,
+            subcategory: product.subcategory,
+            price: product.price,
+            original_price: product.originalPrice,
+            combo_offer: product.comboOffer,
+            badge: product.badge,
+            sizes: product.sizes,
+            colors: product.colors,
+            image: product.image,
+            description: product.description,
+            material: product.material,
+            stock_total: product.stockTotal,
+            size_stock: product.sizeStock,
+            is_active: product.isActive ?? true,
+          }).then();
+        }
+      },
+
+      deleteProduct: (productId) => {
+        const prod = get().products.find((p) => p.id === productId);
+        set((state) => ({
+          products: state.products.filter((p) => p.id !== productId),
+        }));
+        get().addActivityLog('Exclusão de Produto', `Produto "${prod?.name || productId}" removido do catálogo.`);
+
+        const client = getSupabaseClient();
+        if (client) {
+          client.from('products').delete().eq('id', productId).then();
+        }
+      },
+
+      uploadProductImage: (productId, dataUrl) => {
+        set((state) => ({
+          products: state.products.map((p) => {
+            if (p.id === productId) {
+              return {
+                ...p,
+                image: dataUrl,
+                gallery: [dataUrl, ...(p.gallery || [])],
+              };
+            }
+            return p;
+          }),
+        }));
+        get().addActivityLog('Upload de Foto', `Nova foto carregada para o produto ID ${productId}.`);
+      },
 
       updateStock: (productId, newTotal) => {
         set((state) => ({
@@ -144,7 +479,7 @@ export const useStore = create<StoreState>()(
       updateProductPrice: (productId, price, originalPrice) => {
         set((state) => ({
           products: state.products.map((p) =>
-            p.id === productId ? { ...p, price, originalPrice } : p
+            p.id === productId ? { ...p, price, originalPrice: originalPrice ?? p.originalPrice } : p
           ),
         }));
       },
@@ -152,13 +487,9 @@ export const useStore = create<StoreState>()(
       toggleProductActive: (productId) => {
         set((state) => ({
           products: state.products.map((p) =>
-            p.id === productId ? { ...p, isActive: p.isActive === false ? true : false } : p
+            p.id === productId ? { ...p, isActive: !(p.isActive ?? true) } : p
           ),
         }));
-      },
-
-      addProduct: (newProd) => {
-        set((state) => ({ products: [newProd, ...state.products] }));
       },
 
       // Cart
@@ -176,20 +507,15 @@ export const useStore = create<StoreState>()(
           );
 
           if (existingIndex > -1) {
-            const updated = [...state.cart];
-            updated[existingIndex].quantity += quantity;
-            return { cart: updated, isCartOpen: true };
+            const newCart = [...state.cart];
+            newCart[existingIndex].quantity += quantity;
+            return { cart: newCart, isCartOpen: true };
           }
 
           return {
             cart: [
               ...state.cart,
-              {
-                product,
-                selectedSize: size,
-                selectedColor: color,
-                quantity,
-              },
+              { product, selectedSize: size, selectedColor: color, quantity },
             ],
             isCartOpen: true,
           };
@@ -211,21 +537,21 @@ export const useStore = create<StoreState>()(
 
       updateQuantity: (productId, size, colorName, delta) => {
         set((state) => {
-          const updated = state.cart
+          const newCart = state.cart
             .map((item) => {
               if (
                 item.product.id === productId &&
                 item.selectedSize === size &&
                 item.selectedColor.name === colorName
               ) {
-                const newQty = item.quantity + delta;
-                return newQty > 0 ? { ...item, quantity: newQty } : null;
+                const newQuantity = item.quantity + delta;
+                return newQuantity > 0 ? { ...item, quantity: newQuantity } : null;
               }
               return item;
             })
-            .filter(Boolean) as CartItem[];
+            .filter((item): item is CartItem => item !== null);
 
-          return { cart: updated };
+          return { cart: newCart };
         });
       },
 
@@ -235,7 +561,7 @@ export const useStore = create<StoreState>()(
       // Local Delivery Manaus
       deliverySelection: {
         type: 'motoboy',
-        neighborhood: MANAUS_NEIGHBORHOODS_LIST[1], // Adrianópolis / Vieiralves default
+        neighborhood: MANAUS_NEIGHBORHOODS_LIST[0],
         deliveryAddress: '',
       },
       setDeliveryType: (type) =>
@@ -244,27 +570,32 @@ export const useStore = create<StoreState>()(
         })),
       setSelectedNeighborhood: (neighborhood) =>
         set((state) => ({
-          deliverySelection: { ...state.deliverySelection, neighborhood },
+          deliverySelection: {
+            ...state.deliverySelection,
+            type: 'motoboy',
+            neighborhood,
+          },
         })),
       setDeliveryAddress: (address) =>
         set((state) => ({
           deliverySelection: { ...state.deliverySelection, deliveryAddress: address },
         })),
 
-      // Alternating WhatsApp Leads (Maria: 98613-7969 & Carlos: 98606-4005)
+      // WhatsApp Dynamic Attendants & Lead Distribution
       attendants: WHATSAPP_ATTENDANTS,
       currentAttendantIndex: 0,
+      leadClicks: INITIAL_CLICKS,
+
       rotateAttendant: () => {
         const state = get();
         const list = state.attendants && state.attendants.length > 0 ? state.attendants : WHATSAPP_ATTENDANTS;
-        const idx = (state.currentAttendantIndex || 0) % list.length;
-        const selected = list[idx];
+        const currentIdx = state.currentAttendantIndex || 0;
+        const selected = list[currentIdx % list.length];
 
-        // Increment count for this attendant and switch to next
-        const updatedList = list.map((att, i) =>
-          i === idx ? { ...att, clicksCount: (att.clicksCount || 0) + 1 } : att
+        const updatedList = list.map((att, idx) =>
+          idx === currentIdx % list.length ? { ...att, clicksCount: (att.clicksCount || 0) + 1 } : att
         );
-        const nextIdx = (idx + 1) % list.length;
+        const nextIdx = (currentIdx + 1) % list.length;
 
         set({
           attendants: updatedList,
@@ -274,15 +605,150 @@ export const useStore = create<StoreState>()(
         return selected;
       },
 
-      openWhatsAppLead: (customText) => {
+      recordLeadClick: (data) => {
+        const attendant = data.attendantId === 'maria' ? WHATSAPP_ATTENDANTS[0] : WHATSAPP_ATTENDANTS[1];
+        const newClick: LeadClickEvent = {
+          id: `click-${Date.now()}`,
+          timestamp: new Date().toISOString(),
+          timeFormatted: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+          attendantId: data.attendantId,
+          attendantName: data.attendantName,
+          phoneNumber: attendant.phoneNumber,
+          source: data.source,
+          productId: data.productId,
+          productName: data.productName,
+        };
+
+        set((state) => ({ leadClicks: [newClick, ...state.leadClicks.slice(0, 49)] }));
+        get().addActivityLog('Clique WhatsApp', `Lead direcionado para ${data.attendantName} via ${data.source}.`);
+
+        // Sincronização Supabase
+        const client = getSupabaseClient();
+        if (client) {
+          client.from('lead_clicks').insert({
+            attendant_id: data.attendantId,
+            attendant_name: data.attendantName,
+            phone_number: attendant.phoneNumber,
+            product_id: data.productId,
+            product_name: data.productName,
+            source: data.source,
+          }).then();
+        }
+      },
+
+      openWhatsAppLead: (customText, source = 'site_header', product) => {
         const attendant = get().rotateAttendant();
-        const defaultMsg = `Olá, *${attendant.name}*! Gostaria de mais informações sobre as roupas da *MIIXXIIE Variedades* em Manaus. 🌸`;
+        get().recordLeadClick({
+          attendantId: attendant.id as 'maria' | 'carlos',
+          attendantName: attendant.name,
+          source,
+          productId: product?.id,
+          productName: product?.name,
+        });
+
+        const defaultMsg = `Olá, *${attendant.name}*! Gostaria de atendimento de vendas na *MIIXXIIE Variedades* em Manaus. 🌸`;
         const msg = customText || defaultMsg;
         const url = `https://wa.me/${attendant.phoneNumber}?text=${encodeURIComponent(msg)}`;
         window.open(url, '_blank', 'noopener,noreferrer');
       },
 
-      // Product Detail
+      // Orders & Kanban Management
+      adminOrders: INITIAL_ORDERS,
+
+      addAdminOrder: (order) => {
+        set((state) => ({ adminOrders: [order, ...state.adminOrders] }));
+        get().addActivityLog('Novo Pedido', `Pedido ${order.id} registrado para ${order.customer} (${order.status}).`);
+
+        const client = getSupabaseClient();
+        if (client) {
+          client.from('orders').insert({
+            id: order.id,
+            customer: order.customer,
+            customer_phone: order.customerPhone,
+            items: order.itemsList,
+            total: order.total,
+            subtotal: order.subtotal || order.total,
+            shipping_fee: order.shippingFee || 0,
+            delivery_type: order.deliveryMethod?.includes('Retirada') ? 'retirada' : 'motoboy',
+            neighborhood: order.neighborhood,
+            delivery_address: order.deliveryAddress,
+            status: order.status,
+            attendant_id: order.attendantId,
+            attendant_name: order.attendantName,
+            notes: order.notes,
+          }).then();
+        }
+      },
+
+      updateOrderStatus: (orderId, status) => {
+        set((state) => ({
+          adminOrders: state.adminOrders.map((ord) =>
+            ord.id === orderId
+              ? { ...ord, status, statusBadge: KANBAN_BADGE_MAP[status] || ord.statusBadge }
+              : ord
+          ),
+        }));
+        get().addActivityLog('Status de Pedido', `Pedido ${orderId} atualizado para "${status}".`);
+
+        const client = getSupabaseClient();
+        if (client) {
+          client.from('orders').update({ status }).eq('id', orderId).then();
+        }
+      },
+
+      moveKanbanOrder: (orderId, status) => {
+        get().updateOrderStatus(orderId, status);
+      },
+
+      // Activity Logs & Audit
+      activityLogs: INITIAL_LOGS,
+      addActivityLog: (action, description) => {
+        const newLog: ActivityLog = {
+          id: `log-${Date.now()}`,
+          timestamp: new Date().toISOString(),
+          timeFormatted: new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }),
+          action,
+          description,
+          user: get().adminUser?.name || 'Administrador',
+        };
+        set((state) => ({ activityLogs: [newLog, ...state.activityLogs.slice(0, 99)] }));
+
+        const client = getSupabaseClient();
+        if (client) {
+          client.from('activity_logs').insert({
+            action_type: action,
+            description,
+            user_name: newLog.user,
+          }).then();
+        }
+      },
+
+      // Store CMS Settings
+      storeCMS: INITIAL_CMS,
+      updateStoreCMS: (data) => {
+        set((state) => ({ storeCMS: { ...state.storeCMS, ...data } }));
+        get().addActivityLog('CMS Atualizado', 'Configurações visuais e de atendimento da loja foram salvas.');
+
+        const client = getSupabaseClient();
+        if (client) {
+          client.from('store_settings').upsert({
+            id: 'miixxiie_manaus',
+            store_name: data.storeName,
+            subtitle: data.subtitle,
+            niche: data.niche,
+            slogan: data.slogan,
+            city: data.city,
+            address: data.storeAddress,
+            whatsapp_maria: data.whatsappMaria,
+            whatsapp_carlos: data.whatsappCarlos,
+            banner_headline: data.bannerHeadline,
+            banner_subheadline: data.bannerSubheadline,
+            shipping_notice: data.shippingNotice,
+          }).then();
+        }
+      },
+
+      // Product Detail Modal
       selectedProduct: null,
       isDetailOpen: false,
       openDetail: (product) => set({ selectedProduct: product, isDetailOpen: true }),
@@ -325,24 +791,12 @@ export const useStore = create<StoreState>()(
         set({ infoModal: { isOpen: true, title, description } }),
       closeInfoModal: () =>
         set({ infoModal: { isOpen: false, title: '', description: '' } }),
-
-      // Admin Orders
-      adminOrders: ADMIN_DASHBOARD_DATA.recentOrders as AdminOrder[],
-      addAdminOrder: (order) =>
-        set((state) => ({ adminOrders: [order, ...state.adminOrders] })),
-      updateOrderStatus: (orderId, status) => {
-        set((state) => ({
-          adminOrders: state.adminOrders.map((ord) =>
-            ord.id === orderId
-              ? { ...ord, status, statusBadge: statusBadgeMap[status] }
-              : ord
-          ),
-        }));
-      },
     }),
     {
-      name: 'miixxiie_store_real_v3',
+      name: 'miixxiie_store_real_v4_pro',
       partialize: (state) => ({
+        isAdminLoggedIn: state.isAdminLoggedIn,
+        adminUser: state.adminUser,
         products: state.products,
         cart: state.cart,
         favorites: state.favorites,
@@ -350,6 +804,9 @@ export const useStore = create<StoreState>()(
         deliverySelection: state.deliverySelection,
         attendants: state.attendants,
         currentAttendantIndex: state.currentAttendantIndex,
+        leadClicks: state.leadClicks,
+        activityLogs: state.activityLogs,
+        storeCMS: state.storeCMS,
       }),
     }
   )
