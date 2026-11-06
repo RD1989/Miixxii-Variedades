@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import { X, Star, Heart, ShoppingBag, Check, ShieldCheck, Truck, Store, Tag } from 'lucide-react';
+import { X, Star, Heart, ShoppingBag, Check, ShieldCheck, Truck, Store, Tag, MessageCircle } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 import { ColorOption, formatCurrencyBRL } from '@/data/mockData';
 
@@ -14,6 +14,7 @@ export const ProductDetailModal: React.FC = () => {
     addToCart,
     favorites,
     toggleFavorite,
+    openWhatsAppModal,
   } = useStore();
 
   const [selectedSize, setSelectedSize] = useState<string>('');
@@ -312,6 +313,20 @@ export const ProductDetailModal: React.FC = () => {
             >
               <ShoppingBag className="w-4 h-4" />
               <span>Adicionar ao Carrinho</span>
+            </button>
+
+            <button
+              onClick={() => {
+                if (selectedProduct && selectedColor && selectedSize) {
+                  addToCart(selectedProduct, selectedSize, selectedColor, quantity);
+                  closeDetail();
+                  openWhatsAppModal();
+                }
+              }}
+              className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold py-3.5 px-6 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98] text-xs sm:text-sm"
+            >
+              <MessageCircle className="w-4 h-4 fill-white" />
+              <span>Pedir Direto pelo WhatsApp</span>
             </button>
 
             {/* Manaus Local Shipping Notice */}

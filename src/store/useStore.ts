@@ -10,6 +10,8 @@ import {
   DeliverySelection,
   ManausNeighborhood,
   MANAUS_NEIGHBORHOODS_LIST,
+  WhatsAppAttendant,
+  WHATSAPP_ATTENDANTS,
 } from '@/data/mockData';
 
 export interface AdminOrder {
@@ -25,7 +27,7 @@ export interface AdminOrder {
 }
 
 interface StoreState {
-  // Products & Inventory (Managed in Admin, displayed on Storefront)
+  // Products & Inventory
   products: Product[];
   setProducts: (products: Product[]) => void;
   updateStock: (productId: string, newTotal: number) => void;
@@ -50,6 +52,12 @@ interface StoreState {
   setDeliveryType: (type: 'motoboy' | 'retirada') => void;
   setSelectedNeighborhood: (neighborhood: ManausNeighborhood) => void;
   setDeliveryAddress: (address: string) => void;
+
+  // Dynamic WhatsApp Alternating Traffic (Maria & Carlos)
+  attendants: WhatsAppAttendant[];
+  currentAttendantIndex: number;
+  rotateAttendant: () => WhatsAppAttendant;
+  openWhatsAppLead: (customText?: string) => void;
 
   // Product Detail Modal
   selectedProduct: Product | null;
@@ -243,6 +251,37 @@ export const useStore = create<StoreState>()(
           deliverySelection: { ...state.deliverySelection, deliveryAddress: address },
         })),
 
+      // Alternating WhatsApp Leads (Maria: 98613-7969 & Carlos: 98606-4005)
+      attendants: WHATSAPP_ATTENDANTS,
+      currentAttendantIndex: 0,
+      rotateAttendant: () => {
+        const state = get();
+        const list = state.attendants && state.attendants.length > 0 ? state.attendants : WHATSAPP_ATTENDANTS;
+        const idx = (state.currentAttendantIndex || 0) % list.length;
+        const selected = list[idx];
+
+        // Increment count for this attendant and switch to next
+        const updatedList = list.map((att, i) =>
+          i === idx ? { ...att, clicksCount: (att.clicksCount || 0) + 1 } : att
+        );
+        const nextIdx = (idx + 1) % list.length;
+
+        set({
+          attendants: updatedList,
+          currentAttendantIndex: nextIdx,
+        });
+
+        return selected;
+      },
+
+      openWhatsAppLead: (customText) => {
+        const attendant = get().rotateAttendant();
+        const defaultMsg = `Olá, *${attendant.name}*! Gostaria de mais informações sobre as roupas da *MIIXXIIE Variedades* em Manaus. 🌸`;
+        const msg = customText || defaultMsg;
+        const url = `https://wa.me/${attendant.phoneNumber}?text=${encodeURIComponent(msg)}`;
+        window.open(url, '_blank', 'noopener,noreferrer');
+      },
+
       // Product Detail
       selectedProduct: null,
       isDetailOpen: false,
@@ -302,13 +341,15 @@ export const useStore = create<StoreState>()(
       },
     }),
     {
-      name: 'miixxiie_store_real_v2',
+      name: 'miixxiie_store_real_v3',
       partialize: (state) => ({
         products: state.products,
         cart: state.cart,
         favorites: state.favorites,
         adminOrders: state.adminOrders,
         deliverySelection: state.deliverySelection,
+        attendants: state.attendants,
+        currentAttendantIndex: state.currentAttendantIndex,
       }),
     }
   )

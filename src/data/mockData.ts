@@ -53,6 +53,35 @@ export interface ManausNeighborhood {
   time: string;
 }
 
+
+export interface WhatsAppAttendant {
+  id: string;
+  name: string;
+  role: string;
+  phoneDisplay: string;
+  phoneNumber: string;
+  clicksCount: number;
+}
+
+export const WHATSAPP_ATTENDANTS: WhatsAppAttendant[] = [
+  {
+    id: 'maria',
+    name: 'Maria',
+    role: 'Consultora de Vendas',
+    phoneDisplay: '(92) 98613-7969',
+    phoneNumber: '5592986137969',
+    clicksCount: 0,
+  },
+  {
+    id: 'carlos',
+    name: 'Carlos',
+    role: 'Consultor de Vendas & Logística',
+    phoneDisplay: '(92) 98606-4005',
+    phoneNumber: '5592986064005',
+    clicksCount: 0,
+  },
+];
+
 export interface DeliverySelection {
   type: 'motoboy' | 'retirada';
   neighborhood?: ManausNeighborhood;
@@ -69,8 +98,9 @@ export const STORE_CONFIG = {
   slogan: 'Estilo, Conforto e Autoestima',
   footerTagline: 'Beleza em todas as formas!',
   city: 'Manaus - AM',
-  whatsappNumber: '559284199013', // Número Oficial do Catálogo
+  whatsappNumber: '5592986137969', // Padrão rotativo: Maria e Carlos
   catalogUrl: 'https://wa.me/c/559284199013',
+  attendants: WHATSAPP_ATTENDANTS,
   storeAddress: 'Manaus - AM (Atendimento e Retirada Presencial com Agendamento)',
   shippingPolicy: {
     notice: 'Entregas Somente em Manaus - AM (Frete por Bairro via Motoboy ou Retirada na Loja)',
@@ -2948,8 +2978,10 @@ export function calculateCartSubtotal(items: CartItem[]): number {
 export function generateWhatsAppCheckoutUrl(
   items: CartItem[],
   customerName?: string,
-  delivery?: DeliverySelection
-): { url: string; rawMessage: string; subtotal: number; shippingFee: number; total: number } {
+  delivery?: DeliverySelection,
+  attendant?: WhatsAppAttendant
+): { url: string; rawMessage: string; subtotal: number; shippingFee: number; total: number; attendant: WhatsAppAttendant } {
+  const activeAttendant = attendant || WHATSAPP_ATTENDANTS[0];
   const subtotal = calculateCartSubtotal(items);
   const shippingFee = delivery?.type === 'motoboy' && delivery.neighborhood ? delivery.neighborhood.fee : 0;
   const total = subtotal + shippingFee;
@@ -2998,5 +3030,5 @@ export function generateWhatsAppCheckoutUrl(
   const encodedMessage = encodeURIComponent(rawMessage);
   const url = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodedMessage}`;
 
-  return { url, rawMessage, subtotal, shippingFee, total };
+  return { url, rawMessage, subtotal, shippingFee, total, attendant: activeAttendant };
 }

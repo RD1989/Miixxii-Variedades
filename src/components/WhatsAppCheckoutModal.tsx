@@ -15,12 +15,15 @@ import {
   Truck,
   Store,
   MapPin,
+  Users2,
+  RefreshCw,
 } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 import {
   generateWhatsAppCheckoutUrl,
   formatCurrencyBRL,
   MANAUS_NEIGHBORHOODS_LIST,
+  WhatsAppAttendant,
 } from '@/data/mockData';
 
 export const WhatsAppCheckoutModal: React.FC = () => {
@@ -35,20 +38,38 @@ export const WhatsAppCheckoutModal: React.FC = () => {
     setSelectedNeighborhood,
     setDeliveryAddress,
     addAdminOrder,
+    rotateAttendant,
+    attendants,
+    currentAttendantIndex,
   } = useStore();
 
   const [activeTab, setActiveTab] = useState<'handoff' | 'chatSimulator'>('handoff');
   const [chatSent, setChatSent] = useState(false);
 
+  // Selected attendant for this checkout modal view
+  const activeAttendantsList = attendants && attendants.length > 0 ? attendants : [];
+  const previewAttendant = activeAttendantsList[(currentAttendantIndex || 0) % (activeAttendantsList.length || 1)];
+
   if (!isWhatsAppModalOpen) return null;
 
-  const { url, subtotal, shippingFee, total } = generateWhatsAppCheckoutUrl(
+  const { subtotal, shippingFee, total } = generateWhatsAppCheckoutUrl(
     cart,
     customerName || undefined,
-    deliverySelection
+    deliverySelection,
+    previewAttendant
   );
 
   const handleOpenWhatsAppOfficial = () => {
+    // Dynamic Rotation: picks current attendant and switches to next
+    const attendant = rotateAttendant();
+
+    const checkoutData = generateWhatsAppCheckoutUrl(
+      cart,
+      customerName || undefined,
+      deliverySelection,
+      attendant
+    );
+
     // Register order in Admin dashboard simulation
     const newOrderId = `#${Math.floor(1000 + Math.random() * 9000)}`;
     addAdminOrder({
@@ -56,7 +77,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
       customer: customerName || 'Cliente WhatsApp',
       itemsCount: cart.length,
       extraItemsBadge: cart.length > 2 ? `+${cart.length - 2}` : undefined,
-      total: total,
+      total: checkoutData.total,
       deliveryMethod:
         deliverySelection.type === 'retirada'
           ? 'Retirada na Loja'
@@ -66,10 +87,11 @@ export const WhatsAppCheckoutModal: React.FC = () => {
     });
 
     // Open WhatsApp in new tab
-    window.open(url, '_blank', 'noopener,noreferrer');
+    window.open(checkoutData.url, '_blank', 'noopener,noreferrer');
   };
 
   const handleSendInSimulator = () => {
+    const attendant = rotateAttendant();
     setChatSent(true);
     const newOrderId = `#${Math.floor(1000 + Math.random() * 9000)}`;
     addAdminOrder({
@@ -148,6 +170,27 @@ export const WhatsAppCheckoutModal: React.FC = () => {
               <p className="text-xs sm:text-sm text-neutral-500 mt-1 max-w-sm">
                 Converse com a consultora da MIIXXIIE em Manaus para combinar a entrega ou retirada!
               </p>
+            </div>
+
+            {/* Dynamic Load Balancer Badge (Maria & Carlos) */}
+            <div className="w-full bg-neutral-100/80 rounded-2xl p-2.5 border border-neutral-200 flex items-center justify-between text-left">
+              <div className="flex items-center gap-2">
+                <div className="w-7 h-7 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">
+                  {previewAttendant?.name?.charAt(0) || 'M'}
+                </div>
+                <div>
+                  <span className="text-[10px] text-neutral-500 font-medium block">
+                    Atendimento Dinâmico (Tráfego Equilibrado):
+                  </span>
+                  <span className="text-xs font-bold text-neutral-900">
+                    {previewAttendant?.name} — {previewAttendant?.phoneDisplay}
+                  </span>
+                </div>
+              </div>
+              <span className="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                Disponível
+              </span>
             </div>
 
             {/* Customer Details Form */}
@@ -283,7 +326,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
                 className="w-full flex items-center justify-center gap-2.5 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-sm sm:text-base py-3.5 px-6 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-[1.02] active:scale-[0.98]"
               >
                 <MessageCircle className="w-5 h-5 fill-white" />
-                <span>Conversar no WhatsApp Oficial</span>
+                <span>Conversar com {previewAttendant?.name} no WhatsApp</span>
                 <ExternalLink className="w-4 h-4 text-white/80" />
               </button>
 
@@ -303,14 +346,16 @@ export const WhatsAppCheckoutModal: React.FC = () => {
             <div className="bg-[#075E54] text-white px-4 py-3 flex items-center justify-between shadow-md">
               <div className="flex items-center gap-3">
                 <div className="relative w-10 h-10 rounded-full bg-white border border-neutral-300 overflow-hidden flex items-center justify-center text-black font-bold text-xs">
-                  MX
+                  {previewAttendant?.name?.charAt(0) || 'MX'}
                 </div>
                 <div>
                   <h4 className="font-bold text-sm leading-tight flex items-center gap-1.5">
-                    <span>MIIXXIIE Variedades</span>
+                    <span>MIIXXIIE • {previewAttendant?.name}</span>
                     <span className="w-2 h-2 rounded-full bg-emerald-400 inline-block"></span>
                   </h4>
-                  <span className="text-[11px] text-emerald-200">Online • Manaus - AM</span>
+                  <span className="text-[11px] text-emerald-200">
+                    Online • {previewAttendant?.phoneDisplay}
+                  </span>
                 </div>
               </div>
 
@@ -333,7 +378,7 @@ export const WhatsAppCheckoutModal: React.FC = () => {
               <div className="flex justify-start">
                 <div className="max-w-[85%] bg-white rounded-2xl rounded-tl-sm p-3 shadow-sm text-gray-800 space-y-1">
                   <p>
-                    Olá! Seja bem-vinda à <strong>MIIXXIIE Variedades</strong> em Manaus! 🌸
+                    Olá! Meu nome é <strong>{previewAttendant?.name}</strong>, consultora da <strong>MIIXXIIE Variedades</strong> em Manaus! 🌸
                   </p>
                   <p>
                     Tire todas as suas dúvidas sobre caimento, medidas e combinamos a entrega por motoboy ou retirada! ✨

@@ -62,6 +62,9 @@ export default function AdminPage() {
     adminOrders,
     updateOrderStatus,
     openInfoModal,
+    attendants,
+    currentAttendantIndex,
+    openWhatsAppLead,
   } = useStore();
 
   const [activeTab, setActiveTab] = useState<
@@ -711,29 +714,88 @@ export default function AdminPage() {
 
               {/* Store & WhatsApp Settings */}
               <div className="bg-white rounded-2xl border border-neutral-200 p-5 shadow-xs space-y-4">
-                <div className="flex items-center gap-2 pb-2 border-b border-neutral-200">
-                  <Store className="w-4 h-4 text-neutral-800" />
-                  <h3 className="font-bold text-sm text-neutral-900">
-                    Dados da Loja Física & WhatsApp
-                  </h3>
+                <div className="flex items-center justify-between pb-2 border-b border-neutral-200">
+                  <div className="flex items-center gap-2">
+                    <Store className="w-4 h-4 text-neutral-800" />
+                    <h3 className="font-bold text-sm text-neutral-900">
+                      WhatsApp Oficial & Distribuição Dinâmica de Leads
+                    </h3>
+                  </div>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2.5 py-0.5 rounded-full flex items-center gap-1">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-pulse" />
+                    Round-Robin 50/50 Ativo
+                  </span>
                 </div>
 
-                <div className="space-y-3 text-xs">
-                  <div>
-                    <label className="block text-neutral-500 font-semibold mb-1">
-                      WhatsApp Oficial de Vendas:
-                    </label>
-                    <input
-                      type="text"
-                      disabled
-                      value={`+${STORE_CONFIG.whatsappNumber} (MIIXXIIE Manaus)`}
-                      className="w-full bg-neutral-100 border border-neutral-200 px-3 py-2 rounded-xl text-neutral-900 font-bold"
-                    />
-                  </div>
+                {/* Attendants Lead Distribution Cards */}
+                <div className="space-y-3">
+                  <p className="text-xs text-neutral-600">
+                    O tráfego de clientes é balanceado dinamicamente: cada clique no site alterna automaticamente entre as consultoras Maria e Carlos.
+                  </p>
 
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {attendants?.map((att, idx) => {
+                      const isNext = (currentAttendantIndex || 0) % (attendants.length || 1) === idx;
+                      return (
+                        <div
+                          key={att.id}
+                          className={`p-3.5 rounded-xl border transition-all ${
+                            isNext
+                              ? 'border-black bg-neutral-50 shadow-sm'
+                              : 'border-neutral-200 bg-white'
+                          }`}
+                        >
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-center gap-2">
+                              <div className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center font-bold text-xs">
+                                {att.name.charAt(0)}
+                              </div>
+                              <div>
+                                <h4 className="font-bold text-xs text-neutral-900 flex items-center gap-1.5">
+                                  {att.name}
+                                  {isNext && (
+                                    <span className="text-[9px] bg-black text-white px-1.5 py-0.2 rounded font-semibold">
+                                      Próximo da fila
+                                    </span>
+                                  )}
+                                </h4>
+                                <span className="text-[10px] text-neutral-500 font-medium">
+                                  {att.role}
+                                </span>
+                              </div>
+                            </div>
+                            <span className="text-xs font-bold text-neutral-800 bg-neutral-100 px-2 py-0.5 rounded-lg border border-neutral-200">
+                              {att.clicksCount} leads
+                            </span>
+                          </div>
+
+                          <div className="mt-2.5 pt-2 border-t border-neutral-100 flex items-center justify-between text-[11px]">
+                            <span className="font-mono font-semibold text-neutral-700">
+                              {att.phoneDisplay}
+                            </span>
+                            <button
+                              onClick={() => {
+                                const url = `https://wa.me/${att.phoneNumber}?text=${encodeURIComponent(
+                                  `Olá, ${att.name}! Teste de encaminhamento de lead via painel da MIIXXIIE.`
+                                )}`;
+                                window.open(url, '_blank', 'noopener,noreferrer');
+                              }}
+                              className="text-[10px] font-bold text-emerald-700 hover:text-emerald-800 flex items-center gap-1"
+                            >
+                              <MessageCircle className="w-3 h-3 fill-emerald-600" />
+                              <span>Testar Chat</span>
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="space-y-3 text-xs pt-2">
                   <div>
                     <label className="block text-neutral-500 font-semibold mb-1">
-                      Modalidade de Retirada:
+                      Modalidade de Retirada Física:
                     </label>
                     <input
                       type="text"
@@ -988,11 +1050,11 @@ export default function AdminPage() {
               </div>
               <div className="flex justify-between">
                 <span className="text-gray-500">Canal de Venda:</span>
-                <span className="font-bold text-emerald-700">WhatsApp Manaus (92 8419-9013)</span>
+                <span className="font-bold text-emerald-700">WhatsApp Manaus (Maria & Carlos)</span>
               </div>
             </div>
 
-            <div className="flex justify-end gap-2 pt-2">
+            <div className="flex flex-col sm:flex-row justify-end gap-2 pt-2">
               <button
                 onClick={() => setSelectedOrderDetails(null)}
                 className="px-4 py-2 rounded-full text-xs font-semibold text-gray-600 hover:bg-gray-100"
@@ -1002,14 +1064,30 @@ export default function AdminPage() {
               <button
                 onClick={() => {
                   window.open(
-                    `https://wa.me/559284199013?text=Olá, ${selectedOrderDetails.customer}! Entro em contato referente ao seu pedido ${selectedOrderDetails.id} da MIIXXIIE.`,
+                    `https://wa.me/5592986137969?text=${encodeURIComponent(
+                      `Olá, ${selectedOrderDetails.customer}! Sou Maria da MIIXXIIE. Entro em contato referente ao seu pedido ${selectedOrderDetails.id}.`
+                    )}`,
                     '_blank'
                   );
                 }}
-                className="px-4 py-2 rounded-full text-xs font-bold bg-[#25D366] text-white hover:bg-[#1EBE5D] flex items-center gap-1.5"
+                className="px-3.5 py-2 rounded-full text-xs font-bold bg-[#25D366] text-white hover:bg-[#1EBE5D] flex items-center justify-center gap-1.5"
               >
                 <MessageCircle className="w-3.5 h-3.5 fill-white" />
-                <span>Conversar no WhatsApp</span>
+                <span>Maria (98613-7969)</span>
+              </button>
+              <button
+                onClick={() => {
+                  window.open(
+                    `https://wa.me/5592986064005?text=${encodeURIComponent(
+                      `Olá, ${selectedOrderDetails.customer}! Sou Carlos da MIIXXIIE. Entro em contato referente ao seu pedido ${selectedOrderDetails.id}.`
+                    )}`,
+                    '_blank'
+                  );
+                }}
+                className="px-3.5 py-2 rounded-full text-xs font-bold bg-[#075E54] text-white hover:bg-[#128C7E] flex items-center justify-center gap-1.5"
+              >
+                <MessageCircle className="w-3.5 h-3.5 fill-white" />
+                <span>Carlos (98606-4005)</span>
               </button>
             </div>
           </div>

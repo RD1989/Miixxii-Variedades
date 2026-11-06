@@ -35,6 +35,11 @@ export const metadata: Metadata = {
     'conjuntos plus size',
     'comprar pelo whatsapp',
   ],
+  icons: {
+    icon: '/images/logo-square.png',
+    shortcut: '/images/logo-square.png',
+    apple: '/images/logo-square.png',
+  },
 };
 
 export const viewport: Viewport = {
