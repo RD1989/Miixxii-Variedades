@@ -2,9 +2,25 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { X, Trash2, ShoppingBag, Plus, Minus, MessageCircle, ArrowLeft, RefreshCw } from 'lucide-react';
+import {
+  X,
+  Trash2,
+  ShoppingBag,
+  Plus,
+  Minus,
+  MessageCircle,
+  ArrowLeft,
+  RefreshCw,
+  Truck,
+  Store,
+  MapPin,
+} from 'lucide-react';
 import { useStore } from '@/store/useStore';
-import { formatCurrencyBRL, calculateCartSubtotal } from '@/data/mockData';
+import {
+  formatCurrencyBRL,
+  calculateCartSubtotal,
+  MANAUS_NEIGHBORHOODS_LIST,
+} from '@/data/mockData';
 
 export const CartDrawer: React.FC = () => {
   const {
@@ -16,11 +32,19 @@ export const CartDrawer: React.FC = () => {
     clearCart,
     resetToDemoCart,
     openWhatsAppModal,
+    deliverySelection,
+    setDeliveryType,
+    setSelectedNeighborhood,
   } = useStore();
 
   if (!isCartOpen) return null;
 
   const subtotal = calculateCartSubtotal(cart);
+  const shippingFee =
+    deliverySelection.type === 'motoboy' && deliverySelection.neighborhood
+      ? deliverySelection.neighborhood.fee
+      : 0;
+  const total = subtotal + shippingFee;
 
   const handleCheckout = () => {
     setIsCartOpen(false);
@@ -80,7 +104,7 @@ export const CartDrawer: React.FC = () => {
               </div>
               <h3 className="font-bold text-neutral-800 text-base">Seu carrinho está vazio</h3>
               <p className="text-xs text-neutral-500 max-w-xs">
-                Explore nossas coleções plus size e adicione seus looks favoritos!
+                Explore o mostruário real de Manaus e adicione seus looks favoritos!
               </p>
               <button
                 onClick={resetToDemoCart}
@@ -91,116 +115,213 @@ export const CartDrawer: React.FC = () => {
               </button>
             </div>
           ) : (
-            cart.map((item, index) => {
-              const lineTotal = item.product.price * item.quantity;
+            <>
+              {cart.map((item, index) => {
+                const lineTotal = item.product.price * item.quantity;
+                const itemImg = item.selectedColor.image || item.product.image;
 
-              return (
-                <div
-                  key={`${item.product.id}-${item.selectedSize}-${item.selectedColor.name}-${index}`}
-                  className="bg-white rounded-2xl border border-neutral-200 p-3 flex gap-3 shadow-sm hover:shadow-md transition-shadow"
-                >
-                  {/* Item Image */}
-                  <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-neutral-100 shrink-0">
-                    <Image
-                      src={item.product.image}
-                      alt={item.product.name}
-                      fill
-                      sizes="80px"
-                      className="object-cover object-top"
-                    />
-                  </div>
+                return (
+                  <div
+                    key={`${item.product.id}-${item.selectedSize}-${item.selectedColor.name}-${index}`}
+                    className="bg-white rounded-2xl border border-neutral-200 p-3 flex gap-3 shadow-xs hover:shadow-md transition-shadow"
+                  >
+                    {/* Item Image */}
+                    <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-neutral-100 shrink-0 border border-neutral-200">
+                      <Image
+                        src={itemImg}
+                        alt={item.product.name}
+                        fill
+                        sizes="80px"
+                        className="object-cover object-top"
+                      />
+                    </div>
 
-                  {/* Item Details */}
-                  <div className="flex-1 flex flex-col justify-between">
-                    <div>
-                      <div className="flex justify-between items-start gap-1">
-                        <h4 className="font-bold text-xs sm:text-sm text-neutral-900 line-clamp-1">
-                          {item.product.name}
-                        </h4>
-                        <button
-                          onClick={() =>
-                            removeFromCart(
-                              item.product.id,
-                              item.selectedSize,
-                              item.selectedColor.name
-                            )
-                          }
-                          className="text-neutral-300 hover:text-red-500 transition-colors p-0.5"
-                          title="Remover item"
-                        >
-                          <X className="w-3.5 h-3.5" />
-                        </button>
+                    {/* Item Details */}
+                    <div className="flex-1 flex flex-col justify-between">
+                      <div>
+                        <div className="flex justify-between items-start gap-1">
+                          <h4 className="font-bold text-xs sm:text-sm text-neutral-900 line-clamp-1">
+                            {item.product.name}
+                          </h4>
+                          <button
+                            onClick={() =>
+                              removeFromCart(
+                                item.product.id,
+                                item.selectedSize,
+                                item.selectedColor.name
+                              )
+                            }
+                            className="text-neutral-300 hover:text-red-500 transition-colors p-0.5"
+                            title="Remover item"
+                          >
+                            <X className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+
+                        {/* Variant Tags */}
+                        <div className="flex items-center gap-2 mt-1 text-[11px] text-neutral-500">
+                          <span className="bg-neutral-100 px-1.5 py-0.5 rounded font-bold text-neutral-900">
+                            Tam: {item.selectedSize}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            Cor:
+                            <span
+                              className="inline-block w-2.5 h-2.5 rounded-full border border-neutral-300"
+                              style={{ backgroundColor: item.selectedColor.hex }}
+                            />
+                            {item.selectedColor.name}
+                          </span>
+                        </div>
                       </div>
 
-                      {/* Variant Tags */}
-                      <div className="flex items-center gap-2 mt-1 text-[11px] text-neutral-500">
-                        <span className="bg-neutral-100 px-1.5 py-0.5 rounded font-semibold text-neutral-800">
-                          Tam: {item.selectedSize}
-                        </span>
-                        <span className="flex items-center gap-1">
-                          Cor:
-                          <span
-                            className="inline-block w-2.5 h-2.5 rounded-full border border-neutral-300"
-                            style={{ backgroundColor: item.selectedColor.hex }}
-                          />
-                          {item.selectedColor.name}
+                      {/* Quantity & Line Total */}
+                      <div className="flex items-center justify-between pt-2">
+                        <div className="flex items-center border border-neutral-200 rounded-full bg-neutral-50 overflow-hidden">
+                          <button
+                            onClick={() =>
+                              updateQuantity(
+                                item.product.id,
+                                item.selectedSize,
+                                item.selectedColor.name,
+                                -1
+                              )
+                            }
+                            className="w-6 h-6 flex items-center justify-center text-neutral-600 hover:bg-neutral-200 transition-colors"
+                          >
+                            <Minus className="w-3 h-3" />
+                          </button>
+                          <span className="w-6 text-center text-xs font-bold text-neutral-900">
+                            {item.quantity}
+                          </span>
+                          <button
+                            onClick={() =>
+                              updateQuantity(
+                                item.product.id,
+                                item.selectedSize,
+                                item.selectedColor.name,
+                                1
+                              )
+                            }
+                            className="w-6 h-6 flex items-center justify-center text-neutral-600 hover:bg-neutral-200 transition-colors"
+                          >
+                            <Plus className="w-3 h-3" />
+                          </button>
+                        </div>
+
+                        <span className="text-sm font-bold text-black">
+                          {formatCurrencyBRL(lineTotal)}
                         </span>
                       </div>
                     </div>
-
-                    {/* Quantity & Line Total */}
-                    <div className="flex items-center justify-between pt-2">
-                      <div className="flex items-center border border-neutral-200 rounded-full bg-neutral-50 overflow-hidden">
-                        <button
-                          onClick={() =>
-                            updateQuantity(
-                              item.product.id,
-                              item.selectedSize,
-                              item.selectedColor.name,
-                              -1
-                            )
-                          }
-                          className="w-6 h-6 flex items-center justify-center text-neutral-600 hover:bg-neutral-200 transition-colors"
-                        >
-                          <Minus className="w-3 h-3" />
-                        </button>
-                        <span className="w-6 text-center text-xs font-bold text-neutral-900">
-                          {item.quantity}
-                        </span>
-                        <button
-                          onClick={() =>
-                            updateQuantity(
-                              item.product.id,
-                              item.selectedSize,
-                              item.selectedColor.name,
-                              1
-                            )
-                          }
-                          className="w-6 h-6 flex items-center justify-center text-neutral-600 hover:bg-neutral-200 transition-colors"
-                        >
-                          <Plus className="w-3 h-3" />
-                        </button>
-                      </div>
-
-                      <span className="text-sm font-bold text-black">
-                        {formatCurrencyBRL(lineTotal)}
-                      </span>
-                    </div>
                   </div>
+                );
+              })}
+
+              {/* Local Manaus Delivery Options in Cart Drawer */}
+              <div className="bg-neutral-50 rounded-2xl border border-neutral-200 p-3.5 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-neutral-900 flex items-center gap-1.5">
+                    <MapPin className="w-4 h-4 text-neutral-700" />
+                    <span>Opções de Entrega em Manaus:</span>
+                  </span>
                 </div>
-              );
-            })
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => setDeliveryType('motoboy')}
+                    className={`p-2.5 rounded-xl border text-left flex flex-col gap-1 transition-all ${
+                      deliverySelection.type === 'motoboy'
+                        ? 'border-black bg-white ring-1 ring-black shadow-xs'
+                        : 'border-neutral-200 bg-white/50 hover:bg-white text-neutral-600'
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5 font-bold text-xs text-neutral-900">
+                      <Truck className="w-3.5 h-3.5" />
+                      <span>Motoboy</span>
+                    </div>
+                    <span className="text-[10px] text-neutral-500">
+                      Frete por bairro
+                    </span>
+                  </button>
+
+                  <button
+                    onClick={() => setDeliveryType('retirada')}
+                    className={`p-2.5 rounded-xl border text-left flex flex-col gap-1 transition-all ${
+                      deliverySelection.type === 'retirada'
+                        ? 'border-black bg-white ring-1 ring-black shadow-xs'
+                        : 'border-neutral-200 bg-white/50 hover:bg-white text-neutral-600'
+                    }`}
+                  >
+                    <div className="flex items-center gap-1.5 font-bold text-xs text-neutral-900">
+                      <Store className="w-3.5 h-3.5" />
+                      <span>Retirada</span>
+                    </div>
+                    <span className="text-[10px] font-bold text-emerald-700">
+                      Grátis (Manaus)
+                    </span>
+                  </button>
+                </div>
+
+                {deliverySelection.type === 'motoboy' && (
+                  <div className="space-y-1.5 pt-1">
+                    <label className="text-[11px] font-semibold text-neutral-700 block">
+                      Selecione o Bairro de Entrega em Manaus:
+                    </label>
+                    <select
+                      value={deliverySelection.neighborhood?.name}
+                      onChange={(e) => {
+                        const neigh = MANAUS_NEIGHBORHOODS_LIST.find(
+                          (n) => n.name === e.target.value
+                        );
+                        if (neigh) setSelectedNeighborhood(neigh);
+                      }}
+                      className="w-full text-xs font-medium bg-white border border-neutral-300 rounded-xl px-3 py-2 text-neutral-900 focus:outline-none focus:border-black"
+                    >
+                      {MANAUS_NEIGHBORHOODS_LIST.map((n) => (
+                        <option key={n.name} value={n.name}>
+                          {n.name} — {formatCurrencyBRL(n.fee)} ({n.time})
+                        </option>
+                      ))}
+                    </select>
+                    <p className="text-[10px] text-neutral-500 leading-tight">
+                      * O valor exato pode ser confirmado ou ajustado diretamente pelo WhatsApp com o motoboy.
+                    </p>
+                  </div>
+                )}
+              </div>
+            </>
           )}
         </div>
 
-        {/* Footer / Subtotal & Checkout */}
+        {/* Footer / Subtotal, Shipping & Checkout */}
         {cart.length > 0 && (
-          <div className="p-5 border-t border-neutral-200 bg-neutral-50 space-y-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-bold text-neutral-700">Subtotal:</span>
-              <span className="text-xl sm:text-2xl font-extrabold text-black">
-                {formatCurrencyBRL(subtotal)}
-              </span>
+          <div className="p-5 border-t border-neutral-200 bg-neutral-50 space-y-3">
+            <div className="space-y-1.5 text-xs text-neutral-600 border-b border-neutral-200 pb-3">
+              <div className="flex items-center justify-between">
+                <span>Subtotal dos Produtos:</span>
+                <span className="font-semibold text-neutral-900">
+                  {formatCurrencyBRL(subtotal)}
+                </span>
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="flex items-center gap-1">
+                  <Truck className="w-3.5 h-3.5 text-neutral-500" />
+                  {deliverySelection.type === 'retirada'
+                    ? 'Retirada na Loja:'
+                    : `Frete (${deliverySelection.neighborhood?.zone || 'Manaus'}):`}
+                </span>
+                <span className="font-semibold text-neutral-900">
+                  {deliverySelection.type === 'retirada'
+                    ? 'Grátis'
+                    : formatCurrencyBRL(shippingFee)}
+                </span>
+              </div>
+              <div className="flex items-center justify-between pt-1 font-bold text-sm text-neutral-900">
+                <span>Total Estimado:</span>
+                <span className="text-xl font-extrabold text-black">
+                  {formatCurrencyBRL(total)}
+                </span>
+              </div>
             </div>
 
             <button
@@ -208,11 +329,11 @@ export const CartDrawer: React.FC = () => {
               className="w-full flex items-center justify-center gap-2 bg-black hover:bg-neutral-800 text-white font-bold py-3.5 px-6 rounded-full shadow-xl hover:shadow-2xl transition-all hover:scale-[1.02] active:scale-[0.98]"
             >
               <MessageCircle className="w-5 h-5 fill-white" />
-              <span>Finalizar Pedido via WhatsApp</span>
+              <span>Confirmar Pedido via WhatsApp</span>
             </button>
 
             <p className="text-[11px] text-center text-neutral-500">
-              Você será direcionada para o nosso WhatsApp para confirmar os detalhes do pedido e entrega em Manaus.
+              Atendimento exclusivo para Manaus - AM. Pedido enviado diretamente para o WhatsApp oficial da loja.
             </p>
           </div>
         )}

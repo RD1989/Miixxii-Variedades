@@ -3,11 +3,13 @@ import { persist } from 'zustand/middleware';
 import {
   CartItem,
   Product,
-  SizeOption,
   ColorOption,
   INITIAL_DEMO_CART,
   PRODUCTS,
   ADMIN_DASHBOARD_DATA,
+  DeliverySelection,
+  ManausNeighborhood,
+  MANAUS_NEIGHBORHOODS_LIST,
 } from '@/data/mockData';
 
 export interface AdminOrder {
@@ -16,21 +18,38 @@ export interface AdminOrder {
   itemsCount: number;
   extraItemsBadge?: string;
   total: number;
+  deliveryMethod?: string;
   status: 'Pago' | 'Em Atendimento' | 'Pendente' | 'Enviado';
   statusBadge: string;
   date?: string;
 }
 
 interface StoreState {
+  // Products & Inventory (Managed in Admin, displayed on Storefront)
+  products: Product[];
+  setProducts: (products: Product[]) => void;
+  updateStock: (productId: string, newTotal: number) => void;
+  updateSizeStock: (productId: string, size: string, newQty: number) => void;
+  updateProductColors: (productId: string, colors: ColorOption[]) => void;
+  updateProductPrice: (productId: string, price: number, originalPrice?: number | null) => void;
+  toggleProductActive: (productId: string) => void;
+  addProduct: (product: Product) => void;
+
   // Cart
   cart: CartItem[];
   isCartOpen: boolean;
   setIsCartOpen: (open: boolean) => void;
-  addToCart: (product: Product, size: SizeOption, color: ColorOption, quantity?: number) => void;
-  removeFromCart: (productId: string, size: SizeOption, colorName: string) => void;
-  updateQuantity: (productId: string, size: SizeOption, colorName: string, delta: number) => void;
+  addToCart: (product: Product, size: string, color: ColorOption, quantity?: number) => void;
+  removeFromCart: (productId: string, size: string, colorName: string) => void;
+  updateQuantity: (productId: string, size: string, colorName: string, delta: number) => void;
   clearCart: () => void;
   resetToDemoCart: () => void;
+
+  // Local Delivery (Manaus - AM)
+  deliverySelection: DeliverySelection;
+  setDeliveryType: (type: 'motoboy' | 'retirada') => void;
+  setSelectedNeighborhood: (neighborhood: ManausNeighborhood) => void;
+  setDeliveryAddress: (address: string) => void;
 
   // Product Detail Modal
   selectedProduct: Product | null;
@@ -38,7 +57,7 @@ interface StoreState {
   openDetail: (product: Product) => void;
   closeDetail: () => void;
 
-  // WhatsApp Checkout Modal & Chat Simulation
+  // WhatsApp Checkout Modal
   isWhatsAppModalOpen: boolean;
   openWhatsAppModal: () => void;
   closeWhatsAppModal: () => void;
@@ -56,7 +75,7 @@ interface StoreState {
   searchQuery: string;
   setSearchQuery: (query: string) => void;
 
-  // Informational / Secondary Modal
+  // Informational Modal
   infoModal: {
     isOpen: boolean;
     title: string;
@@ -81,7 +100,60 @@ const statusBadgeMap: Record<AdminOrder['status'], string> = {
 export const useStore = create<StoreState>()(
   persist(
     (set, get) => ({
-      // Cart initialized with demo items from Step 3
+      // Products catalog initialized with 40 real products
+      products: PRODUCTS,
+      setProducts: (products) => set({ products }),
+
+      updateStock: (productId, newTotal) => {
+        set((state) => ({
+          products: state.products.map((p) =>
+            p.id === productId ? { ...p, stockTotal: Math.max(0, newTotal) } : p
+          ),
+        }));
+      },
+
+      updateSizeStock: (productId, size, newQty) => {
+        set((state) => ({
+          products: state.products.map((p) => {
+            if (p.id === productId) {
+              const updatedSizeStock = { ...p.sizeStock, [size]: Math.max(0, newQty) };
+              const newTotal = Object.values(updatedSizeStock).reduce((a, b) => a + b, 0);
+              return { ...p, sizeStock: updatedSizeStock, stockTotal: newTotal };
+            }
+            return p;
+          }),
+        }));
+      },
+
+      updateProductColors: (productId, colors) => {
+        set((state) => ({
+          products: state.products.map((p) =>
+            p.id === productId ? { ...p, colors } : p
+          ),
+        }));
+      },
+
+      updateProductPrice: (productId, price, originalPrice) => {
+        set((state) => ({
+          products: state.products.map((p) =>
+            p.id === productId ? { ...p, price, originalPrice } : p
+          ),
+        }));
+      },
+
+      toggleProductActive: (productId) => {
+        set((state) => ({
+          products: state.products.map((p) =>
+            p.id === productId ? { ...p, isActive: p.isActive === false ? true : false } : p
+          ),
+        }));
+      },
+
+      addProduct: (newProd) => {
+        set((state) => ({ products: [newProd, ...state.products] }));
+      },
+
+      // Cart
       cart: INITIAL_DEMO_CART,
       isCartOpen: false,
       setIsCartOpen: (open) => set({ isCartOpen: open }),
@@ -152,6 +224,25 @@ export const useStore = create<StoreState>()(
       clearCart: () => set({ cart: [] }),
       resetToDemoCart: () => set({ cart: INITIAL_DEMO_CART }),
 
+      // Local Delivery Manaus
+      deliverySelection: {
+        type: 'motoboy',
+        neighborhood: MANAUS_NEIGHBORHOODS_LIST[1], // Adrianópolis / Vieiralves default
+        deliveryAddress: '',
+      },
+      setDeliveryType: (type) =>
+        set((state) => ({
+          deliverySelection: { ...state.deliverySelection, type },
+        })),
+      setSelectedNeighborhood: (neighborhood) =>
+        set((state) => ({
+          deliverySelection: { ...state.deliverySelection, neighborhood },
+        })),
+      setDeliveryAddress: (address) =>
+        set((state) => ({
+          deliverySelection: { ...state.deliverySelection, deliveryAddress: address },
+        })),
+
       // Product Detail
       selectedProduct: null,
       isDetailOpen: false,
@@ -166,7 +257,7 @@ export const useStore = create<StoreState>()(
       setCustomerName: (name) => set({ customerName: name }),
 
       // Favorites
-      favorites: ['prod-1', 'prod-2'],
+      favorites: [PRODUCTS[0]?.id || '', PRODUCTS[1]?.id || ''],
       toggleFavorite: (productId) => {
         set((state) => {
           const exists = state.favorites.includes(productId);
@@ -185,7 +276,7 @@ export const useStore = create<StoreState>()(
       searchQuery: '',
       setSearchQuery: (query) => set({ searchQuery: query }),
 
-      // Secondary Modal (Zero Links Quebrados)
+      // Informational Modal
       infoModal: {
         isOpen: false,
         title: '',
@@ -211,11 +302,13 @@ export const useStore = create<StoreState>()(
       },
     }),
     {
-      name: 'miixxiie_store_v1',
+      name: 'miixxiie_store_real_v2',
       partialize: (state) => ({
+        products: state.products,
         cart: state.cart,
         favorites: state.favorites,
         adminOrders: state.adminOrders,
+        deliverySelection: state.deliverySelection,
       }),
     }
   )
