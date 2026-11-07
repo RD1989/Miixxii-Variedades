@@ -19,7 +19,6 @@ import { useStore } from '@/store/useStore';
 import {
   formatCurrencyBRL,
   calculateCartSubtotal,
-  MANAUS_NEIGHBORHOODS_LIST,
 } from '@/data/mockData';
 
 export const CartDrawer: React.FC = () => {
@@ -34,17 +33,13 @@ export const CartDrawer: React.FC = () => {
     openWhatsAppModal,
     deliverySelection,
     setDeliveryType,
-    setSelectedNeighborhood,
   } = useStore();
 
   if (!isCartOpen) return null;
 
   const subtotal = calculateCartSubtotal(cart);
-  const shippingFee =
-    deliverySelection.type === 'motoboy' && deliverySelection.neighborhood
-      ? deliverySelection.neighborhood.fee
-      : 0;
-  const total = subtotal + shippingFee;
+  const shippingFee = 0;
+  const total = subtotal;
 
   const handleCheckout = () => {
     setIsCartOpen(false);
@@ -261,29 +256,16 @@ export const CartDrawer: React.FC = () => {
                   </button>
                 </div>
 
-                {deliverySelection.type === 'motoboy' && (
-                  <div className="space-y-1.5 pt-1">
-                    <label className="text-[11px] font-semibold text-neutral-700 block">
-                      Selecione o Bairro de Entrega em Manaus:
-                    </label>
-                    <select
-                      value={deliverySelection.neighborhood?.name}
-                      onChange={(e) => {
-                        const neigh = MANAUS_NEIGHBORHOODS_LIST.find(
-                          (n) => n.name === e.target.value
-                        );
-                        if (neigh) setSelectedNeighborhood(neigh);
-                      }}
-                      className="w-full text-base sm:text-xs font-medium bg-white border border-neutral-300 rounded-xl px-3 py-2.5 text-neutral-900 focus:outline-none focus:border-black"
-                    >
-                      {MANAUS_NEIGHBORHOODS_LIST.map((n) => (
-                        <option key={n.name} value={n.name}>
-                          {n.name} — {formatCurrencyBRL(n.fee)} ({n.time})
-                        </option>
-                      ))}
-                    </select>
-                    <p className="text-[10px] text-neutral-500 leading-tight">
-                      * O valor exato pode ser confirmado ou ajustado diretamente pelo WhatsApp com o motoboy.
+                {deliverySelection.type === 'motoboy' ? (
+                  <div className="p-2.5 bg-neutral-100/80 rounded-xl border border-neutral-200 text-[11px] text-neutral-600">
+                    <p>
+                      🛵 <strong>Entrega em Manaus:</strong> Endereço e taxa do motoboy combinados diretamente com o atendente no WhatsApp.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="p-2.5 bg-neutral-100/80 rounded-xl border border-neutral-200 text-[11px] text-neutral-600">
+                    <p>
+                      🏬 <strong>Retirada no Showroom:</strong> Grátis em Manaus com horário agendado com a consultora.
                     </p>
                   </div>
                 )}
@@ -305,20 +287,16 @@ export const CartDrawer: React.FC = () => {
               <div className="flex items-center justify-between">
                 <span className="flex items-center gap-1">
                   <Truck className="w-3.5 h-3.5 text-neutral-500" />
-                  {deliverySelection.type === 'retirada'
-                    ? 'Retirada na Loja:'
-                    : `Frete (${deliverySelection.neighborhood?.zone || 'Manaus'}):`}
+                  Taxa de Entrega:
                 </span>
                 <span className="font-semibold text-neutral-900">
-                  {deliverySelection.type === 'retirada'
-                    ? 'Grátis'
-                    : formatCurrencyBRL(shippingFee)}
+                  {deliverySelection.type === 'retirada' ? 'Grátis (Retirada)' : 'A combinar no WhatsApp'}
                 </span>
               </div>
               <div className="flex items-center justify-between pt-1 font-bold text-sm text-neutral-900">
-                <span>Total Estimado:</span>
+                <span>Total dos Produtos:</span>
                 <span className="text-xl font-extrabold text-black">
-                  {formatCurrencyBRL(total)}
+                  {formatCurrencyBRL(subtotal)}
                 </span>
               </div>
             </div>

@@ -445,6 +445,8 @@ interface StoreState {
   closeWhatsAppModal: () => void;
   customerName: string;
   setCustomerName: (name: string) => void;
+  customerPhone: string;
+  setCustomerPhone: (phone: string) => void;
 
   // Favorites
   favorites: string[];
@@ -947,6 +949,8 @@ export const useStore = create<StoreState>()(
       closeWhatsAppModal: () => set({ isWhatsAppModalOpen: false }),
       customerName: '',
       setCustomerName: (name) => set({ customerName: name }),
+      customerPhone: '',
+      setCustomerPhone: (phone) => set({ customerPhone: phone }),
 
       // Favorites
       favorites: [PRODUCTS[0]?.id || '', PRODUCTS[1]?.id || ''],
@@ -988,6 +992,8 @@ export const useStore = create<StoreState>()(
         cart: state.cart,
         favorites: state.favorites,
         adminOrders: state.adminOrders,
+        customerName: state.customerName,
+        customerPhone: state.customerPhone,
         deliverySelection: state.deliverySelection,
         attendants: state.attendants,
         currentAttendantIndex: state.currentAttendantIndex,

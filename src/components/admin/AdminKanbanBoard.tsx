@@ -252,6 +252,11 @@ export const AdminKanbanBoard: React.FC = () => {
                             <h4 className="font-extrabold text-sm text-neutral-900 mt-0.5">
                               {order.customer}
                             </h4>
+                            {order.customerPhone && (
+                              <span className="text-[10px] text-neutral-500 font-medium block">
+                                {order.customerPhone}
+                              </span>
+                            )}
                           </div>
 
                           <span

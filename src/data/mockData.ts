@@ -2985,57 +2985,66 @@ export function calculateCartSubtotal(items: CartItem[]): number {
 export function generateWhatsAppCheckoutUrl(
   items: CartItem[],
   customerName?: string,
+  customerPhone?: string,
   delivery?: DeliverySelection,
   attendant?: WhatsAppAttendant
 ): { url: string; rawMessage: string; subtotal: number; shippingFee: number; total: number; attendant: WhatsAppAttendant } {
   const activeAttendant = attendant || WHATSAPP_ATTENDANTS[0];
   const subtotal = calculateCartSubtotal(items);
-  const shippingFee = delivery?.type === 'motoboy' && delivery.neighborhood ? delivery.neighborhood.fee : 0;
-  const total = subtotal + shippingFee;
+  // Frete combinado direto no WhatsApp de acordo com a distância/bairro em Manaus
+  const shippingFee = 0;
+  const total = subtotal;
 
-  const greeting = customerName
-    ? `Olá, *${STORE_CONFIG.name} ${STORE_CONFIG.subtitle}*! 🌸\nMeu nome é *${customerName}* e gostaria de confirmar o meu pedido feito pelo catálogo virtual:`
-    : `Olá, *${STORE_CONFIG.name} ${STORE_CONFIG.subtitle}*! 🌸\nGostaria de confirmar o meu pedido feito pelo catálogo virtual:`;
+  const greeting = `🌸 *NOVO PEDIDO — ${STORE_CONFIG.name} ${STORE_CONFIG.subtitle}* 🌸\n_Catálogo Virtual de Moda Plus Size (${STORE_CONFIG.city})_`;
+
+  const clientInfo = [
+    `👤 *DADOS DA CLIENTE:*`,
+    `• *Nome:* ${customerName && customerName.trim() ? customerName.trim() : 'Cliente WhatsApp'}`,
+    customerPhone && customerPhone.trim() ? `• *Telefone/WhatsApp:* ${customerPhone.trim()}` : null,
+    delivery?.type === 'retirada'
+      ? `• *Modalidade:* 🏬 Retirada no Showroom em Manaus (Grátis com agendamento)`
+      : `• *Modalidade:* 🛵 Entrega em Manaus (Taxa a combinar no WhatsApp)`,
+    delivery?.type !== 'retirada' && delivery?.deliveryAddress && delivery.deliveryAddress.trim()
+      ? `• *Endereço / Bairro de Entrega:* ${delivery.deliveryAddress.trim()}`
+      : null,
+  ]
+    .filter(Boolean)
+    .join('\n');
 
   const itemsList = items
     .map((item, index) => {
       const lineTotal = formatCurrencyBRL(item.product.price * item.quantity);
       return (
-        `*${index + 1}. ${item.product.name}*\n` +
-        `   • Tamanho: *${item.selectedSize}* | Cor: *${item.selectedColor.name}*\n` +
-        `   • Quantidade: ${item.quantity}x (${formatCurrencyBRL(item.product.price)}) = *${lineTotal}*`
+        `*${index + 1}️⃣ ${item.product.name}*\n` +
+        `   ▫️ *Tamanho:* ${item.selectedSize}\n` +
+        `   ▫️ *Cor:* ${item.selectedColor.name}\n` +
+        `   ▫️ *Quantidade:* ${item.quantity}x (${formatCurrencyBRL(item.product.price)})\n` +
+        `   ▫️ *Subtotal:* ${lineTotal}`
       );
     })
     .join('\n\n');
 
-  let deliverySection = '';
-  if (delivery?.type === 'retirada') {
-    deliverySection = `📦 *Forma de Entrega:* Retirada na Loja Física em Manaus (Grátis)\n`;
-  } else if (delivery?.type === 'motoboy') {
-    const neigh = delivery.neighborhood?.name || 'A combinar';
-    const feeText = shippingFee > 0 ? formatCurrencyBRL(shippingFee) : 'A combinar com o motoboy';
-    deliverySection =
-      `🛵 *Forma de Entrega:* Motoboy em Manaus\n` +
-      `📍 *Bairro:* ${neigh}\n` +
-      `💵 *Taxa de Frete:* ${feeText}\n` +
-      (delivery.deliveryAddress ? `🏠 *Endereço/Ponto de Ref.:* ${delivery.deliveryAddress}\n` : '');
-  } else {
-    deliverySection = `🛵 *Entrega:* Em toda Manaus (Frete a combinar por bairro) ou Retirada na Loja\n`;
-  }
+  const deliveryNote =
+    delivery?.type === 'retirada'
+      ? `🏬 *Entrega:* Retirada Grátis no Showroom em Manaus\n`
+      : `🛵 *Entrega:* Motoboy em Manaus (*Taxa combinada no WhatsApp por bairro*)\n`;
 
   const footer =
-    `\n------------------------------\n` +
-    deliverySection +
-    `💰 *Subtotal dos Produtos:* ${formatCurrencyBRL(subtotal)}\n` +
-    (shippingFee > 0 ? `🛵 *Taxa de Frete:* ${formatCurrencyBRL(shippingFee)}\n` : '') +
-    `💖 *TOTAL FINAL:* ${formatCurrencyBRL(total)}\n` +
+    `\n──────────────────────────────\n` +
+    deliveryNote +
+    `💰 *Subtotal dos Produtos:* *${formatCurrencyBRL(subtotal)}*\n` +
+    (delivery?.type === 'retirada'
+      ? `🛵 *Taxa de Entrega:* Grátis (Retirada no Showroom)\n`
+      : `🛵 *Taxa de Entrega:* A combinar no WhatsApp\n`) +
+    `✨ *TOTAL ESTIMADO DOS PRODUTOS:* *${formatCurrencyBRL(total)}*\n` +
     `📍 *Atendimento Local:* ${STORE_CONFIG.city}\n` +
-    `------------------------------\n` +
-    `Aguardo a confirmação da disponibilidade para pagamento (PIX / Cartão) e envio!`;
+    `──────────────────────────────\n` +
+    `Olá ${activeAttendant.name}! Gostaria de confirmar se essas peças estão disponíveis no estoque (no tamanho e cor indicados) para combinarmos o envio/retirada e o pagamento (PIX / Cartão)! 💕`;
 
-  const rawMessage = `${greeting}\n\n${itemsList}${footer}`;
+  const rawMessage = `${greeting}\n\n${clientInfo}\n\n🛍️ *ITENS DO PEDIDO (${items.length}):*\n\n${itemsList}${footer}`;
   const encodedMessage = encodeURIComponent(rawMessage);
-  const url = `https://wa.me/${STORE_CONFIG.whatsappNumber}?text=${encodedMessage}`;
+  const targetPhone = activeAttendant.phoneNumber || STORE_CONFIG.whatsappNumber;
+  const url = `https://wa.me/${targetPhone}?text=${encodedMessage}`;
 
   return { url, rawMessage, subtotal, shippingFee, total, attendant: activeAttendant };
 }
