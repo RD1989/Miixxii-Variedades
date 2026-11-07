@@ -13,6 +13,7 @@ import {
   Truck,
   Store,
   Tag,
+  ShoppingBag,
 } from 'lucide-react';
 import { Product, formatCurrencyBRL } from '@/data/mockData';
 import { useStore } from '@/store/useStore';
@@ -179,8 +180,8 @@ export const ProductGrid: React.FC = () => {
             onClick={() => openDetail(product)}
             className="w-full mt-1.5 flex items-center justify-center gap-1.5 bg-black hover:bg-neutral-800 text-white text-[11px] sm:text-xs font-bold py-2 sm:py-2.5 px-2 rounded-xl shadow-xs transition-all active:scale-95"
           >
-            <MessageCircle className="w-3.5 h-3.5 fill-white shrink-0" />
-            <span className="truncate">Pedir no Whats</span>
+            <ShoppingBag className="w-3.5 h-3.5 shrink-0" />
+            <span className="truncate">Ver Cores & Tamanhos</span>
           </button>
         </div>
       </div>

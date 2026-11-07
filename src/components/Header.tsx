@@ -60,8 +60,18 @@ export const Header: React.FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar vestidos, conjuntos, calças plus size..."
-                className="w-full pl-5 pr-11 py-2.5 rounded-full border border-neutral-300 text-xs sm:text-sm focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition-all bg-neutral-50 hover:bg-white placeholder-neutral-400"
+                className="w-full pl-5 pr-16 py-2.5 rounded-full border border-neutral-300 text-xs sm:text-sm focus:outline-none focus:border-black focus:ring-2 focus:ring-black/10 transition-all bg-neutral-50 hover:bg-white placeholder-neutral-400"
               />
+              {searchQuery && (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-11 top-1/2 -translate-y-1/2 p-1 text-neutral-400 hover:text-black transition-colors"
+                  title="Limpar busca"
+                >
+                  <X className="w-3.5 h-3.5" />
+                </button>
+              )}
               <button
                 type="submit"
                 className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black hover:bg-neutral-800 text-white flex items-center justify-center transition-all shadow-xs"
@@ -134,8 +144,18 @@ export const Header: React.FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Buscar vestidos, conjuntos, calças..."
-              className="w-full pl-4 pr-10 py-2 rounded-full border border-neutral-300 text-xs focus:outline-none focus:border-black bg-neutral-50"
+              className="w-full pl-4 pr-16 py-2 rounded-full border border-neutral-300 text-xs focus:outline-none focus:border-black bg-neutral-50"
             />
+            {searchQuery && (
+              <button
+                type="button"
+                onClick={() => setSearchQuery('')}
+                className="absolute right-9 top-1/2 -translate-y-1/2 p-1 text-neutral-400 hover:text-black transition-colors"
+                title="Limpar busca"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
             <button
               type="submit"
               className="absolute right-1 top-1/2 -translate-y-1/2 w-7 h-7 rounded-full bg-black text-white flex items-center justify-center shadow-xs"
