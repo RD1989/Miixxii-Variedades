@@ -96,7 +96,7 @@ export const AdminProductManager: React.FC = () => {
     setModalMode('create');
     setEditingProduct(null);
     setFormName('');
-    setFormCategory('vestidos');
+    setFormCategory('vestidos-curtos');
     setFormSubcategory('Vestidos Plus Size');
     setFormPrice('129.90');
     setFormOriginalPrice('');

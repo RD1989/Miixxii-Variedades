@@ -37,6 +37,7 @@ export const ProductGrid: React.FC = () => {
     if (product.isActive === false) return false;
     const matchesCategory = selectedCategory
       ? product.category === selectedCategory ||
+        product.category.toLowerCase().includes(selectedCategory.toLowerCase()) ||
         product.subcategory.toLowerCase().includes(selectedCategory.toLowerCase())
       : true;
     const matchesSearch = searchQuery

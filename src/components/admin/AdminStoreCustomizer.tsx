@@ -38,6 +38,7 @@ import {
   compressAndEncodeImage,
 } from '@/lib/supabase';
 import { CarouselSlide } from '@/types/admin';
+import { CATEGORIES } from '@/data/mockData';
 
 export const AdminStoreCustomizer: React.FC = () => {
   const {
@@ -178,7 +179,7 @@ export const AdminStoreCustomizer: React.FC = () => {
       title: '',
       subtitle: '',
       badge: 'Novidade',
-      categoryTarget: 'Vestidos',
+      categoryTarget: 'vestidos-curtos',
       ctaText: 'Ver Peças',
       imageUrl: '/images/banners/banner-slide-1-marca.jpg',
     });
@@ -275,7 +276,7 @@ export const AdminStoreCustomizer: React.FC = () => {
               type="button"
               onClick={resetCarouselToDefaults}
               className="px-3 py-2 rounded-xl text-xs font-semibold text-neutral-600 bg-neutral-100 hover:bg-neutral-200 transition-colors flex items-center gap-1.5"
-              title="Restaura os 4 banners originais em alta definição"
+              title="Restaura os 11 banners oficiais em alta definição (Marca + 10 Categorias)"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Restaurar Banners Oficiais</span>
@@ -355,7 +356,7 @@ export const AdminStoreCustomizer: React.FC = () => {
                   </span>
                   {slide.categoryTarget && slide.categoryTarget !== 'todos' && (
                     <span className="px-2 py-0.5 rounded-full bg-amber-400/90 text-[10px] font-bold text-black shadow-xs">
-                      {slide.categoryTarget}
+                      {CATEGORIES.find((c) => c.slug === slide.categoryTarget)?.name || slide.categoryTarget}
                     </span>
                   )}
                 </div>
@@ -789,14 +790,21 @@ export const AdminStoreCustomizer: React.FC = () => {
                 {/* Quick Presets of Official High-Res Images */}
                 <div className="pt-1">
                   <span className="text-[11px] text-neutral-500 font-semibold block mb-1.5">
-                    Ou escolha uma das imagens oficiais geradas:
+                    Ou escolha uma das 11 imagens oficiais geradas (Marca + 10 Categorias):
                   </span>
-                  <div className="grid grid-cols-4 gap-1.5">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-1.5 max-h-48 overflow-y-auto p-1 bg-neutral-100/60 rounded-xl">
                     {[
-                      { name: '1. Logo Marca', url: '/images/banners/banner-slide-1-marca.jpg' },
-                      { name: '2. Vestidos', url: '/images/banners/banner-slide-2-vestidos.jpg' },
-                      { name: '3. Conjuntos', url: '/images/banners/banner-slide-3-conjuntos.jpg' },
-                      { name: '4. Calças', url: '/images/banners/banner-slide-4-calcas.jpg' },
+                      { name: '1. Marca (3D Chrome)', url: '/images/banners/banner-slide-1-marca.jpg' },
+                      { name: '2. Bermudas & Shorts', url: '/images/banners/cat-banner-bermudas-shorts.jpg' },
+                      { name: '3. Calças', url: '/images/banners/cat-banner-calcas.jpg' },
+                      { name: '4. Camisas & Regatas', url: '/images/banners/cat-banner-camisas-regatas.jpg' },
+                      { name: '5. Chemises', url: '/images/banners/cat-banner-chemises.jpg' },
+                      { name: '6. Conj. de Calça', url: '/images/banners/cat-banner-conjuntos-calca.jpg' },
+                      { name: '7. Conj. de Shorts', url: '/images/banners/cat-banner-conjuntos-shorts.jpg' },
+                      { name: '8. Malaquinhas', url: '/images/banners/cat-banner-macaquinhas.jpg' },
+                      { name: '9. Vestidos Curtos', url: '/images/banners/cat-banner-vestidos-curtos.jpg' },
+                      { name: '10. Vestidos Longos', url: '/images/banners/cat-banner-vestidos-longos.jpg' },
+                      { name: '11. Vestidos Midis', url: '/images/banners/cat-banner-vestidos-midis.jpg' },
                     ].map((preset) => (
                       <button
                         type="button"
@@ -804,12 +812,12 @@ export const AdminStoreCustomizer: React.FC = () => {
                         onClick={() => setSlideFormData((prev) => ({ ...prev, imageUrl: preset.url }))}
                         className={`p-1 rounded-lg border text-center transition-all ${
                           slideFormData.imageUrl === preset.url
-                            ? 'border-black ring-1 ring-black bg-neutral-100 font-bold'
-                            : 'border-neutral-200 hover:border-neutral-400 bg-neutral-50'
+                            ? 'border-black ring-1 ring-black bg-white font-bold shadow-xs'
+                            : 'border-neutral-200 hover:border-neutral-400 bg-white/70'
                         }`}
                       >
-                        <div className="relative aspect-[16/9] w-full rounded overflow-hidden mb-1">
-                          <Image src={preset.url} alt={preset.name} fill sizes="80px" className="object-cover" />
+                        <div className="relative aspect-[16/9] w-full rounded overflow-hidden mb-1 bg-neutral-900">
+                          <Image src={preset.url} alt={preset.name} fill sizes="100px" className="object-cover" />
                         </div>
                         <span className="text-[9px] block truncate">{preset.name}</span>
                       </button>
@@ -873,13 +881,12 @@ export const AdminStoreCustomizer: React.FC = () => {
                     onChange={(e) => setSlideFormData({ ...slideFormData, categoryTarget: e.target.value })}
                     className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl focus:outline-none focus:border-black font-medium"
                   >
-                    <option value="todos">Todos os Produtos</option>
-                    <option value="Vestidos">Vestidos Plus Size</option>
-                    <option value="Conjuntos">Conjuntos & Alfaiataria</option>
-                    <option value="Bermudas">Bermudas Plus Size</option>
-                    <option value="Calças">Calças Plus Size</option>
-                    <option value="Camisas">Camisas Plus Size</option>
-                    <option value="Shorts">Shorts Plus Size</option>
+                    <option value="todos">Todos os Produtos / Geral</option>
+                    {CATEGORIES.map((cat) => (
+                      <option key={cat.slug} value={cat.slug}>
+                        {cat.name} ({cat.count} peças)
+                      </option>
+                    ))}
                   </select>
                 </div>
 

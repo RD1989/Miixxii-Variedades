@@ -183,67 +183,74 @@ export const MANAUS_NEIGHBORHOODS_LIST: ManausNeighborhood[] = [
 
 export const CATEGORIES: Category[] = [
   {
-    "id": "cat-vestidos-midi",
-    "name": "Vestidos Midi",
-    "slug": "vestidos-midi",
-    "image": "/images/catalog/vestidos-midi/vestido-farm/1.png",
-    "count": 4
-  },
-  {
-    "id": "cat-vestidos-longos",
-    "name": "Vestidos Longos",
-    "slug": "vestidos-longos",
-    "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/1.png",
-    "count": 5
-  },
-  {
-    "id": "cat-vestidos-curtos",
-    "name": "Vestidos Curtos",
-    "slug": "vestidos-curtos",
-    "image": "/images/catalog/vestidos-curtos/vestido-liz/1.png",
-    "count": 6
-  },
-  {
-    "id": "cat-conjuntos-shorts",
-    "name": "Conjuntos Shorts",
-    "slug": "conjuntos-de-shorts",
-    "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiateria/1.png",
-    "count": 11
-  },
-  {
-    "id": "cat-conjuntos-calca",
-    "name": "Conjuntos Calça",
-    "slug": "conjuntos-de-calca",
-    "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla/1.png",
-    "count": 2
+    "id": "cat-bermudas-shorts",
+    "name": "Bermudas e Shorts",
+    "slug": "bermudas-e-shorts",
+    "image": "/images/banners/cat-banner-bermudas-shorts.jpg",
+    "count": 3
   },
   {
     "id": "cat-calcas",
     "name": "Calças",
     "slug": "calcas",
-    "image": "/images/catalog/calcas/calca-lucia/1.png",
-    "count": 3
-  },
-  {
-    "id": "cat-bermudas-shorts",
-    "name": "Bermudas & Shorts",
-    "slug": "bermudas-e-shorts",
-    "image": "/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/1.png",
+    "image": "/images/banners/cat-banner-calcas.jpg",
     "count": 3
   },
   {
     "id": "cat-camisas-regatas",
     "name": "Camisas & Regatas",
     "slug": "camisas-e-regatas",
-    "image": "/images/catalog/camisas-e-regatas/camisa-lorena/1.png",
+    "image": "/images/banners/cat-banner-camisas-regatas.jpg",
     "count": 5
   },
   {
+    "id": "cat-chemises",
+    "name": "Chemises",
+    "slug": "chemises",
+    "image": "/images/banners/cat-banner-chemises.jpg",
+    "count": 4
+  },
+  {
+    "id": "cat-conjuntos-calca",
+    "name": "Conjunto de Calça",
+    "slug": "conjuntos-de-calca",
+    "image": "/images/banners/cat-banner-conjuntos-calca.jpg",
+    "count": 2
+  },
+  {
+    "id": "cat-conjuntos-shorts",
+    "name": "Conjunto de Shorts",
+    "slug": "conjuntos-de-shorts",
+    "image": "/images/banners/cat-banner-conjuntos-shorts.jpg",
+    "count": 11
+  },
+  {
     "id": "cat-macaquinhos",
-    "name": "Macaquinhos",
+    "name": "Malaquinhas (Macaquinhas)",
     "slug": "macaquinhos",
-    "image": "/images/catalog/macaquinhos/macaquinho-keyla/1.png",
+    "image": "/images/banners/cat-banner-macaquinhas.jpg",
     "count": 1
+  },
+  {
+    "id": "cat-vestidos-curtos",
+    "name": "Vestidos Curtos",
+    "slug": "vestidos-curtos",
+    "image": "/images/banners/cat-banner-vestidos-curtos.jpg",
+    "count": 5
+  },
+  {
+    "id": "cat-vestidos-longos",
+    "name": "Vestidos Longos",
+    "slug": "vestidos-longos",
+    "image": "/images/banners/cat-banner-vestidos-longos.jpg",
+    "count": 3
+  },
+  {
+    "id": "cat-vestidos-midi",
+    "name": "Vestidos Midis",
+    "slug": "vestidos-midi",
+    "image": "/images/banners/cat-banner-vestidos-midis.jpg",
+    "count": 3
   }
 ];
 
@@ -1743,7 +1750,7 @@ export const PRODUCTS: Product[] = [
     "id": "miixxe-026",
     "name": "Chemise Keyla Curto com Botões",
     "slug": "chemise-keyla-curto",
-    "category": "vestidos-curtos",
+    "category": "chemises",
     "subcategory": "Chemises",
     "price": 78.0,
     "originalPrice": null,
@@ -2122,7 +2129,7 @@ export const PRODUCTS: Product[] = [
     "id": "miixxe-031",
     "name": "Vestido Selina Ombro a Ombro",
     "slug": "vstido-selina",
-    "category": "vestidos-curtos",
+    "category": "chemises",
     "subcategory": "Vestidos Curtos",
     "price": 128.0,
     "originalPrice": null,
@@ -2177,7 +2184,7 @@ export const PRODUCTS: Product[] = [
     "id": "miixxe-032",
     "name": "Chemise Ivana Longo Botões Dourados",
     "slug": "chemise-ivana",
-    "category": "vestidos-longos",
+    "category": "chemises",
     "subcategory": "Chemises",
     "price": 198.0,
     "originalPrice": null,
@@ -2483,7 +2490,7 @@ export const PRODUCTS: Product[] = [
     "id": "miixxe-036",
     "name": "Vestido Vitória Longo Bicolor Decote V",
     "slug": "vestido-vitoria",
-    "category": "vestidos-longos",
+    "category": "chemises",
     "subcategory": "Vestidos Longos",
     "price": 158.0,
     "originalPrice": null,
