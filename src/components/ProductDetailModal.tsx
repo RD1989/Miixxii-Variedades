@@ -39,6 +39,7 @@ export const ProductDetailModal: React.FC = () => {
     favorites,
     toggleFavorite,
     openWhatsAppModal,
+    setIsCartOpen,
   } = useStore();
 
   const [selectedSize, setSelectedSize] = useState<string>('');
@@ -88,6 +89,7 @@ export const ProductDetailModal: React.FC = () => {
     if (!selectedColor) return;
     addToCart(selectedProduct, selectedSize, selectedColor, quantity);
     closeDetail();
+    setIsCartOpen(true);
   };
 
   const handleDirectWhatsAppOrder = () => {

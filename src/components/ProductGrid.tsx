@@ -154,20 +154,19 @@ export const ProductGrid: React.FC = () => {
             {/* Interactive Color Dots Preview */}
             {product.colors && product.colors.length > 0 && (
               <div className="flex items-center gap-1 pt-1">
-                <span className="text-[9px] sm:text-[10px] text-neutral-400 mr-0.5">Cores:</span>
                 <div className="flex items-center gap-1">
-                  {product.colors.slice(0, 4).map((c, idx) => (
+                  {product.colors.slice(0, 5).map((c, idx) => (
                     <button
                       key={idx}
                       onClick={(e) => handleColorSwatchClick(e, product.id, c.image)}
                       style={{ backgroundColor: c.hex }}
-                      className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border border-neutral-300 hover:scale-125 transition-transform"
+                      className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full border border-neutral-300/80 hover:scale-125 transition-transform"
                       title={c.name}
                     />
                   ))}
-                  {product.colors.length > 4 && (
+                  {product.colors.length > 5 && (
                     <span className="text-[8px] sm:text-[9px] text-neutral-400 font-medium">
-                      +{product.colors.length - 4}
+                      +{product.colors.length - 5}
                     </span>
                   )}
                 </div>
@@ -178,10 +177,10 @@ export const ProductGrid: React.FC = () => {
           {/* Action Button */}
           <button
             onClick={() => openDetail(product)}
-            className="w-full mt-1.5 flex items-center justify-center gap-1.5 bg-black hover:bg-neutral-800 text-white text-[11px] sm:text-xs font-bold py-2 sm:py-2.5 px-2 rounded-xl shadow-xs transition-all active:scale-95"
+            className="w-full mt-2 flex items-center justify-center gap-1.5 bg-neutral-900 hover:bg-black text-white text-[11px] sm:text-xs font-semibold py-2 sm:py-2.5 px-2 rounded-xl shadow-xs transition-all active:scale-95"
           >
             <ShoppingBag className="w-3.5 h-3.5 shrink-0" />
-            <span className="truncate">Ver Cores & Tamanhos</span>
+            <span className="truncate">Ver Peça & Cores</span>
           </button>
         </div>
       </div>
