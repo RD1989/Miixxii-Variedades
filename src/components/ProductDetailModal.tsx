@@ -165,22 +165,23 @@ export const ProductDetailModal: React.FC = () => {
         <div className="flex-1 flex flex-col md:flex-row overflow-y-auto md:overflow-hidden">
           {/* ========================================================
               LEFT COLUMN: FULL-LENGTH PRODUCT IMAGE & GALLERY
+              Never cropped, optimized height so details stay in view
               ======================================================== */}
-          <div className="w-full md:w-[50%] lg:w-[48%] flex flex-col bg-[#F6F6F8] shrink-0 border-b md:border-b-0 md:border-r border-neutral-200">
-            {/* Main Visual Display (Shows Whole Body & Full Dress) */}
-            <div className="relative w-full aspect-[3/4] sm:aspect-[4/5] md:aspect-auto md:h-[520px] lg:h-[580px] bg-neutral-100 overflow-hidden flex items-center justify-center">
+          <div className="w-full md:w-[48%] lg:w-[46%] flex flex-col bg-[#F7F7F9] shrink-0 border-b md:border-b-0 md:border-r border-neutral-200">
+            {/* Main Visual Display (Shows Whole Body & Full Dress, 100% Contained) */}
+            <div className="relative w-full h-[270px] sm:h-[320px] md:h-[500px] lg:h-[560px] max-h-[38vh] md:max-h-[82vh] bg-gradient-to-b from-[#FAF9F8] to-[#F1F1F4] p-3 flex items-center justify-center overflow-hidden">
               <Image
                 src={activeImage || selectedProduct.image}
                 alt={selectedProduct.name}
                 fill
                 priority
                 sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-contain sm:object-cover sm:object-top transition-all duration-300"
+                className="object-contain object-center transition-all duration-300 drop-shadow-sm select-none"
               />
 
               {/* Badges on Image */}
               <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10 pointer-events-none">
-                <span className="px-3 py-1 rounded-full text-[11px] font-extrabold bg-black text-white shadow-md uppercase tracking-wider">
+                <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold bg-black text-white shadow-md uppercase tracking-wider">
                   {selectedProduct.badge}
                 </span>
                 {selectedProduct.comboOffer && (
@@ -193,10 +194,11 @@ export const ProductDetailModal: React.FC = () => {
               {/* Zoom & Fullscreen Button */}
               <button
                 onClick={() => setIsFullscreenImage(true)}
-                className="absolute top-3 right-3 md:right-16 z-10 w-9 h-9 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center backdrop-blur-xs transition-all active:scale-90 shadow-md"
+                className="absolute top-3 right-3 md:right-14 z-10 px-2.5 py-1.5 rounded-full bg-black/65 hover:bg-black/90 text-white flex items-center gap-1.5 backdrop-blur-xs transition-all active:scale-95 shadow-md text-[11px] font-semibold"
                 title="Ampliar foto em tela cheia"
               >
-                <Maximize2 className="w-4 h-4" />
+                <Maximize2 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Ampliar</span>
               </button>
 
               {/* Desktop Wishlist Button */}
@@ -209,9 +211,9 @@ export const ProductDetailModal: React.FC = () => {
               </button>
             </div>
 
-            {/* Thumbnail Strip Gallery (Horizontal Scroll) */}
+            {/* Thumbnail Strip Gallery (Horizontal Scroll, 100% Contained) */}
             {selectedProduct.gallery && selectedProduct.gallery.length > 1 && (
-              <div className="p-3 bg-white border-t border-neutral-200 flex items-center gap-2 overflow-x-auto no-scrollbar">
+              <div className="p-2.5 bg-white border-t border-neutral-200 flex items-center gap-2 overflow-x-auto no-scrollbar">
                 <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider shrink-0 pl-1">
                   Fotos:
                 </span>
@@ -221,10 +223,10 @@ export const ProductDetailModal: React.FC = () => {
                     <button
                       key={idx}
                       onClick={() => handleThumbnailClick(imgUrl)}
-                      className={`relative w-12 h-14 rounded-xl overflow-hidden shrink-0 border-2 transition-all ${
+                      className={`relative w-12 h-14 rounded-xl overflow-hidden shrink-0 border-2 bg-neutral-50 p-1 flex items-center justify-center transition-all ${
                         isActive
-                          ? 'border-black ring-2 ring-black/20 scale-105 shadow-sm'
-                          : 'border-neutral-200 opacity-60 hover:opacity-100 hover:border-neutral-400'
+                          ? 'border-black ring-2 ring-black/20 scale-105 shadow-xs'
+                          : 'border-neutral-200 opacity-70 hover:opacity-100 hover:border-neutral-400'
                       }`}
                       aria-label={`Ver foto ${idx + 1}`}
                     >
@@ -233,7 +235,7 @@ export const ProductDetailModal: React.FC = () => {
                         alt={`Foto ${idx + 1}`}
                         fill
                         sizes="48px"
-                        className="object-cover object-top"
+                        className="object-contain object-center"
                       />
                     </button>
                   );
@@ -516,22 +518,27 @@ export const ProductDetailModal: React.FC = () => {
 
         {/* ========================================================
             STREAMLINED STICKY BOTTOM BAR FOR MOBILE (< md)
-            Low profile (only 64px), leaves 90% of screen free!
+            Provides immediate feedback on selected size & color + 1-tap WhatsApp order
             ======================================================== */}
-        <div className="md:hidden sticky bottom-0 left-0 right-0 p-3 bg-white/95 backdrop-blur-md border-t border-neutral-200 flex items-center justify-between gap-2.5 z-30 shrink-0">
-          <div>
-            <span className="text-[10px] text-neutral-400 block font-semibold leading-tight">
-              Total ({quantity}x):
-            </span>
-            <span className="text-lg font-black text-black leading-tight">
+        <div className="md:hidden sticky bottom-0 left-0 right-0 px-3.5 py-2.5 bg-white/95 backdrop-blur-md border-t border-neutral-200 flex items-center justify-between gap-2.5 z-30 shrink-0">
+          <div className="min-w-0 pr-1">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="text-[10px] font-extrabold text-black bg-neutral-100 border border-neutral-200 px-1.5 py-0.5 rounded-md shrink-0">
+                Tam: {selectedSize || '—'}
+              </span>
+              <span className="text-[10px] font-medium text-neutral-600 truncate max-w-[100px]">
+                {selectedColor?.name || 'Selecione'}
+              </span>
+            </div>
+            <span className="text-base font-black text-black leading-none block">
               {formatCurrencyBRL(selectedProduct.price * quantity)}
             </span>
           </div>
 
-          <div className="flex items-center gap-2 flex-1 justify-end">
+          <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={handleAddToCart}
-              className="w-11 h-11 rounded-2xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 flex items-center justify-center border border-neutral-300 active:scale-95 shrink-0"
+              className="w-11 h-11 rounded-2xl bg-neutral-100 hover:bg-neutral-200 text-neutral-800 flex items-center justify-center border border-neutral-300 active:scale-95"
               title="Adicionar à Sacola"
             >
               <ShoppingBag className="w-5 h-5" />
@@ -539,7 +546,7 @@ export const ProductDetailModal: React.FC = () => {
 
             <button
               onClick={handleDirectWhatsAppOrder}
-              className="flex-1 max-w-[240px] h-11 rounded-2xl bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-transform"
+              className="h-11 px-4 rounded-2xl bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-xs flex items-center justify-center gap-1.5 shadow-md active:scale-95 transition-transform"
             >
               <MessageCircle className="w-4 h-4 fill-white" />
               <span>Pedir no WhatsApp</span>

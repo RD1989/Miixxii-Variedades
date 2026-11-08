@@ -120,13 +120,13 @@ export const CartDrawer: React.FC = () => {
                     className="bg-white rounded-2xl border border-neutral-200 p-3 flex gap-3 shadow-xs hover:shadow-md transition-shadow"
                   >
                     {/* Item Image */}
-                    <div className="relative w-20 h-24 rounded-xl overflow-hidden bg-neutral-100 shrink-0 border border-neutral-200">
+                    <div className="relative w-16 h-20 sm:w-20 sm:h-24 rounded-xl overflow-hidden bg-[#F7F7F9] shrink-0 border border-neutral-200 p-1 flex items-center justify-center">
                       <Image
                         src={itemImg}
                         alt={item.product.name}
                         fill
                         sizes="80px"
-                        className="object-cover object-top"
+                        className="object-contain object-center"
                       />
                     </div>
 

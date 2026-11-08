@@ -323,13 +323,14 @@ export const WhatsAppCheckoutModal: React.FC = () => {
               {cart.map((item, idx) => (
                 <div key={idx} className="flex items-center justify-between gap-2.5 pt-2 first:pt-0">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="relative w-10 h-12 rounded-lg overflow-hidden bg-neutral-100 shrink-0 border border-neutral-200">
+                    {/* Full Garment Thumbnail (Never Cropped, 100% Contained) */}
+                    <div className="relative w-14 h-16 sm:w-16 sm:h-20 rounded-xl overflow-hidden bg-[#F7F7F9] shrink-0 border border-neutral-200 p-1 flex items-center justify-center">
                       <Image
                         src={item.selectedColor.image || item.product.image}
                         alt={item.product.name}
                         fill
-                        sizes="40px"
-                        className="object-cover object-top"
+                        sizes="64px"
+                        className="object-contain object-center"
                       />
                     </div>
                     <div className="min-w-0">
