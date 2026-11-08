@@ -20,30 +20,18 @@ export const CategoryBar: React.FC = () => {
   };
 
   return (
-    <section className="w-full px-4 sm:px-8 lg:px-12 2xl:px-16 py-6 sm:py-8">
-      <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-3 mb-4 sm:mb-6">
-        <div>
-          <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400 block mb-1">
-            Moda Plus Size Manaus
-          </span>
-          <h2 className="text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight">
-            Navegue por Categoria
-          </h2>
-        </div>
-
+    <section className="w-full px-4 sm:px-8 lg:px-12 2xl:px-16 pt-5 pb-2 sm:pt-8 sm:pb-3">
+      <div className="flex items-center justify-between mb-3">
+        <h2 className="text-xs sm:text-sm font-extrabold uppercase tracking-widest text-neutral-900">
+          Categorias
+        </h2>
         {selectedCategory && (
-          <div className="flex items-center gap-2">
-            <span className="text-xs bg-black text-white px-3 py-1 rounded-full font-bold flex items-center gap-1.5 shadow-xs">
-              <span>{CATEGORIES.find((c) => c.slug === selectedCategory)?.name || selectedCategory}</span>
-              <button
-                onClick={() => setSelectedCategory(null)}
-                className="hover:text-neutral-300"
-                title="Limpar filtro"
-              >
-                <X className="w-3.5 h-3.5" />
-              </button>
-            </span>
-          </div>
+          <button
+            onClick={() => setSelectedCategory(null)}
+            className="text-[11px] sm:text-xs text-neutral-500 hover:text-black font-semibold flex items-center gap-1 underline transition-colors"
+          >
+            Ver todas
+          </button>
         )}
       </div>
 

@@ -193,27 +193,14 @@ export const HeroBanner: React.FC = () => {
           )}
         </div>
 
-        {/* Mobile Action Buttons (Direct Deep-link & WhatsApp) */}
-        <div className="grid grid-cols-2 gap-2 pt-0.5">
+        {/* Mobile Action Button (Focused, Single Clear CTA) */}
+        <div className="pt-0.5">
           <button
             onClick={() => handleCtaClick(currentSlide)}
-            className="flex items-center justify-center gap-1.5 bg-white hover:bg-neutral-100 text-black font-extrabold text-xs py-3 px-3 rounded-xl shadow-md active:scale-95 transition-transform"
+            className="w-full flex items-center justify-center gap-2 bg-white hover:bg-neutral-100 text-black font-extrabold text-xs py-3 px-4 rounded-xl shadow-md active:scale-95 transition-transform"
           >
             <span>{currentSlide.ctaText}</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </button>
-
-          <button
-            onClick={() =>
-              openWhatsAppLead(
-                `Olá! Vi o destaque de "${currentSlide.title}" no catálogo virtual e gostaria de consultar as peças disponíveis em Manaus. 🌸`,
-                'mobile_carousel_cta'
-              )
-            }
-            className="flex items-center justify-center gap-1.5 bg-[#25D366] hover:bg-[#1EBE5D] text-white font-extrabold text-xs py-3 px-3 rounded-xl shadow-md active:scale-95 transition-transform"
-          >
-            <MessageCircle className="w-3.5 h-3.5 fill-white" />
-            <span>WhatsApp</span>
           </button>
         </div>
 
