@@ -381,6 +381,7 @@ interface StoreState {
   updateProductColors: (productId: string, colors: ColorOption[]) => void;
   updateProductPrice: (productId: string, price: number, originalPrice?: number | null) => void;
   toggleProductActive: (productId: string) => void;
+  toggleProductFeatured: (productId: string) => void;
 
   // Cart
   cart: CartItem[];
@@ -393,6 +394,11 @@ interface StoreState {
   resetToDemoCart: () => void;
 
   // Local Delivery (Manaus - AM)
+  neighborhoods: ManausNeighborhood[];
+  setNeighborhoods: (list: ManausNeighborhood[]) => void;
+  updateNeighborhoodFee: (name: string, newFee: number) => void;
+  addNeighborhood: (neighborhood: ManausNeighborhood) => void;
+  deleteNeighborhood: (name: string) => void;
   deliverySelection: DeliverySelection;
   setDeliveryType: (type: 'motoboy' | 'retirada') => void;
   setSelectedNeighborhood: (neighborhood: ManausNeighborhood) => void;
@@ -400,6 +406,7 @@ interface StoreState {
 
   // Dynamic WhatsApp Alternating Traffic (Maria & Carlos)
   attendants: WhatsAppAttendant[];
+  updateAttendant: (id: string, updates: Partial<WhatsAppAttendant>) => void;
   currentAttendantIndex: number;
   rotateAttendant: () => WhatsAppAttendant;
   openWhatsAppLead: (customText?: string, source?: string, product?: Product) => void;
@@ -632,6 +639,19 @@ export const useStore = create<StoreState>()(
         }));
       },
 
+      toggleProductFeatured: (productId) => {
+        set((state) => ({
+          products: state.products.map((p) => {
+            if (p.id === productId) {
+              const isFeatured = p.badge === 'Destaque';
+              return { ...p, badge: (isFeatured ? 'Novo' : 'Destaque') as Product['badge'] };
+            }
+            return p;
+          }),
+        }));
+        get().addActivityLog('Destaque de Produto', 'Status de destaque atualizado para o produto ID ' + productId);
+      },
+
       toggleProductActive: (productId) => {
         set((state) => ({
           products: state.products.map((p) =>
@@ -707,6 +727,27 @@ export const useStore = create<StoreState>()(
       resetToDemoCart: () => set({ cart: INITIAL_DEMO_CART }),
 
       // Local Delivery Manaus
+      neighborhoods: MANAUS_NEIGHBORHOODS_LIST,
+      setNeighborhoods: (neighborhoods) => set({ neighborhoods }),
+      updateNeighborhoodFee: (name, newFee) => {
+        set((state) => ({
+          neighborhoods: state.neighborhoods.map((n) =>
+            n.name === name ? { ...n, fee: Math.max(0, newFee) } : n
+          ),
+        }));
+        get().addActivityLog('Taxa de Entrega', 'Taxa de ' + name + ' alterada para R$ ' + newFee);
+      },
+      addNeighborhood: (item) => {
+        set((state) => ({ neighborhoods: [...state.neighborhoods, item] }));
+        get().addActivityLog('Novo Bairro', 'Bairro ' + item.name + ' adicionado.');
+      },
+      deleteNeighborhood: (name) => {
+        set((state) => ({
+          neighborhoods: state.neighborhoods.filter((n) => n.name !== name),
+        }));
+        get().addActivityLog('Remoção de Bairro', 'Bairro ' + name + ' removido.');
+      },
+
       deliverySelection: {
         type: 'motoboy',
         neighborhood: MANAUS_NEIGHBORHOODS_LIST[0],
@@ -731,6 +772,14 @@ export const useStore = create<StoreState>()(
 
       // WhatsApp Dynamic Attendants & Lead Distribution
       attendants: WHATSAPP_ATTENDANTS,
+      updateAttendant: (id, updates) => {
+        set((state) => ({
+          attendants: state.attendants.map((att) =>
+            att.id === id ? { ...att, ...updates } : att
+          ),
+        }));
+        get().addActivityLog('Atualização de Atendente', 'Dados da atendente ' + id + ' atualizados.');
+      },
       currentAttendantIndex: 0,
       leadClicks: INITIAL_CLICKS,
 
@@ -986,6 +1035,7 @@ export const useStore = create<StoreState>()(
     {
       name: 'miixxiie_store_real_v4_pro',
       partialize: (state) => ({
+        neighborhoods: state.neighborhoods,
         isAdminLoggedIn: state.isAdminLoggedIn,
         adminUser: state.adminUser,
         products: state.products,

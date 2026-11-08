@@ -23,6 +23,9 @@ import {
   Database,
   CheckCircle2,
   Users,
+  Layers,
+  MessageCircle,
+  MapPin,
 } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 import { AdminLogin } from '@/components/admin/AdminLogin';
@@ -30,7 +33,19 @@ import { AdminKanbanBoard } from '@/components/admin/AdminKanbanBoard';
 import { AdminProductManager } from '@/components/admin/AdminProductManager';
 import { AdminMetricsAndClicks } from '@/components/admin/AdminMetricsAndClicks';
 import { AdminStoreCustomizer } from '@/components/admin/AdminStoreCustomizer';
+import { AdminManausDelivery } from '@/components/admin/AdminManausDelivery';
+import { AdminAttendantsManager } from '@/components/admin/AdminAttendantsManager';
 import { formatCurrencyBRL } from '@/data/mockData';
+
+type AdminTab =
+  | 'dashboard'
+  | 'kanban'
+  | 'produtos'
+  | 'banners'
+  | 'entregas'
+  | 'atendentes'
+  | 'metricas'
+  | 'customizacao';
 
 export default function AdminPage() {
   const {
@@ -41,11 +56,10 @@ export default function AdminPage() {
     adminOrders,
     attendants,
     storeCMS,
+    neighborhoods,
   } = useStore();
 
-  const [activeTab, setActiveTab] = useState<
-    'dashboard' | 'kanban' | 'produtos' | 'metricas' | 'customizacao'
-  >('dashboard');
+  const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // If not authenticated, show professional login screen
@@ -53,7 +67,7 @@ export default function AdminPage() {
     return <AdminLogin />;
   }
 
-  const handleTabChange = (tab: typeof activeTab) => {
+  const handleTabChange = (tab: AdminTab) => {
     setActiveTab(tab);
     setIsMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -62,6 +76,55 @@ export default function AdminPage() {
   const mariaLeads = attendants.find((a) => a.id === 'maria')?.clicksCount || 0;
   const carlosLeads = attendants.find((a) => a.id === 'carlos')?.clicksCount || 0;
   const totalRevenue = adminOrders.reduce((sum, o) => sum + o.total, 0);
+
+  const menuItems: { id: AdminTab; label: string; icon: React.ReactNode; badge?: string }[] = [
+    {
+      id: 'dashboard',
+      label: 'Visão Geral',
+      icon: <LayoutDashboard className="w-4 h-4" />,
+    },
+    {
+      id: 'kanban',
+      label: 'Kanban de Pedidos',
+      icon: <Kanban className="w-4 h-4" />,
+      badge: `${adminOrders.length}`,
+    },
+    {
+      id: 'produtos',
+      label: 'Mostruário & Estoque',
+      icon: <ShoppingBag className="w-4 h-4" />,
+      badge: `${products.length}`,
+    },
+    {
+      id: 'banners',
+      label: 'Banners & Carrossel',
+      icon: <Layers className="w-4 h-4" />,
+      badge: '10 Cat',
+    },
+    {
+      id: 'entregas',
+      label: 'Entregas & Bairros Manaus',
+      icon: <Truck className="w-4 h-4" />,
+      badge: `${neighborhoods?.length || 10}`,
+    },
+    {
+      id: 'atendentes',
+      label: 'Equipe WhatsApp',
+      icon: <MessageCircle className="w-4 h-4" />,
+      badge: `${attendants.length}`,
+    },
+    {
+      id: 'metricas',
+      label: 'Métricas & Cliques',
+      icon: <BarChart3 className="w-4 h-4" />,
+      badge: `${mariaLeads + carlosLeads}`,
+    },
+    {
+      id: 'customizacao',
+      label: 'Loja & Supabase',
+      icon: <Settings className="w-4 h-4" />,
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-[#F8F8FA] flex flex-col md:flex-row text-neutral-900 font-sans selection:bg-black selection:text-white">
@@ -85,93 +148,45 @@ export default function AdminPage() {
               <span className="text-neutral-400 font-medium">Gestão Manaus - AM</span>
               <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.2 rounded-full font-bold flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                Online
+                Painel Ativo
               </span>
             </div>
           </div>
 
           {/* Navigation Links */}
           <nav className="space-y-1.5 text-xs font-semibold">
-            <button
-              onClick={() => handleTabChange('dashboard')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
-                activeTab === 'dashboard'
-                  ? 'bg-white text-black font-bold shadow-md'
-                  : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <LayoutDashboard className="w-4 h-4" />
-                <span>Visão Geral</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 opacity-60" />
-            </button>
-
-            <button
-              onClick={() => handleTabChange('kanban')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
-                activeTab === 'kanban'
-                  ? 'bg-white text-black font-bold shadow-md'
-                  : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <Kanban className="w-4 h-4" />
-                <span>Kanban de Pedidos</span>
-              </div>
-              <span className="text-[10px] bg-neutral-800 text-neutral-300 px-2 py-0.2 rounded-full">
-                {adminOrders.length}
-              </span>
-            </button>
-
-            <button
-              onClick={() => handleTabChange('produtos')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
-                activeTab === 'produtos'
-                  ? 'bg-white text-black font-bold shadow-md'
-                  : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <ShoppingBag className="w-4 h-4" />
-                <span>Produtos & Fotos</span>
-              </div>
-              <span className="text-[10px] bg-neutral-800 text-neutral-300 px-2 py-0.2 rounded-full">
-                {products.length}
-              </span>
-            </button>
-
-            <button
-              onClick={() => handleTabChange('metricas')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
-                activeTab === 'metricas'
-                  ? 'bg-white text-black font-bold shadow-md'
-                  : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <BarChart3 className="w-4 h-4" />
-                <span>Métricas & Cliques</span>
-              </div>
-              <span className="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-800 px-2 py-0.2 rounded-full">
-                {mariaLeads + carlosLeads} leads
-              </span>
-            </button>
-
-            <button
-              onClick={() => handleTabChange('customizacao')}
-              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
-                activeTab === 'customizacao'
-                  ? 'bg-white text-black font-bold shadow-md'
-                  : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
-              }`}
-            >
-              <div className="flex items-center gap-2.5">
-                <Settings className="w-4 h-4" />
-                <span>Loja & Supabase</span>
-              </div>
-              <ChevronRight className="w-3.5 h-3.5 opacity-60" />
-            </button>
+            {menuItems.map((item) => {
+              const isActive = activeTab === item.id;
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => handleTabChange(item.id)}
+                  className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl transition-all ${
+                    isActive
+                      ? 'bg-white text-black font-extrabold shadow-md scale-[1.02]'
+                      : 'text-neutral-400 hover:text-white hover:bg-neutral-900'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    {item.icon}
+                    <span>{item.label}</span>
+                  </div>
+                  {item.badge ? (
+                    <span
+                      className={`text-[10px] px-2 py-0.2 rounded-full font-bold ${
+                        isActive
+                          ? 'bg-black text-white'
+                          : 'bg-neutral-800 text-neutral-300'
+                      }`}
+                    >
+                      {item.badge}
+                    </span>
+                  ) : (
+                    <ChevronRight className="w-3.5 h-3.5 opacity-40" />
+                  )}
+                </button>
+              );
+            })}
           </nav>
         </div>
 
@@ -235,51 +250,26 @@ export default function AdminPage() {
       {/* Mobile Drawer Menu */}
       {isMobileMenuOpen && (
         <div className="md:hidden bg-[#121214] border-b border-neutral-800 p-4 space-y-2 text-xs font-semibold text-neutral-300">
-          <button
-            onClick={() => handleTabChange('dashboard')}
-            className={`w-full p-2.5 rounded-xl text-left flex items-center gap-2 ${
-              activeTab === 'dashboard' ? 'bg-white text-black font-bold' : ''
-            }`}
-          >
-            <LayoutDashboard className="w-4 h-4" />
-            <span>Visão Geral</span>
-          </button>
-          <button
-            onClick={() => handleTabChange('kanban')}
-            className={`w-full p-2.5 rounded-xl text-left flex items-center gap-2 ${
-              activeTab === 'kanban' ? 'bg-white text-black font-bold' : ''
-            }`}
-          >
-            <Kanban className="w-4 h-4" />
-            <span>Kanban de Pedidos ({adminOrders.length})</span>
-          </button>
-          <button
-            onClick={() => handleTabChange('produtos')}
-            className={`w-full p-2.5 rounded-xl text-left flex items-center gap-2 ${
-              activeTab === 'produtos' ? 'bg-white text-black font-bold' : ''
-            }`}
-          >
-            <ShoppingBag className="w-4 h-4" />
-            <span>Produtos & Fotos ({products.length})</span>
-          </button>
-          <button
-            onClick={() => handleTabChange('metricas')}
-            className={`w-full p-2.5 rounded-xl text-left flex items-center gap-2 ${
-              activeTab === 'metricas' ? 'bg-white text-black font-bold' : ''
-            }`}
-          >
-            <BarChart3 className="w-4 h-4" />
-            <span>Métricas & Cliques</span>
-          </button>
-          <button
-            onClick={() => handleTabChange('customizacao')}
-            className={`w-full p-2.5 rounded-xl text-left flex items-center gap-2 ${
-              activeTab === 'customizacao' ? 'bg-white text-black font-bold' : ''
-            }`}
-          >
-            <Settings className="w-4 h-4" />
-            <span>Loja & Supabase</span>
-          </button>
+          {menuItems.map((item) => (
+            <button
+              key={item.id}
+              onClick={() => handleTabChange(item.id)}
+              className={`w-full p-2.5 rounded-xl text-left flex items-center justify-between ${
+                activeTab === item.id ? 'bg-white text-black font-extrabold' : ''
+              }`}
+            >
+              <div className="flex items-center gap-2">
+                {item.icon}
+                <span>{item.label}</span>
+              </div>
+              {item.badge && (
+                <span className="text-[10px] bg-neutral-800 text-neutral-300 px-2 py-0.5 rounded-full">
+                  {item.badge}
+                </span>
+              )}
+            </button>
+          ))}
+
           <div className="pt-2 border-t border-neutral-800 flex justify-between items-center">
             <Link href="/" className="text-xs text-neutral-400 underline">
               Ver Loja Virtual
@@ -297,12 +287,15 @@ export default function AdminPage() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-6 border-b border-neutral-200 mb-6">
           <div>
             <span className="text-[10px] uppercase font-bold tracking-widest text-neutral-400">
-              MIIXXIIE • Negócio Local Manaus
+              MIIXXIIE • Gestão de Comércio Local Manaus
             </span>
             <h1 className="text-xl sm:text-2xl font-extrabold text-neutral-900 tracking-tight capitalize">
               {activeTab === 'dashboard' && 'Painel de Controle Executivo'}
               {activeTab === 'kanban' && 'Quadro Kanban de Vendas & Pedidos'}
-              {activeTab === 'produtos' && 'Catálogo de Produtos & Gestão de Fotos'}
+              {activeTab === 'produtos' && 'Mostruário & Gestão Completa de Estoque'}
+              {activeTab === 'banners' && 'Gestão de Banners das 10 Categorias'}
+              {activeTab === 'entregas' && 'Entregas por Motoboy & Showroom em Manaus'}
+              {activeTab === 'atendentes' && 'Equipe de Atendentes & Rotação WhatsApp'}
               {activeTab === 'metricas' && 'Métricas Reais & Rastreio de Leads'}
               {activeTab === 'customizacao' && 'Customização da Loja & Conexão Supabase'}
             </h1>
@@ -312,7 +305,7 @@ export default function AdminPage() {
           <div className="flex items-center gap-2 text-xs font-semibold">
             <div className="bg-white px-3 py-1.5 rounded-xl border border-neutral-200 shadow-2xs flex items-center gap-1.5">
               <Truck className="w-3.5 h-3.5 text-neutral-600" />
-              <span>Entregas Manaus Ativas</span>
+              <span>Manaus: Motoboy & Showroom</span>
             </div>
             <Link
               href="/"
@@ -330,10 +323,12 @@ export default function AdminPage() {
           <div className="space-y-6">
             {/* KPI Cards */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-2">
-                <span className="text-xs font-semibold text-neutral-500">Pedidos no Kanban</span>
+              <div className="bg-white p-5 rounded-3xl border border-neutral-200 shadow-xs space-y-2">
+                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                  Pedidos no Kanban
+                </span>
                 <div className="flex items-baseline justify-between">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-neutral-900">
+                  <span className="text-2xl sm:text-3xl font-black text-neutral-900">
                     {adminOrders.length}
                   </span>
                   <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">
@@ -343,36 +338,42 @@ export default function AdminPage() {
                 <p className="text-[11px] text-neutral-400">Fluxo em tempo real</p>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-2">
-                <span className="text-xs font-semibold text-neutral-500">Faturamento do Fluxo</span>
+              <div className="bg-white p-5 rounded-3xl border border-neutral-200 shadow-xs space-y-2">
+                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                  Faturamento do Fluxo
+                </span>
                 <div className="flex items-baseline justify-between">
-                  <span className="text-xl sm:text-2xl font-extrabold text-neutral-900">
+                  <span className="text-xl sm:text-2xl font-black text-neutral-900">
                     {formatCurrencyBRL(totalRevenue)}
                   </span>
                   <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
-                    +19%
+                    Ativo
                   </span>
                 </div>
                 <p className="text-[11px] text-neutral-400">Total em pedidos ativos</p>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-2">
-                <span className="text-xs font-semibold text-neutral-500">Total de Produtos</span>
+              <div className="bg-white p-5 rounded-3xl border border-neutral-200 shadow-xs space-y-2">
+                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                  Mostruário de Peças
+                </span>
                 <div className="flex items-baseline justify-between">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-neutral-900">
+                  <span className="text-2xl sm:text-3xl font-black text-neutral-900">
                     {products.length}
                   </span>
                   <span className="text-[10px] bg-neutral-100 text-neutral-700 font-bold px-2 py-0.5 rounded-full">
-                    100% Reais
+                    10 Categorias
                   </span>
                 </div>
                 <p className="text-[11px] text-neutral-400">Vestidos, Conjuntos, Calças...</p>
               </div>
 
-              <div className="bg-white p-5 rounded-2xl border border-neutral-200 shadow-xs space-y-2">
-                <span className="text-xs font-semibold text-neutral-500">Cliques no WhatsApp</span>
+              <div className="bg-white p-5 rounded-3xl border border-neutral-200 shadow-xs space-y-2">
+                <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                  Cliques no WhatsApp
+                </span>
                 <div className="flex items-baseline justify-between">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-neutral-900">
+                  <span className="text-2xl sm:text-3xl font-black text-neutral-900">
                     {mariaLeads + carlosLeads}
                   </span>
                   <span className="text-[10px] bg-pink-100 text-pink-800 font-bold px-2 py-0.5 rounded-full">
@@ -386,41 +387,41 @@ export default function AdminPage() {
             {/* Quick Access Actions */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <button
-                onClick={() => handleTabChange('kanban')}
-                className="bg-white p-5 rounded-2xl border border-neutral-200 text-left hover:border-black transition-all shadow-xs group"
-              >
-                <div className="w-10 h-10 rounded-xl bg-neutral-100 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-colors mb-3">
-                  <Kanban className="w-5 h-5" />
-                </div>
-                <h4 className="font-bold text-sm text-neutral-900">Gerenciar Pedidos (Kanban)</h4>
-                <p className="text-xs text-neutral-500 mt-1">
-                  Mova pedidos pelas etapas: Novo Lead, Pagamento, Estoque e Entrega em Manaus.
-                </p>
-              </button>
-
-              <button
                 onClick={() => handleTabChange('produtos')}
-                className="bg-white p-5 rounded-2xl border border-neutral-200 text-left hover:border-black transition-all shadow-xs group"
+                className="bg-white p-5 rounded-3xl border border-neutral-200 text-left hover:border-black transition-all shadow-xs group"
               >
-                <div className="w-10 h-10 rounded-xl bg-neutral-100 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-colors mb-3">
+                <div className="w-10 h-10 rounded-2xl bg-neutral-100 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-colors mb-3">
                   <ShoppingBag className="w-5 h-5" />
                 </div>
-                <h4 className="font-bold text-sm text-neutral-900">Upload de Fotos & Estoque</h4>
+                <h4 className="font-extrabold text-sm text-neutral-900">Gerenciar Mostruário & Estoque</h4>
                 <p className="text-xs text-neutral-500 mt-1">
-                  Adicione novas fotos tiradas pelo celular direto para o catálogo da loja virtual.
+                  Cadastre novos modelos, ajuste quantidades por tamanho, adicione cores e destaque peças.
                 </p>
               </button>
 
               <button
-                onClick={() => handleTabChange('customizacao')}
-                className="bg-white p-5 rounded-2xl border border-neutral-200 text-left hover:border-black transition-all shadow-xs group"
+                onClick={() => handleTabChange('kanban')}
+                className="bg-white p-5 rounded-3xl border border-neutral-200 text-left hover:border-black transition-all shadow-xs group"
               >
-                <div className="w-10 h-10 rounded-xl bg-neutral-100 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-colors mb-3">
-                  <Database className="w-5 h-5" />
+                <div className="w-10 h-10 rounded-2xl bg-neutral-100 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-colors mb-3">
+                  <Kanban className="w-5 h-5" />
                 </div>
-                <h4 className="font-bold text-sm text-neutral-900">Conexão Supabase & CMS</h4>
+                <h4 className="font-extrabold text-sm text-neutral-900">Kanban de Vendas no WhatsApp</h4>
                 <p className="text-xs text-neutral-500 mt-1">
-                  Configure a chave do Supabase e customize os textos do cabeçalho da loja.
+                  Mova os pedidos recebidos: Novo Lead, Pagamento, Separação de Estoque e Entrega em Manaus.
+                </p>
+              </button>
+
+              <button
+                onClick={() => handleTabChange('entregas')}
+                className="bg-white p-5 rounded-3xl border border-neutral-200 text-left hover:border-black transition-all shadow-xs group"
+              >
+                <div className="w-10 h-10 rounded-2xl bg-neutral-100 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-colors mb-3">
+                  <Truck className="w-5 h-5" />
+                </div>
+                <h4 className="font-extrabold text-sm text-neutral-900">Bairros & Taxas de Entrega</h4>
+                <p className="text-xs text-neutral-500 mt-1">
+                  Configure as taxas de motoboy para cada bairro de Manaus e regras de retirada no Showroom.
                 </p>
               </button>
             </div>
@@ -428,7 +429,7 @@ export default function AdminPage() {
             {/* Kanban Preview */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h3 className="font-bold text-sm sm:text-base text-neutral-900">
+                <h3 className="font-extrabold text-base text-neutral-900">
                   Visão Rápida do Kanban de Pedidos
                 </h3>
                 <button
@@ -449,10 +450,19 @@ export default function AdminPage() {
         {/* TAB 3: PRODUTOS */}
         {activeTab === 'produtos' && <AdminProductManager />}
 
-        {/* TAB 4: MÉTRICAS & CLIQUES */}
+        {/* TAB 4: BANNERS */}
+        {activeTab === 'banners' && <AdminStoreCustomizer />}
+
+        {/* TAB 5: ENTREGAS MANAUS */}
+        {activeTab === 'entregas' && <AdminManausDelivery />}
+
+        {/* TAB 6: ATENDENTES */}
+        {activeTab === 'atendentes' && <AdminAttendantsManager />}
+
+        {/* TAB 7: MÉTRICAS & CLIQUES */}
         {activeTab === 'metricas' && <AdminMetricsAndClicks />}
 
-        {/* TAB 5: CUSTOMIZAÇÃO & SUPABASE */}
+        {/* TAB 8: CUSTOMIZAÇÃO & SUPABASE */}
         {activeTab === 'customizacao' && <AdminStoreCustomizer />}
       </main>
     </div>
