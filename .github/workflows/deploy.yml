@@ -1,0 +1,60 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Build Next.js Standalone
+        run: npm run build
+
+      - name: Package Standalone Deployment
+        run: |
+          mkdir -p deploy_staging/.next/static
+          mkdir -p deploy_staging/public
+          mkdir -p deploy_staging/tmp
+          cp -r .next/standalone/* deploy_staging/
+          cp -r .next/static/* deploy_staging/.next/static/
+          cp -r public/* deploy_staging/public/
+          touch deploy_staging/tmp/restart.txt
+          tar -czf deploy.tar.gz -C deploy_staging .
+
+      - name: Transfer Bundle to Hostinger via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          port: ${{ secrets.HOSTINGER_PORT }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          source: "deploy.tar.gz"
+          target: "/home/u767514941/"
+
+      - name: Extract & Restart on Hostinger
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.HOSTINGER_HOST }}
+          username: ${{ secrets.HOSTINGER_USER }}
+          port: ${{ secrets.HOSTINGER_PORT }}
+          key: ${{ secrets.HOSTINGER_SSH_KEY }}
+          script: |
+            TARGET="/home/u767514941/domains/miixxiievariedades.com.br/hbuilds/current/nodejs"
+            mkdir -p "$TARGET/tmp"
+            tar -xzf /home/u767514941/deploy.tar.gz -C "$TARGET"
+            rm -f /home/u767514941/deploy.tar.gz
+            touch "$TARGET/tmp/restart.txt"
+            echo "🚀 MIIXXIIE Deploy completed successfully on Hostinger!"

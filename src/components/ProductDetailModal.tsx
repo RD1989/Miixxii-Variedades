@@ -169,7 +169,7 @@ export const ProductDetailModal: React.FC = () => {
               ======================================================== */}
           <div className="w-full md:w-[48%] lg:w-[46%] flex flex-col bg-[#F7F7F9] shrink-0 border-b md:border-b-0 md:border-r border-neutral-200">
             {/* Main Visual Display (Shows Whole Body & Full Dress, 100% Contained) */}
-            <div className="relative w-full h-[270px] sm:h-[320px] md:h-[500px] lg:h-[560px] max-h-[38vh] md:max-h-[82vh] bg-gradient-to-b from-[#FAF9F8] to-[#F1F1F4] p-3 flex items-center justify-center overflow-hidden">
+            <div className="relative w-full h-[240px] sm:h-[290px] md:h-[500px] lg:h-[560px] max-h-[33vh] md:max-h-[82vh] bg-gradient-to-b from-[#FAF9F8] to-[#F1F1F4] p-2 sm:p-3 flex items-center justify-center overflow-hidden">
               <Image
                 src={activeImage || selectedProduct.image}
                 alt={selectedProduct.name}
@@ -248,7 +248,7 @@ export const ProductDetailModal: React.FC = () => {
               RIGHT COLUMN: SPACIOUS, FLUID PRODUCT CONFIGURATION
               ======================================================== */}
           <div className="w-full md:w-[50%] lg:w-[52%] flex flex-col justify-between overflow-y-auto bg-white">
-            <div className="p-4 sm:p-6 lg:p-8 space-y-5">
+            <div className="p-3.5 sm:p-6 lg:p-8 space-y-3.5 sm:space-y-5">
               {/* Top Subcategory & Stock Status */}
               <div>
                 <div className="flex items-center justify-between gap-2 mb-1.5">
