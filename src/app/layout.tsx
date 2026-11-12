@@ -1,18 +1,11 @@
 import type { Metadata, Viewport } from 'next';
-import { Cinzel, Dancing_Script, Playfair_Display, Plus_Jakarta_Sans } from 'next/font/google';
+import { Cinzel, Dancing_Script, Plus_Jakarta_Sans } from 'next/font/google';
 import './globals.css';
 
 const cinzel = Cinzel({
   subsets: ['latin'],
   weight: ['600', '700', '800'],
   variable: '--font-cinzel',
-  display: 'swap',
-});
-
-const playfair = Playfair_Display({
-  subsets: ['latin'],
-  weight: ['500', '600', '700', '800'],
-  variable: '--font-playfair',
   display: 'swap',
 });
 
@@ -63,7 +56,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${cinzel.variable} ${playfair.variable} ${dancingScript.variable} ${plusJakarta.variable}`}
+      className={`${cinzel.variable} ${dancingScript.variable} ${plusJakarta.variable}`}
     >
       <body className="min-h-screen bg-[#F8F8FA] text-[#111111] font-sans antialiased selection:bg-black selection:text-white">
         {children}

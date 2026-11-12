@@ -23,9 +23,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        brand: ["var(--font-cinzel)", "serif"],
-        serif: ["var(--font-playfair)", "Georgia", "serif"],
-        editorial: ["var(--font-playfair)", "Georgia", "serif"],
+        brand: ["var(--font-cinzel)", "Georgia", "serif"],
+        serif: ["var(--font-cinzel)", "Didot", "Bodoni MT", "Georgia", "serif"],
         script: ["var(--font-dancing)", "cursive"],
         sans: ["var(--font-jakarta)", "sans-serif"],
       },
