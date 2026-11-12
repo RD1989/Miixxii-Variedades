@@ -102,6 +102,13 @@ export const HeroBanner: React.FC = () => {
 
   const currentSlide = activeSlides[currentIndex] || activeSlides[0];
 
+  const sanitizeText = (txt?: string) => {
+    if (!txt) return '';
+    return txt
+      .replace(/malaquinhas\s*\(macaquinhos\)/gi, 'Macaquinhas')
+      .replace(/malaquinhas/gi, 'Macaquinhas');
+  };
+
   return (
     <div className="w-full px-2 sm:px-6 lg:px-10 2xl:px-12 pt-2 sm:pt-4">
       {/* ========================================================
@@ -159,10 +166,10 @@ export const HeroBanner: React.FC = () => {
                 : 'MIIXXIIE • Manaus - AM'}
             </span>
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white drop-shadow-lg leading-tight tracking-tight">
-              {currentSlide.title}
+              {sanitizeText(currentSlide.title)}
             </h1>
             <p className="text-[11px] text-neutral-300 line-clamp-2 leading-relaxed">
-              {currentSlide.subtitle}
+              {sanitizeText(currentSlide.subtitle)}
             </p>
           </div>
 
@@ -199,7 +206,7 @@ export const HeroBanner: React.FC = () => {
             onClick={() => handleCtaClick(currentSlide)}
             className="w-full flex items-center justify-center gap-2 bg-white hover:bg-neutral-100 text-black font-extrabold text-xs py-3 px-4 rounded-xl shadow-md active:scale-95 transition-transform"
           >
-            <span>{currentSlide.ctaText}</span>
+            <span>{sanitizeText(currentSlide.ctaText)}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -294,10 +301,10 @@ export const HeroBanner: React.FC = () => {
             {/* Headline with Editorial Serif Typography */}
             <div className="space-y-2 max-w-xl">
               <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white tracking-tight leading-[1.15] drop-shadow-xl">
-                {currentSlide.title}
+                {sanitizeText(currentSlide.title)}
               </h1>
               <p className="text-sm lg:text-base text-neutral-200 font-normal leading-relaxed drop-shadow-sm">
-                {currentSlide.subtitle}
+                {sanitizeText(currentSlide.subtitle)}
               </p>
             </div>
 
@@ -307,14 +314,14 @@ export const HeroBanner: React.FC = () => {
                 onClick={() => handleCtaClick(currentSlide)}
                 className="inline-flex items-center justify-center gap-2.5 bg-white hover:bg-neutral-100 text-black text-xs sm:text-sm font-extrabold px-7 py-3.5 rounded-full shadow-2xl transition-all border border-neutral-300 hover:scale-105 active:scale-95"
               >
-                <span>{currentSlide.ctaText}</span>
+                <span>{sanitizeText(currentSlide.ctaText)}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
 
               <button
                 onClick={() =>
                   openWhatsAppLead(
-                    `Olá! Vi o banner de "${currentSlide.title}" no catálogo virtual e gostaria de atendimento VIP em Manaus. 🌸`,
+                    `Olá! Vi o banner de "${sanitizeText(currentSlide.title)}" no catálogo virtual e gostaria de atendimento VIP em Manaus. 🌸`,
                     'desktop_carousel_cta'
                   )
                 }

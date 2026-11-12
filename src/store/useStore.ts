@@ -24,6 +24,20 @@ import {
 } from '@/types/admin';
 import { getSupabaseClient } from '@/lib/supabase';
 
+// Purge any stale client localStorage caches containing legacy typos
+if (typeof window !== 'undefined') {
+  try {
+    ['miixxiie_store_real_v4_pro', 'miixxiie_store_real_v3', 'miixxe-store-storage'].forEach((key) => {
+      const val = localStorage.getItem(key);
+      if (val && (val.includes('Malaquinhas') || val.includes('Macaquihas'))) {
+        localStorage.removeItem(key);
+      }
+    });
+  } catch (e) {
+    // silent catch for privacy mode / restricted environments
+  }
+}
+
 export {
   type KanbanStatus,
   type AdminOrder,
@@ -1033,7 +1047,26 @@ export const useStore = create<StoreState>()(
         set({ infoModal: { isOpen: false, title: '', description: '' } }),
     }),
     {
-      name: 'miixxiie_store_real_v4_pro',
+      name: 'miixxiie_store_v7_live',
+      onRehydrateStorage: () => (state) => {
+        if (state && state.carouselSlides) {
+          let dirty = false;
+          const cleaned = state.carouselSlides.map((s) => {
+            if (s.title && (s.title.includes('Malaquinhas') || s.title.includes('Macaquihas'))) {
+              dirty = true;
+              return {
+                ...s,
+                title: 'Macaquinhas',
+                ctaText: 'Ver Macaquinhas',
+              };
+            }
+            return s;
+          });
+          if (dirty) {
+            state.setCarouselSlides(cleaned);
+          }
+        }
+      },
       partialize: (state) => ({
         neighborhoods: state.neighborhoods,
         isAdminLoggedIn: state.isAdminLoggedIn,
