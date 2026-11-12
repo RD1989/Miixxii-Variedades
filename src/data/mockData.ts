@@ -226,7 +226,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     "id": "cat-macaquinhos",
-    "name": "Malaquinhas (Macaquinhas)",
+    "name": "Macaquinhas",
     "slug": "macaquinhos",
     "image": "/images/banners/cat-banner-macaquinhas.jpg",
     "count": 1
@@ -1698,7 +1698,7 @@ export const PRODUCTS: Product[] = [
     "name": "Macaquinho Keyla com Babado",
     "slug": "macaquinho-keyla",
     "category": "macaquinhos",
-    "subcategory": "Macaquinhos",
+    "subcategory": "Macaquinhas",
     "price": 78.0,
     "originalPrice": null,
     "comboOffer": null,

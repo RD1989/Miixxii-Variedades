@@ -24,6 +24,8 @@ const config: Config = {
       },
       fontFamily: {
         brand: ["var(--font-cinzel)", "serif"],
+        serif: ["var(--font-playfair)", "Georgia", "serif"],
+        editorial: ["var(--font-playfair)", "Georgia", "serif"],
         script: ["var(--font-dancing)", "cursive"],
         sans: ["var(--font-jakarta)", "sans-serif"],
       },

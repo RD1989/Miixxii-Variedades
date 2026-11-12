@@ -158,7 +158,7 @@ export const HeroBanner: React.FC = () => {
                 ? `Categoria: ${CATEGORIES.find((c) => c.slug === currentSlide.categoryTarget)?.name || currentSlide.categoryTarget}`
                 : 'MIIXXIIE • Manaus - AM'}
             </span>
-            <h1 className="font-script text-2xl sm:text-3xl font-bold text-white drop-shadow-lg leading-tight">
+            <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white drop-shadow-lg leading-tight tracking-tight">
               {currentSlide.title}
             </h1>
             <p className="text-[11px] text-neutral-300 line-clamp-2 leading-relaxed">
@@ -291,9 +291,9 @@ export const HeroBanner: React.FC = () => {
               )}
             </div>
 
-            {/* Headline with Script Typography */}
+            {/* Headline with Editorial Serif Typography */}
             <div className="space-y-2 max-w-xl">
-              <h1 className="font-script text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white tracking-wide leading-tight drop-shadow-xl">
+              <h1 className="font-serif text-3xl sm:text-4xl lg:text-5xl 2xl:text-6xl font-bold text-white tracking-tight leading-[1.15] drop-shadow-xl">
                 {currentSlide.title}
               </h1>
               <p className="text-sm lg:text-base text-neutral-200 font-normal leading-relaxed drop-shadow-sm">

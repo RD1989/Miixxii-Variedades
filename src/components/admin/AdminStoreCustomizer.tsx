@@ -801,7 +801,7 @@ export const AdminStoreCustomizer: React.FC = () => {
                       { name: '5. Chemises', url: '/images/banners/cat-banner-chemises.jpg' },
                       { name: '6. Conj. de Calça', url: '/images/banners/cat-banner-conjuntos-calca.jpg' },
                       { name: '7. Conj. de Shorts', url: '/images/banners/cat-banner-conjuntos-shorts.jpg' },
-                      { name: '8. Malaquinhas', url: '/images/banners/cat-banner-macaquinhas.jpg' },
+                      { name: '8. Macaquinhas', url: '/images/banners/cat-banner-macaquinhas.jpg' },
                       { name: '9. Vestidos Curtos', url: '/images/banners/cat-banner-vestidos-curtos.jpg' },
                       { name: '10. Vestidos Longos', url: '/images/banners/cat-banner-vestidos-longos.jpg' },
                       { name: '11. Vestidos Midis', url: '/images/banners/cat-banner-vestidos-midis.jpg' },

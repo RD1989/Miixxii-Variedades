@@ -318,11 +318,11 @@ const INITIAL_CAROUSEL_SLIDES: CarouselSlide[] = [
   },
   {
     id: 'slide-macaquinhas',
-    title: 'Malaquinhas (Macaquinhos)',
+    title: 'Macaquinhas',
     subtitle: 'Praticidade e elegância em peça única com modelagem transpassada e tecidos fluidos.',
     badge: 'Categoria Oficial',
     categoryTarget: 'macaquinhos',
-    ctaText: 'Ver Malaquinhas',
+    ctaText: 'Ver Macaquinhas',
     imageUrl: '/images/banners/cat-banner-macaquinhas.jpg',
     isActive: true,
     order: 8,
