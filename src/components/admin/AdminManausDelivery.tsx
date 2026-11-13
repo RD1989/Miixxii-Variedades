@@ -97,6 +97,19 @@ export const AdminManausDelivery: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Official Shipping Policy Notice */}
+      <div className="p-4 bg-amber-50 border border-amber-200 rounded-3xl flex items-start sm:items-center gap-3 text-xs text-amber-900 shadow-xs">
+        <AlertCircle className="w-5 h-5 text-amber-600 shrink-0 mt-0.5 sm:mt-0" />
+        <div>
+          <strong className="block text-sm font-extrabold text-amber-950">
+            Regra Oficial de Frete da MIIXXIIE (Manaus - AM):
+          </strong>
+          <span>
+            Não existe frete grátis para entregas em domicílio. Todas as entregas são feitas via motoboy com frete a combinar pelo WhatsApp de acordo com o bairro e distância. O frete é <strong>grátis exclusivamente para retirada presencial na loja física / showroom</strong> com horário agendado.
+          </span>
+        </div>
+      </div>
+
       {/* Header Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         <div className="bg-white p-5 rounded-3xl border border-neutral-200 shadow-xs space-y-2">

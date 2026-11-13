@@ -13,7 +13,7 @@ export const TopBar: React.FC = () => {
 
   const announcement =
     storeCMS?.topBarAnnouncement ||
-    'Entregas em toda Manaus via Motoboy ou Retirada no Showroom • Moda Plus Size Feminina (G ao G3)';
+    'Entregas em Manaus: Frete via Motoboy a Combinar no WhatsApp • Grátis Apenas Retirando na Loja';
 
   return (
     <div className="w-full bg-[#0A0A0A] text-neutral-300 text-[11px] sm:text-xs py-2 px-4 border-b border-neutral-800 text-center flex items-center justify-center gap-2">

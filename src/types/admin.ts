@@ -70,7 +70,6 @@ export interface StoreCMSConfig {
   pixKeyType?: 'CPF' | 'CNPJ' | 'Telefone' | 'E-mail' | 'Aleatória';
   pixReceiverName?: string;
   showroomHours?: string;
-  freeShippingThreshold?: number;
   whatsappGreetingTemplate?: string;
 }
 

@@ -249,16 +249,15 @@ const INITIAL_CMS: StoreCMSConfig = {
   storeAddress: 'Manaus - AM (Atendimento e Retirada Presencial com Agendamento)',
   bannerHeadline: 'Elegância Sem Medidas ♡',
   bannerSubheadline: 'Coleções exclusivas do G ao G3 pensadas sob medida para realçar sua melhor versão com conforto absoluto em Manaus.',
-  shippingNotice: 'Entregas Somente em Manaus - AM (Frete por Bairro via Motoboy ou Retirada Grátis na Loja)',
+  shippingNotice: 'Entregas em Manaus via Motoboy (Frete a Combinar no WhatsApp) • Grátis Apenas Retirando na Loja',
   whatsappMaria: '(92) 98613-7969',
   whatsappCarlos: '(92) 98606-4005',
-  topBarAnnouncement: 'Entregas em toda Manaus via Motoboy ou Retirada no Showroom • Moda Plus Size Feminina (G ao G3)',
+  topBarAnnouncement: 'Entregas em Manaus: Frete via Motoboy a Combinar no WhatsApp • Grátis Apenas Retirando na Loja',
   isTopBarActive: true,
   pixKey: '(92) 98613-7969',
   pixKeyType: 'Telefone',
   pixReceiverName: 'MIIXXIIE VARIEDADES',
   showroomHours: 'Segunda a Sábado, das 09h às 18h (Agendamento no WhatsApp)',
-  freeShippingThreshold: 299,
   whatsappGreetingTemplate: 'Olá! Vim pelo catálogo da MIIXXIIE em Manaus e gostaria de atendimento sobre peças Plus Size.',
 };
 

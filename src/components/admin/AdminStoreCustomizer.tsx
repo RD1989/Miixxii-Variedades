@@ -68,7 +68,7 @@ export const AdminStoreCustomizer: React.FC = () => {
   const [phoneMaria, setPhoneMaria] = useState(storeCMS.whatsappMaria);
   const [phoneCarlos, setPhoneCarlos] = useState(storeCMS.whatsappCarlos);
   const [topBarAnnouncement, setTopBarAnnouncement] = useState(
-    storeCMS.topBarAnnouncement || 'Entregas em toda Manaus via Motoboy ou Retirada no Showroom • Moda Plus Size Feminina (G ao G3)'
+    storeCMS.topBarAnnouncement || 'Entregas em Manaus: Frete via Motoboy a Combinar no WhatsApp • Grátis Apenas Retirando na Loja'
   );
   const [isTopBarActive, setIsTopBarActive] = useState(storeCMS.isTopBarActive ?? true);
   const [pixKey, setPixKey] = useState(storeCMS.pixKey || '(92) 98613-7969');
@@ -76,9 +76,6 @@ export const AdminStoreCustomizer: React.FC = () => {
   const [pixReceiverName, setPixReceiverName] = useState(storeCMS.pixReceiverName || 'MIIXXIIE VARIEDADES');
   const [showroomHours, setShowroomHours] = useState(
     storeCMS.showroomHours || 'Segunda a Sábado, das 09h às 18h (Agendamento no WhatsApp)'
-  );
-  const [freeShippingThreshold, setFreeShippingThreshold] = useState(
-    storeCMS.freeShippingThreshold ? String(storeCMS.freeShippingThreshold) : '299'
   );
   const [whatsappGreetingTemplate, setWhatsappGreetingTemplate] = useState(
     storeCMS.whatsappGreetingTemplate || 'Olá! Vim pelo catálogo da MIIXXIIE em Manaus e gostaria de saber mais informações.'
@@ -171,7 +168,6 @@ export const AdminStoreCustomizer: React.FC = () => {
       pixKeyType: pixKeyType as any,
       pixReceiverName,
       showroomHours,
-      freeShippingThreshold: parseFloat(freeShippingThreshold) || undefined,
       whatsappGreetingTemplate,
     });
 
@@ -745,7 +741,7 @@ export const AdminStoreCustomizer: React.FC = () => {
                 type="text"
                 value={topBarAnnouncement}
                 onChange={(e) => setTopBarAnnouncement(e.target.value)}
-                placeholder="Ex: Entregas em toda Manaus via Motoboy ou Retirada no Showroom • Moda Plus Size Feminina (G ao G3)"
+                placeholder="Ex: Entregas em Manaus: Frete via Motoboy a Combinar no WhatsApp • Grátis Apenas Retirando na Loja"
                 className="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-black font-medium"
               />
             </div>
@@ -818,17 +814,13 @@ export const AdminStoreCustomizer: React.FC = () => {
               />
             </div>
 
-            <div>
-              <label className="block text-neutral-700 font-semibold mb-1">
-                Frete Grátis a partir de (R$):
-              </label>
-              <input
-                type="number"
-                value={freeShippingThreshold}
-                onChange={(e) => setFreeShippingThreshold(e.target.value)}
-                placeholder="299"
-                className="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-black font-bold"
-              />
+            <div className="p-3 bg-neutral-100/80 rounded-xl border border-neutral-200 flex flex-col justify-center">
+              <span className="block text-[11px] font-bold text-neutral-900">
+                Regra Oficial de Frete:
+              </span>
+              <p className="text-[10px] text-neutral-600 mt-0.5 leading-snug">
+                Todas as entregas em Manaus têm frete a combinar via WhatsApp. Grátis apenas retirando no showroom.
+              </p>
             </div>
 
             <div className="sm:col-span-3">

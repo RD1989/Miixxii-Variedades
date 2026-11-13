@@ -110,9 +110,9 @@ export const STORE_CONFIG = {
   attendants: WHATSAPP_ATTENDANTS,
   storeAddress: 'Manaus - AM (Atendimento e Retirada Presencial com Agendamento)',
   shippingPolicy: {
-    notice: 'Entregas Somente em Manaus - AM (Frete por Bairro via Motoboy ou Retirada na Loja)',
-    motoboyInfo: 'Frete a combinar por distância / bairro em toda Manaus.',
-    pickupInfo: 'Retirada na loja física disponível gratuitamente.',
+    notice: 'Entregas em Manaus: Frete via Motoboy a Combinar no WhatsApp • Grátis Apenas Retirando na Loja',
+    motoboyInfo: 'Entregas em toda Manaus: Frete a combinar no WhatsApp de acordo com o bairro/distância.',
+    pickupInfo: 'Retirada no Showroom: Grátis com agendamento prévio.',
   },
   colors: {
     primary: '#0A0A0A',
