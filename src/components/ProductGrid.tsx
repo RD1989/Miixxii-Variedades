@@ -27,6 +27,7 @@ export const ProductGrid: React.FC = () => {
     setSelectedCategory,
     searchQuery,
     setSearchQuery,
+    categories,
   } = useStore();
 
   const [activeTab, setActiveTab] = useState<SectionTab>('todos');
@@ -71,7 +72,8 @@ export const ProductGrid: React.FC = () => {
     return matchesCategory && matchesSearch;
   });
 
-  const selectedCategoryObj = CATEGORIES.find((c) => c.slug === selectedCategory);
+  const allCategories = categories && categories.length > 0 ? categories : CATEGORIES;
+  const selectedCategoryObj = allCategories.find((c) => c.slug === selectedCategory);
 
   // Render a clean, minimalist, high-end fashion card
   const renderProductCard = (product: Product) => {

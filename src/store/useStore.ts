@@ -4,6 +4,8 @@ import {
   CartItem,
   Product,
   ColorOption,
+  Category,
+  CATEGORIES,
   INITIAL_DEMO_CART,
   PRODUCTS,
   DeliverySelection,
@@ -47,7 +49,7 @@ export {
   type AdminAuthUser,
   type CarouselSlide,
 };
-export { type Product, type ColorOption } from '@/data/mockData';
+export { type Product, type ColorOption, type Category } from '@/data/mockData';
 
 export const KANBAN_BADGE_MAP: Record<KanbanStatus, string> = {
   'Novo Lead': 'bg-amber-50 text-amber-800 border-amber-200',
@@ -250,6 +252,14 @@ const INITIAL_CMS: StoreCMSConfig = {
   shippingNotice: 'Entregas Somente em Manaus - AM (Frete por Bairro via Motoboy ou Retirada Grátis na Loja)',
   whatsappMaria: '(92) 98613-7969',
   whatsappCarlos: '(92) 98606-4005',
+  topBarAnnouncement: 'Entregas em toda Manaus via Motoboy ou Retirada no Showroom • Moda Plus Size Feminina (G ao G3)',
+  isTopBarActive: true,
+  pixKey: '(92) 98613-7969',
+  pixKeyType: 'Telefone',
+  pixReceiverName: 'MIIXXIIE VARIEDADES',
+  showroomHours: 'Segunda a Sábado, das 09h às 18h (Agendamento no WhatsApp)',
+  freeShippingThreshold: 299,
+  whatsappGreetingTemplate: 'Olá! Vim pelo catálogo da MIIXXIIE em Manaus e gostaria de atendimento sobre peças Plus Size.',
 };
 
 const INITIAL_CAROUSEL_SLIDES: CarouselSlide[] = [
@@ -397,6 +407,16 @@ interface StoreState {
   toggleProductActive: (productId: string) => void;
   toggleProductFeatured: (productId: string) => void;
 
+  // Categories Management
+  categories: Category[];
+  setCategories: (categories: Category[]) => void;
+  addCategory: (category: Omit<Category, 'id'> | Category) => void;
+  updateCategory: (category: Category) => void;
+  deleteCategory: (categoryId: string) => void;
+  toggleCategoryActive: (categoryId: string) => void;
+  reorderCategory: (categoryId: string, direction: 'up' | 'down') => void;
+  resetCategoriesToDefault: () => void;
+
   // Cart
   cart: CartItem[];
   isCartOpen: boolean;
@@ -421,6 +441,9 @@ interface StoreState {
   // Dynamic WhatsApp Alternating Traffic (Maria & Carlos)
   attendants: WhatsAppAttendant[];
   updateAttendant: (id: string, updates: Partial<WhatsAppAttendant>) => void;
+  addAttendant: (attendant: Omit<WhatsAppAttendant, 'id'> | WhatsAppAttendant) => void;
+  deleteAttendant: (id: string) => void;
+  toggleAttendantActive: (id: string) => void;
   currentAttendantIndex: number;
   rotateAttendant: () => WhatsAppAttendant;
   openWhatsAppLead: (customText?: string, source?: string, product?: Product) => void;
@@ -432,6 +455,8 @@ interface StoreState {
   addAdminOrder: (order: AdminOrder) => void;
   updateOrderStatus: (orderId: string, status: KanbanStatus) => void;
   moveKanbanOrder: (orderId: string, status: KanbanStatus) => void;
+  deleteAdminOrder: (orderId: string) => void;
+  clearCompletedOrders: () => void;
 
   // Logs & Audit
   activityLogs: ActivityLog[];
@@ -674,6 +699,80 @@ export const useStore = create<StoreState>()(
         }));
       },
 
+      // Categories Management
+      categories: CATEGORIES.map((c, idx) => ({
+        ...c,
+        isActive: c.isActive ?? true,
+        order: c.order ?? idx + 1,
+      })),
+      setCategories: (categories) => set({ categories }),
+      addCategory: (categoryData) => {
+        const newCat: Category = {
+          ...categoryData,
+          id: 'id' in categoryData && categoryData.id ? categoryData.id : `cat-${Date.now()}`,
+          name: categoryData.name,
+          slug: categoryData.slug,
+          image: categoryData.image || '/images/banners/banner-slide-1-marca.jpg',
+          count: categoryData.count ?? 0,
+          isActive: categoryData.isActive ?? true,
+          order: categoryData.order ?? (get().categories.length + 1),
+          description: categoryData.description || '',
+        };
+        set((state) => ({ categories: [...state.categories, newCat] }));
+        get().addActivityLog('Nova Categoria', `Categoria "${newCat.name}" criada.`);
+      },
+      updateCategory: (updated) => {
+        set((state) => ({
+          categories: state.categories.map((c) => (c.id === updated.id ? updated : c)),
+        }));
+        get().addActivityLog('Categoria Atualizada', `Categoria "${updated.name}" foi editada.`);
+      },
+      deleteCategory: (categoryId) => {
+        const cat = get().categories.find((c) => c.id === categoryId);
+        set((state) => ({
+          categories: state.categories.filter((c) => c.id !== categoryId),
+        }));
+        get().addActivityLog('Categoria Removida', `Categoria "${cat?.name || categoryId}" removida.`);
+      },
+      toggleCategoryActive: (categoryId) => {
+        let newStatus = true;
+        set((state) => ({
+          categories: state.categories.map((c) => {
+            if (c.id === categoryId) {
+              newStatus = !(c.isActive ?? true);
+              return { ...c, isActive: newStatus };
+            }
+            return c;
+          }),
+        }));
+        const cat = get().categories.find((c) => c.id === categoryId);
+        get().addActivityLog(
+          'Status de Categoria',
+          `Categoria "${cat?.name || categoryId}" ${newStatus ? 'ativada (visível)' : 'desativada (oculta)'} na loja.`
+        );
+      },
+      reorderCategory: (categoryId, direction) => {
+        const list = [...get().categories].sort((a, b) => (a.order || 0) - (b.order || 0));
+        const idx = list.findIndex((c) => c.id === categoryId);
+        if (idx === -1) return;
+        const targetIdx = direction === 'up' ? idx - 1 : idx + 1;
+        if (targetIdx < 0 || targetIdx >= list.length) return;
+
+        const temp = list[idx];
+        list[idx] = list[targetIdx];
+        list[targetIdx] = temp;
+
+        const reordered = list.map((item, i) => ({ ...item, order: i + 1 }));
+        set({ categories: reordered });
+        get().addActivityLog('Ordem das Categorias', 'Ordem de exibição das categorias foi reorganizada.');
+      },
+      resetCategoriesToDefault: () => {
+        set({
+          categories: CATEGORIES.map((c, idx) => ({ ...c, isActive: true, order: idx + 1 })),
+        });
+        get().addActivityLog('Categorias Restauradas', 'Categorias restauradas para a configuração oficial.');
+      },
+
       // Cart
       cart: INITIAL_DEMO_CART,
       isCartOpen: false,
@@ -794,18 +893,48 @@ export const useStore = create<StoreState>()(
         }));
         get().addActivityLog('Atualização de Atendente', 'Dados da atendente ' + id + ' atualizados.');
       },
+      addAttendant: (attendantData) => {
+        const newAtt: WhatsAppAttendant = {
+          ...attendantData,
+          id: 'id' in attendantData && attendantData.id ? attendantData.id : `att-${Date.now()}`,
+          name: attendantData.name,
+          role: attendantData.role || 'Consultora de Vendas',
+          phoneDisplay: attendantData.phoneDisplay,
+          phoneNumber: attendantData.phoneNumber.replace(/\D/g, ''),
+          clicksCount: 0,
+          isActive: attendantData.isActive ?? true,
+        };
+        set((state) => ({ attendants: [...state.attendants, newAtt] }));
+        get().addActivityLog('Novo Atendente', `Atendente "${newAtt.name}" adicionado à equipe.`);
+      },
+      deleteAttendant: (id) => {
+        const att = get().attendants.find((a) => a.id === id);
+        set((state) => ({ attendants: state.attendants.filter((a) => a.id !== id) }));
+        get().addActivityLog('Atendente Removido', `Atendente "${att?.name || id}" removido.`);
+      },
+      toggleAttendantActive: (id) => {
+        set((state) => ({
+          attendants: state.attendants.map((a) =>
+            a.id === id ? { ...a, isActive: !(a.isActive ?? true) } : a
+          ),
+        }));
+      },
       currentAttendantIndex: 0,
       leadClicks: INITIAL_CLICKS,
 
       rotateAttendant: () => {
         const state = get();
-        const list = state.attendants && state.attendants.length > 0 ? state.attendants : WHATSAPP_ATTENDANTS;
+        const allList = state.attendants && state.attendants.length > 0 ? state.attendants : WHATSAPP_ATTENDANTS;
+        const activeList = allList.filter((a) => a.isActive !== false);
+        const list = activeList.length > 0 ? activeList : allList;
         const currentIdx = state.currentAttendantIndex || 0;
         const selected = list[currentIdx % list.length];
 
-        const updatedList = list.map((att, idx) =>
-          idx === currentIdx % list.length ? { ...att, clicksCount: (att.clicksCount || 0) + 1 } : att
-        );
+        const updatedList = allList.map((att) =>
+          att.id === selected.id ? { ...att, clicksCount: (att.clicksCount || 0) + 1 } : att);
+        /*
+          // previous index logic
+        */
         const nextIdx = (currentIdx + 1) % list.length;
 
         set({
@@ -909,6 +1038,16 @@ export const useStore = create<StoreState>()(
 
       moveKanbanOrder: (orderId, status) => {
         get().updateOrderStatus(orderId, status);
+      },
+      deleteAdminOrder: (orderId) => {
+        set((state) => ({ adminOrders: state.adminOrders.filter((o) => o.id !== orderId) }));
+        get().addActivityLog('Pedido Excluído', `Pedido ${orderId} foi removido do Kanban.`);
+      },
+      clearCompletedOrders: () => {
+        set((state) => ({
+          adminOrders: state.adminOrders.filter((o) => o.status !== 'Concluído' && o.status !== 'Cancelado'),
+        }));
+        get().addActivityLog('Limpeza de Pedidos', 'Pedidos finalizados e cancelados arquivados.');
       },
 
       // Activity Logs & Audit
@@ -1066,6 +1205,19 @@ export const useStore = create<StoreState>()(
             state.setCarouselSlides(cleaned);
           }
         }
+        if (state && state.categories) {
+          let dirtyCat = false;
+          const cleanedCat = state.categories.map((c) => {
+            if (c.name && (c.name.includes('Malaquinhas') || c.name.includes('Macaquihas'))) {
+              dirtyCat = true;
+              return { ...c, name: 'Macaquinhas' };
+            }
+            return c;
+          });
+          if (dirtyCat) {
+            state.setCategories(cleanedCat);
+          }
+        }
       },
       partialize: (state) => ({
         neighborhoods: state.neighborhoods,
@@ -1086,6 +1238,7 @@ export const useStore = create<StoreState>()(
         carouselSlides: state.carouselSlides,
         carouselAutoPlay: state.carouselAutoPlay,
         carouselIntervalSeconds: state.carouselIntervalSeconds,
+        categories: state.categories,
       }),
     }
   )

@@ -26,11 +26,13 @@ import {
   Layers,
   MessageCircle,
   MapPin,
+  FolderTree,
 } from 'lucide-react';
 import { useStore } from '@/store/useStore';
 import { AdminLogin } from '@/components/admin/AdminLogin';
 import { AdminKanbanBoard } from '@/components/admin/AdminKanbanBoard';
 import { AdminProductManager } from '@/components/admin/AdminProductManager';
+import { AdminCategoryManager } from '@/components/admin/AdminCategoryManager';
 import { AdminMetricsAndClicks } from '@/components/admin/AdminMetricsAndClicks';
 import { AdminStoreCustomizer } from '@/components/admin/AdminStoreCustomizer';
 import { AdminManausDelivery } from '@/components/admin/AdminManausDelivery';
@@ -41,6 +43,7 @@ type AdminTab =
   | 'dashboard'
   | 'kanban'
   | 'produtos'
+  | 'categorias'
   | 'banners'
   | 'entregas'
   | 'atendentes'
@@ -53,6 +56,7 @@ export default function AdminPage() {
     adminUser,
     logoutAdmin,
     products,
+    categories,
     adminOrders,
     attendants,
     storeCMS,
@@ -94,6 +98,12 @@ export default function AdminPage() {
       label: 'Mostruário & Estoque',
       icon: <ShoppingBag className="w-4 h-4" />,
       badge: `${products.length}`,
+    },
+    {
+      id: 'categorias',
+      label: 'Categorias da Loja',
+      icon: <FolderTree className="w-4 h-4" />,
+      badge: `${(categories || []).filter((c) => c.isActive !== false).length}/${categories?.length || 10}`,
     },
     {
       id: 'banners',
@@ -385,7 +395,19 @@ export default function AdminPage() {
             </div>
 
             {/* Quick Access Actions */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <button
+                onClick={() => handleTabChange('categorias')}
+                className="bg-white p-5 rounded-3xl border border-neutral-200 text-left hover:border-black transition-all shadow-xs group"
+              >
+                <div className="w-10 h-10 rounded-2xl bg-neutral-100 group-hover:bg-black group-hover:text-white flex items-center justify-center transition-colors mb-3">
+                  <FolderTree className="w-5 h-5" />
+                </div>
+                <h4 className="font-extrabold text-sm text-neutral-900">Categorias da Loja</h4>
+                <p className="text-xs text-neutral-500 mt-1">
+                  Ative, pause, edite nomes e fotos circulares, e ordene as categorias da vitrine.
+                </p>
+              </button>
               <button
                 onClick={() => handleTabChange('produtos')}
                 className="bg-white p-5 rounded-3xl border border-neutral-200 text-left hover:border-black transition-all shadow-xs group"
@@ -449,6 +471,9 @@ export default function AdminPage() {
 
         {/* TAB 3: PRODUTOS */}
         {activeTab === 'produtos' && <AdminProductManager />}
+
+        {/* TAB 3.5: CATEGORIAS */}
+        {activeTab === 'categorias' && <AdminCategoryManager />}
 
         {/* TAB 4: BANNERS */}
         {activeTab === 'banners' && <AdminStoreCustomizer />}

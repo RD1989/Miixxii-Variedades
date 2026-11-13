@@ -64,6 +64,14 @@ export interface StoreCMSConfig {
   shippingNotice: string;
   whatsappMaria: string;
   whatsappCarlos: string;
+  topBarAnnouncement?: string;
+  isTopBarActive?: boolean;
+  pixKey?: string;
+  pixKeyType?: 'CPF' | 'CNPJ' | 'Telefone' | 'E-mail' | 'Aleatória';
+  pixReceiverName?: string;
+  showroomHours?: string;
+  freeShippingThreshold?: number;
+  whatsappGreetingTemplate?: string;
 }
 
 export interface AdminAuthUser {

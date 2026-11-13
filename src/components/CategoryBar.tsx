@@ -7,7 +7,7 @@ import { useStore } from '@/store/useStore';
 import { X, Sparkles } from 'lucide-react';
 
 export const CategoryBar: React.FC = () => {
-  const { selectedCategory, setSelectedCategory } = useStore();
+  const { selectedCategory, setSelectedCategory, categories } = useStore();
 
   const handleCategoryClick = (slug: string) => {
     if (selectedCategory === slug) {
@@ -18,6 +18,16 @@ export const CategoryBar: React.FC = () => {
     const el = document.getElementById('novidades-section');
     el?.scrollIntoView({ behavior: 'smooth' });
   };
+
+  // Only show active categories, ordered by custom order
+  const storeCategories = categories && categories.length > 0 ? categories : CATEGORIES;
+  const activeCategories = storeCategories
+    .filter((cat) => cat.isActive !== false)
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
+
+  if (activeCategories.length === 0) {
+    return null;
+  }
 
   return (
     <section className="w-full px-4 sm:px-8 lg:px-12 2xl:px-16 pt-5 pb-2 sm:pt-8 sm:pb-3">
@@ -37,7 +47,7 @@ export const CategoryBar: React.FC = () => {
 
       {/* Horizontal Scrollable Categories Strip */}
       <div className="flex items-center gap-3 sm:gap-6 overflow-x-auto no-scrollbar scroll-smooth py-2 px-1">
-        {CATEGORIES.map((cat) => {
+        {activeCategories.map((cat) => {
           const isSelected = selectedCategory === cat.slug;
 
           return (

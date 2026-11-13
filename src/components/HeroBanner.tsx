@@ -25,6 +25,7 @@ export const HeroBanner: React.FC = () => {
     carouselIntervalSeconds,
     openWhatsAppLead,
     setSelectedCategory,
+    categories,
   } = useStore();
 
   const activeSlides: CarouselSlide[] =
@@ -162,7 +163,7 @@ export const HeroBanner: React.FC = () => {
           <div className="absolute bottom-3 left-3 right-3 text-left space-y-1">
             <span className="text-[10px] font-bold text-amber-300 uppercase tracking-widest drop-shadow-sm block">
               {currentSlide.categoryTarget && currentSlide.categoryTarget !== 'todos'
-                ? `Categoria: ${CATEGORIES.find((c) => c.slug === currentSlide.categoryTarget)?.name || currentSlide.categoryTarget}`
+                ? `Categoria: ${(categories || CATEGORIES).find((c) => c.slug === currentSlide.categoryTarget)?.name || currentSlide.categoryTarget}`
                 : 'MIIXXIIE • Manaus - AM'}
             </span>
             <h1 className="font-serif text-2xl sm:text-3xl font-bold text-white drop-shadow-lg leading-tight tracking-tight">
@@ -293,7 +294,7 @@ export const HeroBanner: React.FC = () => {
               {currentSlide.categoryTarget && currentSlide.categoryTarget !== 'todos' && (
                 <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-black/50 text-[11px] font-semibold text-amber-300 border border-amber-400/30">
                   <Grid className="w-3 h-3 text-amber-400" />
-                  <span>Categoria: {CATEGORIES.find((c) => c.slug === currentSlide.categoryTarget)?.name || currentSlide.categoryTarget}</span>
+                  <span>Categoria: {(categories || CATEGORIES).find((c) => c.slug === currentSlide.categoryTarget)?.name || currentSlide.categoryTarget}</span>
                 </span>
               )}
             </div>

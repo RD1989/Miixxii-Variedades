@@ -44,6 +44,9 @@ export interface Category {
   slug: string;
   image: string;
   count: number;
+  isActive?: boolean;
+  order?: number;
+  description?: string;
 }
 
 export interface ManausNeighborhood {
@@ -61,6 +64,8 @@ export interface WhatsAppAttendant {
   phoneDisplay: string;
   phoneNumber: string;
   clicksCount: number;
+  avatar?: string;
+  isActive?: boolean;
 }
 
 export const WHATSAPP_ATTENDANTS: WhatsAppAttendant[] = [
@@ -71,6 +76,7 @@ export const WHATSAPP_ATTENDANTS: WhatsAppAttendant[] = [
     phoneDisplay: '(92) 98613-7969',
     phoneNumber: '5592986137969',
     clicksCount: 0,
+    isActive: true,
   },
   {
     id: 'carlos',
@@ -79,6 +85,7 @@ export const WHATSAPP_ATTENDANTS: WhatsAppAttendant[] = [
     phoneDisplay: '(92) 98606-4005',
     phoneNumber: '5592986064005',
     clicksCount: 0,
+    isActive: true,
   },
 ];
 
@@ -187,70 +194,90 @@ export const CATEGORIES: Category[] = [
     "name": "Bermudas e Shorts",
     "slug": "bermudas-e-shorts",
     "image": "/images/banners/cat-banner-bermudas-shorts.jpg",
-    "count": 3
+    "count": 3,
+    "isActive": true,
+    "order": 1
   },
   {
     "id": "cat-calcas",
     "name": "Calças",
     "slug": "calcas",
     "image": "/images/banners/cat-banner-calcas.jpg",
-    "count": 3
+    "count": 3,
+    "isActive": true,
+    "order": 2
   },
   {
     "id": "cat-camisas-regatas",
     "name": "Camisas & Regatas",
     "slug": "camisas-e-regatas",
     "image": "/images/banners/cat-banner-camisas-regatas.jpg",
-    "count": 5
+    "count": 5,
+    "isActive": true,
+    "order": 3
   },
   {
     "id": "cat-chemises",
     "name": "Chemises",
     "slug": "chemises",
     "image": "/images/banners/cat-banner-chemises.jpg",
-    "count": 4
+    "count": 4,
+    "isActive": true,
+    "order": 4
   },
   {
     "id": "cat-conjuntos-calca",
     "name": "Conjunto de Calça",
     "slug": "conjuntos-de-calca",
     "image": "/images/banners/cat-banner-conjuntos-calca.jpg",
-    "count": 2
+    "count": 2,
+    "isActive": true,
+    "order": 5
   },
   {
     "id": "cat-conjuntos-shorts",
     "name": "Conjunto de Shorts",
     "slug": "conjuntos-de-shorts",
     "image": "/images/banners/cat-banner-conjuntos-shorts.jpg",
-    "count": 11
+    "count": 11,
+    "isActive": true,
+    "order": 6
   },
   {
     "id": "cat-macaquinhos",
     "name": "Macaquinhas",
     "slug": "macaquinhos",
     "image": "/images/banners/cat-banner-macaquinhas.jpg",
-    "count": 1
+    "count": 1,
+    "isActive": true,
+    "order": 7
   },
   {
     "id": "cat-vestidos-curtos",
     "name": "Vestidos Curtos",
     "slug": "vestidos-curtos",
     "image": "/images/banners/cat-banner-vestidos-curtos.jpg",
-    "count": 5
+    "count": 5,
+    "isActive": true,
+    "order": 8
   },
   {
     "id": "cat-vestidos-longos",
     "name": "Vestidos Longos",
     "slug": "vestidos-longos",
     "image": "/images/banners/cat-banner-vestidos-longos.jpg",
-    "count": 3
+    "count": 3,
+    "isActive": true,
+    "order": 9
   },
   {
     "id": "cat-vestidos-midi",
     "name": "Vestidos Midis",
     "slug": "vestidos-midi",
     "image": "/images/banners/cat-banner-vestidos-midis.jpg",
-    "count": 3
+    "count": 3,
+    "isActive": true,
+    "order": 10
   }
 ];
 

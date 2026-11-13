@@ -55,7 +55,10 @@ export const AdminStoreCustomizer: React.FC = () => {
     setCarouselAutoPlay,
     setCarouselIntervalSeconds,
     resetCarouselToDefaults,
+    categories,
   } = useStore();
+
+  const storeCategories = categories && categories.length > 0 ? categories : CATEGORIES;
 
   // CMS Form State
   const [storeName, setStoreName] = useState(storeCMS.storeName);
@@ -64,6 +67,22 @@ export const AdminStoreCustomizer: React.FC = () => {
   const [shippingNotice, setShippingNotice] = useState(storeCMS.shippingNotice);
   const [phoneMaria, setPhoneMaria] = useState(storeCMS.whatsappMaria);
   const [phoneCarlos, setPhoneCarlos] = useState(storeCMS.whatsappCarlos);
+  const [topBarAnnouncement, setTopBarAnnouncement] = useState(
+    storeCMS.topBarAnnouncement || 'Entregas em toda Manaus via Motoboy ou Retirada no Showroom • Moda Plus Size Feminina (G ao G3)'
+  );
+  const [isTopBarActive, setIsTopBarActive] = useState(storeCMS.isTopBarActive ?? true);
+  const [pixKey, setPixKey] = useState(storeCMS.pixKey || '(92) 98613-7969');
+  const [pixKeyType, setPixKeyType] = useState<string>(storeCMS.pixKeyType || 'Telefone');
+  const [pixReceiverName, setPixReceiverName] = useState(storeCMS.pixReceiverName || 'MIIXXIIE VARIEDADES');
+  const [showroomHours, setShowroomHours] = useState(
+    storeCMS.showroomHours || 'Segunda a Sábado, das 09h às 18h (Agendamento no WhatsApp)'
+  );
+  const [freeShippingThreshold, setFreeShippingThreshold] = useState(
+    storeCMS.freeShippingThreshold ? String(storeCMS.freeShippingThreshold) : '299'
+  );
+  const [whatsappGreetingTemplate, setWhatsappGreetingTemplate] = useState(
+    storeCMS.whatsappGreetingTemplate || 'Olá! Vim pelo catálogo da MIIXXIIE em Manaus e gostaria de saber mais informações.'
+  );
 
   // Supabase Config State
   const [supabaseUrl, setSupabaseUrl] = useState('');
@@ -146,6 +165,14 @@ export const AdminStoreCustomizer: React.FC = () => {
       shippingNotice,
       whatsappMaria: phoneMaria,
       whatsappCarlos: phoneCarlos,
+      topBarAnnouncement,
+      isTopBarActive,
+      pixKey,
+      pixKeyType: pixKeyType as any,
+      pixReceiverName,
+      showroomHours,
+      freeShippingThreshold: parseFloat(freeShippingThreshold) || undefined,
+      whatsappGreetingTemplate,
     });
 
     // 2. Save Supabase credentials in browser
@@ -356,7 +383,7 @@ export const AdminStoreCustomizer: React.FC = () => {
                   </span>
                   {slide.categoryTarget && slide.categoryTarget !== 'todos' && (
                     <span className="px-2 py-0.5 rounded-full bg-amber-400/90 text-[10px] font-bold text-black shadow-xs">
-                      {CATEGORIES.find((c) => c.slug === slide.categoryTarget)?.name || slide.categoryTarget}
+                      {storeCategories.find((c) => c.slug === slide.categoryTarget)?.name || slide.categoryTarget}
                     </span>
                   )}
                 </div>
@@ -680,6 +707,145 @@ export const AdminStoreCustomizer: React.FC = () => {
           </div>
         </div>
 
+        {/* SECTION 5: TOPBAR ANNOUNCEMENT */}
+        <div className="bg-white rounded-2xl border border-neutral-200 p-5 sm:p-6 shadow-xs space-y-4">
+          <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
+            <div className="flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-neutral-800" />
+              <h3 className="font-bold text-sm sm:text-base text-neutral-900">
+                Faixa Superior de Anúncios (TopBar)
+              </h3>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[11px] font-semibold text-neutral-600">
+                {isTopBarActive ? 'Visível no topo' : 'Oculta'}
+              </span>
+              <button
+                type="button"
+                onClick={() => setIsTopBarActive(!isTopBarActive)}
+                className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors focus:outline-none ${
+                  isTopBarActive ? 'bg-black' : 'bg-neutral-300'
+                }`}
+              >
+                <span
+                  className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${
+                    isTopBarActive ? 'translate-x-4' : 'translate-x-1'
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
+
+          <div className="space-y-3 text-xs">
+            <div>
+              <label className="block text-neutral-700 font-semibold mb-1">
+                Texto do Anúncio no Topo da Loja:
+              </label>
+              <input
+                type="text"
+                value={topBarAnnouncement}
+                onChange={(e) => setTopBarAnnouncement(e.target.value)}
+                placeholder="Ex: Entregas em toda Manaus via Motoboy ou Retirada no Showroom • Moda Plus Size Feminina (G ao G3)"
+                className="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-black font-medium"
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* SECTION 6: PIX & SHOWROOM MANAUS */}
+        <div className="bg-white rounded-2xl border border-neutral-200 p-5 sm:p-6 shadow-xs space-y-4">
+          <div className="flex items-center gap-2 pb-3 border-b border-neutral-200">
+            <Store className="w-4 h-4 text-neutral-800" />
+            <h3 className="font-bold text-sm sm:text-base text-neutral-900">
+              Dados de Pagamento PIX & Atendimento no Showroom
+            </h3>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
+            <div>
+              <label className="block text-neutral-700 font-semibold mb-1">
+                Chave PIX da Loja:
+              </label>
+              <input
+                type="text"
+                value={pixKey}
+                onChange={(e) => setPixKey(e.target.value)}
+                placeholder="(92) 98613-7969"
+                className="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-black font-mono font-bold"
+              />
+            </div>
+
+            <div>
+              <label className="block text-neutral-700 font-semibold mb-1">
+                Tipo de Chave PIX:
+              </label>
+              <select
+                value={pixKeyType}
+                onChange={(e) => setPixKeyType(e.target.value)}
+                className="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-black font-semibold"
+              >
+                <option value="Telefone">Telefone</option>
+                <option value="CNPJ">CNPJ</option>
+                <option value="CPF">CPF</option>
+                <option value="E-mail">E-mail</option>
+                <option value="Aleatória">Chave Aleatória</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-neutral-700 font-semibold mb-1">
+                Nome do Favorecido (PIX):
+              </label>
+              <input
+                type="text"
+                value={pixReceiverName}
+                onChange={(e) => setPixReceiverName(e.target.value)}
+                placeholder="MIIXXIIE VARIEDADES"
+                className="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-black font-bold uppercase"
+              />
+            </div>
+
+            <div className="sm:col-span-2">
+              <label className="block text-neutral-700 font-semibold mb-1">
+                Horário de Atendimento no Showroom:
+              </label>
+              <input
+                type="text"
+                value={showroomHours}
+                onChange={(e) => setShowroomHours(e.target.value)}
+                placeholder="Segunda a Sábado, das 09h às 18h (Agendamento no WhatsApp)"
+                className="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-black"
+              />
+            </div>
+
+            <div>
+              <label className="block text-neutral-700 font-semibold mb-1">
+                Frete Grátis a partir de (R$):
+              </label>
+              <input
+                type="number"
+                value={freeShippingThreshold}
+                onChange={(e) => setFreeShippingThreshold(e.target.value)}
+                placeholder="299"
+                className="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-black font-bold"
+              />
+            </div>
+
+            <div className="sm:col-span-3">
+              <label className="block text-neutral-700 font-semibold mb-1">
+                Mensagem Padrão de Abertura no WhatsApp:
+              </label>
+              <textarea
+                rows={2}
+                value={whatsappGreetingTemplate}
+                onChange={(e) => setWhatsappGreetingTemplate(e.target.value)}
+                placeholder="Olá! Vim pelo catálogo da MIIXXIIE em Manaus e gostaria de saber mais informações..."
+                className="w-full px-3.5 py-2 bg-neutral-50 border border-neutral-200 rounded-xl focus:outline-none focus:border-black text-xs"
+              />
+            </div>
+          </div>
+        </div>
+
         {/* Save Button */}
         <div className="flex justify-end pt-2">
           <button
@@ -882,9 +1048,9 @@ export const AdminStoreCustomizer: React.FC = () => {
                     className="w-full px-3 py-2 bg-neutral-50 border border-neutral-300 rounded-xl focus:outline-none focus:border-black font-medium"
                   >
                     <option value="todos">Todos os Produtos / Geral</option>
-                    {CATEGORIES.map((cat) => (
+                    {storeCategories.map((cat) => (
                       <option key={cat.slug} value={cat.slug}>
-                        {cat.name} ({cat.count} peças)
+                        {cat.name} {cat.isActive === false ? '(Pausada)' : ''}
                       </option>
                     ))}
                   </select>

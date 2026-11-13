@@ -64,7 +64,10 @@ export const AdminProductManager: React.FC = () => {
     toggleProductFeatured,
     updateStock,
     updateSizeStock,
+    categories,
   } = useStore();
+
+  const storeCategories = categories && categories.length > 0 ? categories : CATEGORIES;
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
@@ -412,10 +415,10 @@ export const AdminProductManager: React.FC = () => {
               onChange={(e) => setSelectedCategory(e.target.value)}
               className="px-3 py-1.5 bg-neutral-100 border border-neutral-200 rounded-xl text-xs font-semibold focus:outline-none focus:border-black"
             >
-              <option value="all">Todas as 10 Categorias</option>
-              {CATEGORIES.map((c) => (
+              <option value="all">Todas as Categorias ({storeCategories.length})</option>
+              {storeCategories.map((c) => (
                 <option key={c.id} value={c.slug}>
-                  {c.name} ({c.count} modelos)
+                  {c.name} {c.isActive === false ? '(Pausada)' : ''}
                 </option>
               ))}
             </select>
@@ -788,9 +791,9 @@ export const AdminProductManager: React.FC = () => {
                     onChange={(e) => setFormCategory(e.target.value)}
                     className="w-full px-3.5 py-2.5 bg-neutral-50 border border-neutral-200 rounded-2xl focus:outline-none focus:border-black font-semibold text-xs"
                   >
-                    {CATEGORIES.map((cat) => (
+                    {storeCategories.map((cat) => (
                       <option key={cat.id} value={cat.slug}>
-                        {cat.name}
+                        {cat.name} {cat.isActive === false ? '(Oculta)' : ''}
                       </option>
                     ))}
                   </select>
