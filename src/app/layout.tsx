@@ -23,6 +23,9 @@ const plusJakarta = Plus_Jakarta_Sans({
   display: 'swap',
 });
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: 'MIIXXIIE Variedades | Moda Plus Size Feminina — Manaus AM',
   description:

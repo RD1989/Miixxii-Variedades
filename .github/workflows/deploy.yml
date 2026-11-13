@@ -57,4 +57,5 @@ jobs:
             tar -xzf /home/u767514941/deploy.tar.gz -C "$TARGET"
             rm -f /home/u767514941/deploy.tar.gz
             touch "$TARGET/tmp/restart.txt"
+            pkill -9 -f next-server || true
             echo "🚀 MIIXXIIE Deploy completed successfully on Hostinger!"

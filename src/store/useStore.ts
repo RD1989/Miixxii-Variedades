@@ -26,12 +26,12 @@ import {
 } from '@/types/admin';
 import { getSupabaseClient } from '@/lib/supabase';
 
-// Purge any stale client localStorage caches containing legacy typos
+// Purge any stale client localStorage caches containing legacy typos or outdated shipping policies
 if (typeof window !== 'undefined') {
   try {
-    ['miixxiie_store_real_v4_pro', 'miixxiie_store_real_v3', 'miixxe-store-storage'].forEach((key) => {
+    ['miixxiie_store_v7_live', 'miixxiie_store_real_v4_pro', 'miixxiie_store_real_v3', 'miixxe-store-storage'].forEach((key) => {
       const val = localStorage.getItem(key);
-      if (val && (val.includes('Malaquinhas') || val.includes('Macaquihas'))) {
+      if (val && (val.includes('Malaquinhas') || val.includes('Macaquihas') || val.includes('Entregas em toda Manaus via Motoboy ou Retirada') || val.includes('grátis a partir'))) {
         localStorage.removeItem(key);
       }
     });
@@ -1185,7 +1185,7 @@ export const useStore = create<StoreState>()(
         set({ infoModal: { isOpen: false, title: '', description: '' } }),
     }),
     {
-      name: 'miixxiie_store_v7_live',
+      name: 'miixxiie_store_v8_live',
       onRehydrateStorage: () => (state) => {
         if (state && state.carouselSlides) {
           let dirty = false;
@@ -1215,6 +1215,20 @@ export const useStore = create<StoreState>()(
           });
           if (dirtyCat) {
             state.setCategories(cleanedCat);
+          }
+        }
+        if (state && state.storeCMS) {
+          const officialNotice = 'Entregas em Manaus: Frete via Motoboy a Combinar no WhatsApp • Grátis Apenas Retirando na Loja';
+          if (
+            !state.storeCMS.topBarAnnouncement ||
+            state.storeCMS.topBarAnnouncement.includes('toda Manaus via Motoboy') ||
+            state.storeCMS.topBarAnnouncement.includes('grátis a partir') ||
+            state.storeCMS.shippingNotice?.includes('grátis a partir')
+          ) {
+            state.updateStoreCMS({
+              topBarAnnouncement: officialNotice,
+              shippingNotice: officialNotice,
+            });
           }
         }
       },
