@@ -33,6 +33,10 @@ import {
   ChevronDown,
   RotateCcw,
   CheckCircle2,
+  LayoutGrid,
+  List,
+  ArrowUpDown,
+  TrendingUp,
 } from 'lucide-react';
 import { compressAndEncodeImage } from '@/lib/supabase';
 
@@ -73,6 +77,8 @@ export const AdminProductManager: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [filterStock, setFilterStock] = useState<'all' | 'low' | 'out'>('all');
   const [filterVisibility, setFilterVisibility] = useState<'all' | 'active' | 'hidden' | 'featured'>('all');
+  const [viewMode, setViewMode] = useState<'grid' | 'table'>('grid');
+  const [sortBy, setSortBy] = useState<'recent' | 'stock-asc' | 'stock-desc' | 'price-desc' | 'price-asc' | 'name-asc'>('recent');
 
   // Modal State
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -115,6 +121,13 @@ export const AdminProductManager: React.FC = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const cameraInputRef = useRef<HTMLInputElement>(null);
 
+  // Metric counts for quick filter chips
+  const totalCount = products.length;
+  const activeCount = products.filter((p) => p.isActive !== false).length;
+  const lowStockCount = products.filter((p) => p.stockTotal > 0 && p.stockTotal <= 3).length;
+  const outOfStockCount = products.filter((p) => p.stockTotal === 0).length;
+  const featuredCount = products.filter((p) => p.badge === 'Destaque').length;
+
   // Filter products
   const filteredProducts = products.filter((prod) => {
     const matchesSearch =
@@ -136,6 +149,16 @@ export const AdminProductManager: React.FC = () => {
     if (filterVisibility === 'featured') matchesVisibility = prod.badge === 'Destaque';
 
     return matchesSearch && matchesCat && matchesStock && matchesVisibility;
+  });
+
+  // Sort products
+  const sortedProducts = [...filteredProducts].sort((a, b) => {
+    if (sortBy === 'stock-asc') return a.stockTotal - b.stockTotal;
+    if (sortBy === 'stock-desc') return b.stockTotal - a.stockTotal;
+    if (sortBy === 'price-desc') return b.price - a.price;
+    if (sortBy === 'price-asc') return a.price - b.price;
+    if (sortBy === 'name-asc') return a.name.localeCompare(b.name);
+    return 0;
   });
 
   const handleOpenCreate = () => {
@@ -382,6 +405,90 @@ export const AdminProductManager: React.FC = () => {
         onChange={handleImageFileChange}
       />
 
+      {/* KPI Summary Interactive Badges */}
+      <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+        <button
+          type="button"
+          onClick={() => {
+            setFilterVisibility('all');
+            setFilterStock('all');
+            setSelectedCategory('all');
+          }}
+          className={`p-3 rounded-2xl border text-left transition-all ${
+            filterVisibility === 'all' && filterStock === 'all'
+              ? 'bg-black text-white border-black shadow-sm'
+              : 'bg-white text-neutral-800 border-neutral-200 hover:border-neutral-400'
+          }`}
+        >
+          <div className="text-[10px] uppercase font-bold opacity-70">Total Peças</div>
+          <div className="text-lg font-black">{totalCount}</div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setFilterVisibility('active');
+            setFilterStock('all');
+          }}
+          className={`p-3 rounded-2xl border text-left transition-all ${
+            filterVisibility === 'active'
+              ? 'bg-emerald-700 text-white border-emerald-700 shadow-sm'
+              : 'bg-white text-neutral-800 border-neutral-200 hover:border-emerald-300'
+          }`}
+        >
+          <div className="text-[10px] uppercase font-bold text-emerald-600">Ativas na Loja</div>
+          <div className="text-lg font-black text-emerald-700">{activeCount}</div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setFilterStock('low');
+            setFilterVisibility('all');
+          }}
+          className={`p-3 rounded-2xl border text-left transition-all ${
+            filterStock === 'low'
+              ? 'bg-amber-500 text-white border-amber-500 shadow-sm'
+              : 'bg-white text-neutral-800 border-neutral-200 hover:border-amber-300'
+          }`}
+        >
+          <div className="text-[10px] uppercase font-bold text-amber-600">Baixo Estoque (≤3)</div>
+          <div className="text-lg font-black text-amber-700">{lowStockCount}</div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setFilterStock('out');
+            setFilterVisibility('all');
+          }}
+          className={`p-3 rounded-2xl border text-left transition-all ${
+            filterStock === 'out'
+              ? 'bg-red-600 text-white border-red-600 shadow-sm'
+              : 'bg-white text-neutral-800 border-neutral-200 hover:border-red-300'
+          }`}
+        >
+          <div className="text-[10px] uppercase font-bold text-red-500">Esgotadas (0 un)</div>
+          <div className="text-lg font-black text-red-600">{outOfStockCount}</div>
+        </button>
+
+        <button
+          type="button"
+          onClick={() => {
+            setFilterVisibility('featured');
+            setFilterStock('all');
+          }}
+          className={`p-3 rounded-2xl border text-left transition-all col-span-2 sm:col-span-1 ${
+            filterVisibility === 'featured'
+              ? 'bg-amber-400 text-neutral-900 border-amber-400 shadow-sm'
+              : 'bg-white text-neutral-800 border-neutral-200 hover:border-amber-300'
+          }`}
+        >
+          <div className="text-[10px] uppercase font-bold text-amber-800">★ Destaques</div>
+          <div className="text-lg font-black text-neutral-900">{featuredCount}</div>
+        </button>
+      </div>
+
       {/* Top Filter and Search Bar */}
       <div className="bg-white p-4 sm:p-5 rounded-3xl border border-neutral-200 shadow-xs space-y-3">
         <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
@@ -396,13 +503,62 @@ export const AdminProductManager: React.FC = () => {
             />
           </div>
 
-          <button
-            onClick={handleOpenCreate}
-            className="px-5 py-2.5 bg-black hover:bg-neutral-800 text-white text-xs font-extrabold rounded-2xl flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95 shrink-0"
-          >
-            <Plus className="w-4 h-4 stroke-[3]" />
-            <span>Cadastrar Novo Produto</span>
-          </button>
+          {/* View Mode & Sort Controls */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Sort Dropdown */}
+            <div className="flex items-center gap-1.5 bg-neutral-100 border border-neutral-200 rounded-2xl px-3 py-2 text-xs font-semibold">
+              <ArrowUpDown className="w-3.5 h-3.5 text-neutral-500 shrink-0" />
+              <select
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value as any)}
+                className="bg-transparent text-xs font-semibold text-neutral-800 focus:outline-none cursor-pointer"
+              >
+                <option value="recent">Recentes (Padrão)</option>
+                <option value="stock-asc">Menor Estoque (Reposição)</option>
+                <option value="stock-desc">Maior Estoque</option>
+                <option value="price-desc">Maior Preço</option>
+                <option value="price-asc">Menor Preço</option>
+                <option value="name-asc">Nome (A - Z)</option>
+              </select>
+            </div>
+
+            {/* View Mode Toggle: Grid vs Table */}
+            <div className="flex items-center bg-neutral-100 p-1 rounded-2xl border border-neutral-200">
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                className={`p-1.5 rounded-xl transition-all ${
+                  viewMode === 'grid'
+                    ? 'bg-white text-black shadow-xs font-bold'
+                    : 'text-neutral-500 hover:text-black'
+                }`}
+                title="Modo Grade Visual (Cards 4:5)"
+              >
+                <LayoutGrid className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('table')}
+                className={`p-1.5 rounded-xl transition-all ${
+                  viewMode === 'table'
+                    ? 'bg-white text-black shadow-xs font-bold'
+                    : 'text-neutral-500 hover:text-black'
+                }`}
+                title="Modo Planilha / Tabela Rápida de Estoque"
+              >
+                <List className="w-4 h-4" />
+              </button>
+            </div>
+
+            <button
+              onClick={handleOpenCreate}
+              className="px-4 py-2.5 bg-black hover:bg-neutral-800 text-white text-xs font-extrabold rounded-2xl flex items-center justify-center gap-2 shadow-md hover:shadow-lg transition-all active:scale-95 shrink-0"
+            >
+              <Plus className="w-4 h-4 stroke-[3]" />
+              <span className="hidden sm:inline">Cadastrar Novo Produto</span>
+              <span className="sm:hidden">Novo</span>
+            </button>
+          </div>
         </div>
 
         {/* Filter Pills */}
@@ -454,188 +610,404 @@ export const AdminProductManager: React.FC = () => {
           </div>
 
           <span className="ml-auto text-[11px] font-bold text-neutral-500">
-            {filteredProducts.length} de {products.length} peças cadastradas
+            {sortedProducts.length} de {products.length} peças cadastradas
           </span>
         </div>
       </div>
 
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {filteredProducts.map((product) => {
-          const isActive = product.isActive ?? true;
-          const isFeatured = product.badge === 'Destaque';
+      {/* Render Products: Empty State, Grid View, or Table View */}
+      {sortedProducts.length === 0 ? (
+        <div className="bg-white rounded-3xl border border-neutral-200 p-12 text-center space-y-3">
+          <div className="w-14 h-14 bg-neutral-100 rounded-full flex items-center justify-center mx-auto text-neutral-400">
+            <ShoppingBag className="w-6 h-6" />
+          </div>
+          <h4 className="font-extrabold text-base text-neutral-900">Nenhuma peça encontrada</h4>
+          <p className="text-xs text-neutral-500 max-w-sm mx-auto">
+            Não encontramos peças com os filtros ou termo de busca selecionados. Tente limpar os filtros ou cadastre um novo produto.
+          </p>
+          <button
+            onClick={() => {
+              setSearchTerm('');
+              setSelectedCategory('all');
+              setFilterStock('all');
+              setFilterVisibility('all');
+            }}
+            className="px-4 py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-bold rounded-xl transition-all"
+          >
+            Limpar Todos os Filtros
+          </button>
+        </div>
+      ) : viewMode === 'grid' ? (
+        /* Products Grid */
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {sortedProducts.map((product) => {
+            const isActive = product.isActive ?? true;
+            const isFeatured = product.badge === 'Destaque';
 
-          return (
-            <div
-              key={product.id}
-              className={`bg-white rounded-3xl border overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group ${
-                !isActive ? 'opacity-65 border-dashed border-neutral-300 bg-neutral-50/50' : 'border-neutral-200'
-              }`}
-            >
-              <div>
-                {/* Image Container (100% Contained, Never Cropped) */}
-                <div className="relative aspect-[4/5] w-full bg-[#F7F7F9] overflow-hidden flex items-center justify-center p-2 border-b border-neutral-100">
-                  <Image
-                    src={product.image}
-                    alt={product.name}
-                    fill
-                    sizes="(max-width: 768px) 100vw, 320px"
-                    className="object-contain object-center group-hover:scale-102 transition-transform duration-300 drop-shadow-xs"
-                  />
+            return (
+              <div
+                key={product.id}
+                className={`bg-white rounded-3xl border overflow-hidden shadow-xs hover:shadow-lg transition-all flex flex-col justify-between group ${
+                  !isActive ? 'opacity-65 border-dashed border-neutral-300 bg-neutral-50/50' : 'border-neutral-200'
+                }`}
+              >
+                <div>
+                  {/* Image Container (100% Contained, Never Cropped) */}
+                  <div className="relative aspect-[4/5] w-full bg-[#F7F7F9] overflow-hidden flex items-center justify-center p-2 border-b border-neutral-100">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 320px"
+                      className="object-contain object-center group-hover:scale-102 transition-transform duration-300 drop-shadow-xs"
+                    />
 
-                  {/* Top Badges */}
-                  <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10">
-                    <span className="text-[10px] font-black bg-black text-white px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider">
-                      {product.badge}
-                    </span>
-                    {product.comboOffer && (
-                      <span className="text-[9px] font-bold bg-amber-400 text-neutral-900 px-2 py-0.5 rounded-full shadow-xs">
-                        {product.comboOffer}
+                    {/* Top Badges */}
+                    <div className="absolute top-2.5 left-2.5 flex flex-col gap-1 z-10">
+                      <span className="text-[10px] font-black bg-black text-white px-2.5 py-0.5 rounded-full shadow-xs uppercase tracking-wider">
+                        {product.badge}
                       </span>
-                    )}
-                  </div>
-
-                  {/* Top Right Quick Toggles: Featured Star & Visible Eye */}
-                  <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 z-10">
-                    {/* Toggle Destaque */}
-                    <button
-                      onClick={() => toggleProductFeatured(product.id)}
-                      className={`p-1.5 rounded-full shadow-xs transition-all active:scale-90 ${
-                        isFeatured
-                          ? 'bg-amber-400 text-amber-950 font-bold'
-                          : 'bg-white/90 text-neutral-400 hover:text-amber-500 hover:bg-white'
-                      }`}
-                      title={isFeatured ? 'Remover dos Destaques' : 'Destacar na Loja'}
-                    >
-                      <Star className={`w-3.5 h-3.5 ${isFeatured ? 'fill-current' : ''}`} />
-                    </button>
-
-                    {/* Toggle Active / Hidden */}
-                    <button
-                      onClick={() => toggleProductActive(product.id)}
-                      className={`p-1.5 rounded-full shadow-xs transition-all active:scale-90 ${
-                        isActive
-                          ? 'bg-emerald-600 text-white'
-                          : 'bg-neutral-800 text-neutral-300'
-                      }`}
-                      title={isActive ? 'Clique para ocultar produto' : 'Clique para ativar na loja'}
-                    >
-                      {isActive ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
-                    </button>
-                  </div>
-
-                  {/* Stock Pill on Bottom Image */}
-                  <div className="absolute bottom-2 left-2 right-2 bg-black/75 backdrop-blur-md text-white px-2.5 py-1 rounded-xl text-[10px] flex items-center justify-between font-medium">
-                    <span className="flex items-center gap-1">
-                      <span className={`w-1.5 h-1.5 rounded-full ${product.stockTotal > 0 ? 'bg-emerald-400' : 'bg-red-400'}`} />
-                      {product.stockTotal > 0 ? `${product.stockTotal} un em Manaus` : 'Esgotado'}
-                    </span>
-                    <span className="text-neutral-300 font-normal">
-                      {product.sizes?.length || 0} tamanhos
-                    </span>
-                  </div>
-                </div>
-
-                {/* Details */}
-                <div className="p-4 space-y-2.5">
-                  <div>
-                    <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-neutral-400">
-                      <span>{product.subcategory}</span>
-                      <span className={isActive ? 'text-emerald-700 font-extrabold' : 'text-neutral-400 font-semibold'}>
-                        {isActive ? '● Ativo' : '○ Oculto'}
-                      </span>
-                    </div>
-
-                    <h4 className="font-bold text-xs sm:text-sm text-neutral-900 line-clamp-1 mt-0.5">
-                      {product.name}
-                    </h4>
-
-                    {/* Price */}
-                    <div className="flex items-baseline gap-2 mt-1">
-                      <span className="text-base font-black text-black">
-                        {formatCurrencyBRL(product.price)}
-                      </span>
-                      {product.originalPrice && (
-                        <span className="text-xs text-neutral-400 line-through">
-                          {formatCurrencyBRL(product.originalPrice)}
+                      {product.comboOffer && (
+                        <span className="text-[9px] font-bold bg-amber-400 text-neutral-900 px-2 py-0.5 rounded-full shadow-xs">
+                          {product.comboOffer}
                         </span>
                       )}
                     </div>
-                  </div>
 
-                  {/* Colors & Sizes Summary */}
-                  <div className="space-y-1.5 text-[11px] pt-1 border-t border-neutral-100">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-neutral-400 font-medium shrink-0">Cores:</span>
-                      <div className="flex items-center gap-1 overflow-hidden">
-                        {product.colors?.map((c, i) => (
-                          <span
-                            key={i}
-                            className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0"
-                            style={{ backgroundColor: c.hex }}
-                            title={c.name}
-                          />
-                        ))}
-                      </div>
+                    {/* Top Right Quick Toggles: Featured Star & Visible Eye */}
+                    <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5 z-10">
+                      {/* Toggle Destaque */}
+                      <button
+                        onClick={() => toggleProductFeatured(product.id)}
+                        className={`p-1.5 rounded-full shadow-xs transition-all active:scale-90 ${
+                          isFeatured
+                            ? 'bg-amber-400 text-amber-950 font-bold'
+                            : 'bg-white/90 text-neutral-400 hover:text-amber-500 hover:bg-white'
+                        }`}
+                        title={isFeatured ? 'Remover dos Destaques' : 'Destacar na Loja'}
+                      >
+                        <Star className={`w-3.5 h-3.5 ${isFeatured ? 'fill-current' : ''}`} />
+                      </button>
+
+                      {/* Toggle Active / Hidden */}
+                      <button
+                        onClick={() => toggleProductActive(product.id)}
+                        className={`p-1.5 rounded-full shadow-xs transition-all active:scale-90 ${
+                          isActive
+                            ? 'bg-emerald-600 text-white'
+                            : 'bg-neutral-800 text-neutral-300'
+                        }`}
+                        title={isActive ? 'Clique para ocultar produto' : 'Clique para ativar na loja'}
+                      >
+                        {isActive ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+                      </button>
                     </div>
 
-                    <div className="flex items-center gap-1.5 text-neutral-600">
-                      <span className="text-neutral-400 font-medium shrink-0">Grade:</span>
-                      <span className="font-bold text-neutral-800 truncate">
-                        {product.sizes?.join(', ')}
+                    {/* Stock Pill on Bottom Image */}
+                    <div className="absolute bottom-2 left-2 right-2 bg-black/75 backdrop-blur-md text-white px-2.5 py-1 rounded-xl text-[10px] flex items-center justify-between font-medium">
+                      <span className="flex items-center gap-1">
+                        <span className={`w-1.5 h-1.5 rounded-full ${product.stockTotal > 0 ? 'bg-emerald-400' : 'bg-red-400'}`} />
+                        {product.stockTotal > 0 ? `${product.stockTotal} un em Manaus` : 'Esgotado'}
+                      </span>
+                      <span className="text-neutral-300 font-normal">
+                        {product.sizes?.length || 0} tamanhos
                       </span>
                     </div>
                   </div>
+
+                  {/* Details */}
+                  <div className="p-4 space-y-2.5">
+                    <div>
+                      <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                        <span>{product.subcategory}</span>
+                        <span className={isActive ? 'text-emerald-700 font-extrabold' : 'text-neutral-400 font-semibold'}>
+                          {isActive ? '● Ativo' : '○ Oculto'}
+                        </span>
+                      </div>
+
+                      <h4 className="font-bold text-xs sm:text-sm text-neutral-900 line-clamp-1 mt-0.5">
+                        {product.name}
+                      </h4>
+
+                      {/* Price */}
+                      <div className="flex items-baseline gap-2 mt-1">
+                        <span className="text-base font-black text-black">
+                          {formatCurrencyBRL(product.price)}
+                        </span>
+                        {product.originalPrice && (
+                          <span className="text-xs text-neutral-400 line-through">
+                            {formatCurrencyBRL(product.originalPrice)}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    {/* Colors & Sizes Summary */}
+                    <div className="space-y-1.5 text-[11px] pt-1 border-t border-neutral-100">
+                      <div className="flex items-center gap-1.5">
+                        <span className="text-neutral-400 font-medium shrink-0">Cores:</span>
+                        <div className="flex items-center gap-1 overflow-hidden">
+                          {product.colors?.map((c, i) => (
+                            <span
+                              key={i}
+                              className="w-3.5 h-3.5 rounded-full border border-black/20 shrink-0"
+                              style={{ backgroundColor: c.hex }}
+                              title={c.name}
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 text-neutral-600">
+                        <span className="text-neutral-400 font-medium shrink-0">Grade:</span>
+                        <span className="font-bold text-neutral-800 truncate">
+                          {product.sizes?.join(', ')}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Quick Stock & Actions Bar */}
+                <div className="p-3 bg-neutral-50/80 border-t border-neutral-100 flex items-center justify-between gap-2">
+                  {/* Fast Stock Stepper */}
+                  <div className="flex items-center border border-neutral-200 rounded-xl bg-white overflow-hidden shadow-2xs">
+                    <button
+                      onClick={() => handleQuickStock(product.id, -1)}
+                      className="w-7 h-7 flex items-center justify-center text-neutral-600 hover:bg-neutral-100 font-bold active:scale-95 text-xs"
+                      title="Diminuir estoque (-1)"
+                    >
+                      -
+                    </button>
+                    <span className="w-8 text-center text-xs font-black text-neutral-900">
+                      {product.stockTotal}
+                    </span>
+                    <button
+                      onClick={() => handleQuickStock(product.id, +1)}
+                      className="w-7 h-7 flex items-center justify-center text-neutral-600 hover:bg-neutral-100 font-bold active:scale-95 text-xs"
+                      title="Aumentar estoque (+1)"
+                    >
+                      +
+                    </button>
+                  </div>
+
+                  {/* Edit & Delete Buttons */}
+                  <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => handleOpenEdit(product)}
+                      className="px-3 py-1.5 bg-black hover:bg-neutral-800 text-white text-xs font-bold rounded-xl flex items-center gap-1 transition-all active:scale-95"
+                      title="Editar produto"
+                    >
+                      <Edit2 className="w-3 h-3" />
+                      <span>Editar</span>
+                    </button>
+
+                    <button
+                      onClick={() => handleDelete(product)}
+                      className="p-1.5 text-neutral-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
+                      title="Excluir produto"
+                    >
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
                 </div>
               </div>
+            );
+          })}
+        </div>
+      ) : (
+        /* Table View: Fast Stock Management Spreadsheet */
+        <div className="bg-white rounded-3xl border border-neutral-200 shadow-xs overflow-hidden">
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="bg-neutral-50/80 border-b border-neutral-200/80 text-[10px] font-bold uppercase tracking-wider text-neutral-500">
+                  <th className="py-3 px-4">Produto & Categoria</th>
+                  <th className="py-3 px-3">Preço</th>
+                  <th className="py-3 px-3">Estoque Rápido</th>
+                  <th className="py-3 px-3">Tamanhos & Cores</th>
+                  <th className="py-3 px-3 text-center">Destaque</th>
+                  <th className="py-3 px-3 text-center">Visibilidade</th>
+                  <th className="py-3 px-4 text-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-neutral-100">
+                {sortedProducts.map((product) => {
+                  const isActive = product.isActive ?? true;
+                  const isFeatured = product.badge === 'Destaque';
+                  const isLowStock = product.stockTotal > 0 && product.stockTotal <= 3;
+                  const isOutOfStock = product.stockTotal === 0;
 
-              {/* Bottom Quick Stock & Actions Bar */}
-              <div className="p-3 bg-neutral-50/80 border-t border-neutral-100 flex items-center justify-between gap-2">
-                {/* Fast Stock Stepper */}
-                <div className="flex items-center border border-neutral-200 rounded-xl bg-white overflow-hidden shadow-2xs">
-                  <button
-                    onClick={() => handleQuickStock(product.id, -1)}
-                    className="w-7 h-7 flex items-center justify-center text-neutral-600 hover:bg-neutral-100 font-bold active:scale-95 text-xs"
-                    title="Diminuir estoque (-1)"
-                  >
-                    -
-                  </button>
-                  <span className="w-8 text-center text-xs font-black text-neutral-900">
-                    {product.stockTotal}
-                  </span>
-                  <button
-                    onClick={() => handleQuickStock(product.id, +1)}
-                    className="w-7 h-7 flex items-center justify-center text-neutral-600 hover:bg-neutral-100 font-bold active:scale-95 text-xs"
-                    title="Aumentar estoque (+1)"
-                  >
-                    +
-                  </button>
-                </div>
+                  return (
+                    <tr
+                      key={product.id}
+                      className={`hover:bg-neutral-50/80 transition-colors ${
+                        !isActive ? 'opacity-60 bg-neutral-50/40' : ''
+                      }`}
+                    >
+                      {/* Product Thumbnail & Details */}
+                      <td className="py-3 px-4">
+                        <div className="flex items-center gap-3">
+                          <div className="relative w-12 h-14 rounded-xl bg-neutral-100 border border-neutral-200 overflow-hidden shrink-0">
+                            <Image
+                              src={product.image}
+                              alt={product.name}
+                              fill
+                              sizes="48px"
+                              className="object-contain p-0.5"
+                            />
+                          </div>
+                          <div className="min-w-0">
+                            <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider block truncate">
+                              {product.subcategory}
+                            </span>
+                            <span className="font-extrabold text-neutral-900 block truncate max-w-xs sm:max-w-sm">
+                              {product.name}
+                            </span>
+                            <div className="flex items-center gap-1.5 mt-0.5">
+                              <span className="text-[9px] font-black bg-neutral-900 text-white px-1.5 py-0.2 rounded uppercase">
+                                {product.badge}
+                              </span>
+                              {product.comboOffer && (
+                                <span className="text-[9px] font-bold bg-amber-400 text-neutral-900 px-1.5 py-0.2 rounded">
+                                  {product.comboOffer}
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
 
-                {/* Edit & Delete Buttons */}
-                <div className="flex items-center gap-1">
-                  <button
-                    onClick={() => handleOpenEdit(product)}
-                    className="px-3 py-1.5 bg-black hover:bg-neutral-800 text-white text-xs font-bold rounded-xl flex items-center gap-1 transition-all active:scale-95"
-                    title="Editar produto"
-                  >
-                    <Edit2 className="w-3 h-3" />
-                    <span>Editar</span>
-                  </button>
+                      {/* Price */}
+                      <td className="py-3 px-3 whitespace-nowrap">
+                        <div className="font-black text-neutral-900">
+                          {formatCurrencyBRL(product.price)}
+                        </div>
+                        {product.originalPrice && (
+                          <div className="text-[10px] text-neutral-400 line-through">
+                            {formatCurrencyBRL(product.originalPrice)}
+                          </div>
+                        )}
+                      </td>
 
-                  <button
-                    onClick={() => handleDelete(product)}
-                    className="p-1.5 text-neutral-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all"
-                    title="Excluir produto"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          );
-        })}
-      </div>
+                      {/* Stock Stepper */}
+                      <td className="py-3 px-3 whitespace-nowrap">
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center border border-neutral-200 rounded-lg bg-neutral-50 overflow-hidden shadow-2xs">
+                            <button
+                              onClick={() => handleQuickStock(product.id, -1)}
+                              className="w-6 h-6 flex items-center justify-center text-neutral-600 hover:bg-neutral-200 font-bold active:scale-95 text-xs"
+                              title="Diminuir estoque (-1)"
+                            >
+                              -
+                            </button>
+                            <span className="w-7 text-center text-xs font-black text-neutral-900">
+                              {product.stockTotal}
+                            </span>
+                            <button
+                              onClick={() => handleQuickStock(product.id, +1)}
+                              className="w-6 h-6 flex items-center justify-center text-neutral-600 hover:bg-neutral-200 font-bold active:scale-95 text-xs"
+                              title="Aumentar estoque (+1)"
+                            >
+                              +
+                            </button>
+                          </div>
+                          {isOutOfStock ? (
+                            <span className="text-[10px] font-extrabold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
+                              Esgotado
+                            </span>
+                          ) : isLowStock ? (
+                            <span className="text-[10px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                              Baixo ({product.stockTotal} un)
+                            </span>
+                          ) : (
+                            <span className="text-[10px] font-medium text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full">
+                              Ok ({product.stockTotal} un)
+                            </span>
+                          )}
+                        </div>
+                      </td>
+
+                      {/* Sizes & Colors */}
+                      <td className="py-3 px-3">
+                        <div className="text-[11px] font-semibold text-neutral-700 truncate max-w-[140px]">
+                          {product.sizes?.join(', ') || 'Único'}
+                        </div>
+                        <div className="flex items-center gap-1 mt-1">
+                          {product.colors?.slice(0, 4).map((c, i) => (
+                            <span
+                              key={i}
+                              className="w-3 h-3 rounded-full border border-black/20 shrink-0"
+                              style={{ backgroundColor: c.hex }}
+                              title={c.name}
+                            />
+                          ))}
+                          {product.colors && product.colors.length > 4 && (
+                            <span className="text-[9px] text-neutral-400 font-bold">
+                              +{product.colors.length - 4}
+                            </span>
+                          )}
+                        </div>
+                      </td>
+
+                      {/* Featured */}
+                      <td className="py-3 px-3 text-center whitespace-nowrap">
+                        <button
+                          onClick={() => toggleProductFeatured(product.id)}
+                          className={`p-1.5 rounded-full transition-all active:scale-90 ${
+                            isFeatured
+                              ? 'bg-amber-400 text-amber-950 font-bold shadow-xs'
+                              : 'text-neutral-400 hover:text-amber-500 hover:bg-amber-50'
+                          }`}
+                          title={isFeatured ? 'Remover dos Destaques' : 'Destacar na Loja'}
+                        >
+                          <Star className={`w-4 h-4 ${isFeatured ? 'fill-current' : ''}`} />
+                        </button>
+                      </td>
+
+                      {/* Visibility Toggle */}
+                      <td className="py-3 px-3 text-center whitespace-nowrap">
+                        <button
+                          onClick={() => toggleProductActive(product.id)}
+                          className={`px-2.5 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 mx-auto transition-all ${
+                            isActive
+                              ? 'bg-emerald-100 text-emerald-800 hover:bg-emerald-200'
+                              : 'bg-neutral-200 text-neutral-600 hover:bg-neutral-300'
+                          }`}
+                          title={isActive ? 'Ocultar da Vitrine' : 'Tornar Visível'}
+                        >
+                          {isActive ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
+                          <span>{isActive ? 'Ativo' : 'Oculto'}</span>
+                        </button>
+                      </td>
+
+                      {/* Actions */}
+                      <td className="py-3 px-4 text-right whitespace-nowrap">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <button
+                            onClick={() => handleOpenEdit(product)}
+                            className="p-1.5 rounded-lg bg-neutral-100 hover:bg-black hover:text-white text-neutral-700 transition-colors"
+                            title="Editar produto"
+                          >
+                            <Edit2 className="w-3.5 h-3.5" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(product)}
+                            className="p-1.5 rounded-lg text-neutral-400 hover:text-red-600 hover:bg-red-50 transition-colors"
+                            title="Excluir produto"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
 
       {/* ========================================================
           CREATE / EDIT PRODUCT MODAL (COMPLETE & FLUID)

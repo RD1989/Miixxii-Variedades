@@ -33,8 +33,13 @@ import {
   Eye,
   Clock,
   ShieldCheck,
+  AlertTriangle,
+  Calendar,
+  ArrowRight,
+  Copy,
+  Plus,
 } from 'lucide-react';
-import { useStore } from '@/store/useStore';
+import { useStore, AdminOrder } from '@/store/useStore';
 import { AdminLogin } from '@/components/admin/AdminLogin';
 import { AdminKanbanBoard } from '@/components/admin/AdminKanbanBoard';
 import { AdminProductManager } from '@/components/admin/AdminProductManager';
@@ -107,6 +112,48 @@ export default function AdminPage() {
   const activeAttendantsCount = attendants.filter((a) => a.isActive !== false).length;
   const activeCategoriesCount = (categories || []).filter((c) => c.isActive !== false).length;
   const activeSlidesCount = (carouselSlides || []).filter((s) => s.isActive !== false).length;
+
+  const averageTicket = adminOrders.length > 0 ? totalRevenue / adminOrders.length : 0;
+  const criticalStockItems = products.filter((p) => p.stockTotal <= 2);
+  const recentOrders = [...adminOrders].slice(0, 5);
+
+  const kanbanStages = [
+    { label: 'Novos Leads', count: adminOrders.filter((o) => o.status === 'Novo Lead').length, color: 'bg-amber-500', dot: 'bg-amber-500' },
+    { label: 'Em Atendimento', count: adminOrders.filter((o) => o.status === 'Em Atendimento').length, color: 'bg-blue-500', dot: 'bg-blue-500' },
+    { label: 'Pagamento Confirmado', count: adminOrders.filter((o) => o.status === 'Pagamento Confirmado').length, color: 'bg-emerald-500', dot: 'bg-emerald-500' },
+    { label: 'Separando Estoque', count: adminOrders.filter((o) => o.status === 'Separando Estoque').length, color: 'bg-purple-500', dot: 'bg-purple-500' },
+    { label: 'Saiu p/ Entrega', count: adminOrders.filter((o) => o.status === 'Saiu para Entrega').length, color: 'bg-indigo-500', dot: 'bg-indigo-500' },
+    { label: 'Concluído', count: adminOrders.filter((o) => o.status === 'Concluído').length, color: 'bg-green-600', dot: 'bg-green-600' },
+  ];
+
+  const handleQuickDispatchMotoboy = (order: AdminOrder) => {
+    const text = `🛵 *SOLICITAÇÃO DE MOTOBOY - MIIXXIIE VARIEDADES*
+------------------------------------------------
+📍 *Destino:* ${order.deliveryMethod === 'retirada' ? 'Retirada no Showroom (Vieiralves)' : `${order.deliveryAddress || order.neighborhood || 'Manaus - AM'}`}
+👤 *Cliente:* ${order.customer}
+📱 *Telefone:* ${order.customerPhone || 'A combinar'}
+💰 *Valor Pedido:* ${formatCurrencyBRL(order.total)}
+📦 *Peças:* ${order.itemsList || `${order.itemsCount} peças`}
+${order.notes ? `📝 *Observação:* ${order.notes}` : ''}
+------------------------------------------------`;
+    if (navigator?.clipboard) {
+      navigator.clipboard.writeText(text);
+      alert('Dados de entrega copiados para a área de transferência! Cole no WhatsApp do motoboy.');
+    }
+  };
+
+  const handleOpenCustomerWhatsApp = (phone?: string, customerName?: string) => {
+    const raw = (phone || '').replace(/\D/g, '');
+    let fullPhone = raw;
+    if (fullPhone.length === 10 || fullPhone.length === 11) {
+      fullPhone = `55${fullPhone}`;
+    }
+    if (!fullPhone) {
+      fullPhone = '5592986137969';
+    }
+    const url = `https://wa.me/${fullPhone}?text=${encodeURIComponent(`Olá ${customerName || ''}! Tudo bem? Aqui é da MIIXXIIE Variedades falando sobre seu pedido.`)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   // Traditional, Organized Menu Structure in 4 Logical Groups
   const menuGroups: MenuGroup[] = [
@@ -680,13 +727,100 @@ export default function AdminPage() {
 
         {/* Workspace Content Canvas */}
         <div className="p-4 sm:p-6 lg:p-8 space-y-6 max-w-7xl">
-          {/* TAB 1: DASHBOARD (VISÃO GERAL) */}
+          {/* TAB 1: DASHBOARD (VISÃO GERAL EXECUTIVA) */}
           {activeTab === 'dashboard' && (
             <div className="space-y-6">
+              {/* Executive Operational Banner */}
+              <div className="bg-white rounded-3xl border border-neutral-200 p-5 sm:p-6 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black uppercase tracking-wider bg-black text-white px-2.5 py-0.5 rounded-full">
+                      Manaus - AM
+                    </span>
+                    <span className="text-xs text-neutral-500 font-semibold flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5 text-neutral-400" />
+                      Operação em Tempo Real
+                    </span>
+                  </div>
+                  <h2 className="text-xl sm:text-2xl font-black text-neutral-900 tracking-tight">
+                    Painel de Controle Executivo
+                  </h2>
+                  <p className="text-xs text-neutral-500">
+                    Showroom físico no Vieiralves & Atendimento personalizado no WhatsApp com Maria e Carlos.
+                  </p>
+                </div>
+
+                {/* Quick Action Buttons */}
+                <div className="flex flex-wrap items-center gap-2 w-full md:w-auto">
+                  <button
+                    onClick={() => handleTabChange('produtos')}
+                    className="px-4 py-2 bg-black hover:bg-neutral-800 text-white text-xs font-extrabold rounded-2xl flex items-center gap-1.5 shadow-xs transition-all active:scale-95"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Cadastrar Peça</span>
+                  </button>
+                  <button
+                    onClick={() => handleTabChange('kanban')}
+                    className="px-4 py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-bold rounded-2xl flex items-center gap-1.5 transition-all active:scale-95"
+                  >
+                    <Kanban className="w-3.5 h-3.5" />
+                    <span>Ver Kanban</span>
+                  </button>
+                  <button
+                    onClick={() => handleTabChange('entregas')}
+                    className="px-4 py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-800 text-xs font-bold rounded-2xl flex items-center gap-1.5 transition-all active:scale-95"
+                  >
+                    <Truck className="w-3.5 h-3.5" />
+                    <span>Entregas Manaus</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Low Stock Emergency Alert Bar */}
+              {criticalStockItems.length > 0 && (
+                <div className="bg-amber-50 border border-amber-200 rounded-3xl p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xs animate-in fade-in">
+                  <div className="flex items-start gap-3">
+                    <div className="w-9 h-9 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-xs">
+                      <AlertTriangle className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h4 className="font-extrabold text-sm text-amber-950">
+                        Alerta de Estoque Crítico ({criticalStockItems.length} {criticalStockItems.length === 1 ? 'modelo' : 'modelos'})
+                      </h4>
+                      <p className="text-xs text-amber-800 mt-0.5">
+                        Algumas peças estão esgotadas ou com apenas 1 ou 2 unidades disponíveis no showroom de Manaus.
+                      </p>
+                      <div className="flex flex-wrap gap-1.5 mt-2">
+                        {criticalStockItems.slice(0, 4).map((p) => (
+                          <span
+                            key={p.id}
+                            className="text-[10px] bg-white border border-amber-300 text-amber-900 font-bold px-2 py-0.5 rounded-full"
+                          >
+                            {p.name} ({p.stockTotal === 0 ? 'Esgotado' : `${p.stockTotal} un`})
+                          </span>
+                        ))}
+                        {criticalStockItems.length > 4 && (
+                          <span className="text-[10px] text-amber-700 font-semibold self-center">
+                            +{criticalStockItems.length - 4} outros
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => handleTabChange('produtos')}
+                    className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-extrabold rounded-xl transition-all shadow-xs shrink-0 active:scale-95"
+                  >
+                    Repor / Ajustar no Estoque
+                  </button>
+                </div>
+              )}
+
               {/* Executive KPI Cards */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3.5">
                 <div className="bg-white p-5 rounded-3xl border border-neutral-200 shadow-xs space-y-2">
-                  <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                  <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
                     Pedidos no Kanban
                   </span>
                   <div className="flex items-baseline justify-between">
@@ -694,14 +828,14 @@ export default function AdminPage() {
                       {adminOrders.length}
                     </span>
                     <span className="text-[10px] bg-blue-100 text-blue-800 font-bold px-2 py-0.5 rounded-full">
-                      Tempo Real
+                      Ativos
                     </span>
                   </div>
-                  <p className="text-[11px] text-neutral-400">Fluxo de pedidos no WhatsApp</p>
+                  <p className="text-[11px] text-neutral-500">Fluxo em andamento no WhatsApp</p>
                 </div>
 
                 <div className="bg-white p-5 rounded-3xl border border-neutral-200 shadow-xs space-y-2">
-                  <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                  <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
                     Faturamento do Fluxo
                   </span>
                   <div className="flex items-baseline justify-between">
@@ -709,14 +843,29 @@ export default function AdminPage() {
                       {formatCurrencyBRL(totalRevenue)}
                     </span>
                     <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
-                      Ativo
+                      Total
                     </span>
                   </div>
-                  <p className="text-[11px] text-neutral-400">Total em pedidos registrados</p>
+                  <p className="text-[11px] text-neutral-500">Soma dos pedidos registrados</p>
                 </div>
 
                 <div className="bg-white p-5 rounded-3xl border border-neutral-200 shadow-xs space-y-2">
-                  <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                  <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
+                    Ticket Médio
+                  </span>
+                  <div className="flex items-baseline justify-between">
+                    <span className="text-xl sm:text-2xl font-black text-neutral-900">
+                      {formatCurrencyBRL(averageTicket)}
+                    </span>
+                    <span className="text-[10px] bg-purple-100 text-purple-800 font-bold px-2 py-0.5 rounded-full">
+                      Médio
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-neutral-500">Média por pedido concluído</p>
+                </div>
+
+                <div className="bg-white p-5 rounded-3xl border border-neutral-200 shadow-xs space-y-2">
+                  <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
                     Mostruário de Peças
                   </span>
                   <div className="flex items-baseline justify-between">
@@ -727,11 +876,11 @@ export default function AdminPage() {
                       {activeCategoriesCount} Categorias
                     </span>
                   </div>
-                  <p className="text-[11px] text-neutral-400">Vestidos, Conjuntos, Calças...</p>
+                  <p className="text-[11px] text-neutral-500">Catálogo ativo em Manaus</p>
                 </div>
 
                 <div className="bg-white p-5 rounded-3xl border border-neutral-200 shadow-xs space-y-2">
-                  <span className="text-xs font-bold text-neutral-400 uppercase tracking-wider">
+                  <span className="text-[11px] font-bold text-neutral-400 uppercase tracking-wider">
                     Cliques nos WhatsApps
                   </span>
                   <div className="flex items-baseline justify-between">
@@ -739,10 +888,49 @@ export default function AdminPage() {
                       {mariaLeads + carlosLeads}
                     </span>
                     <span className="text-[10px] bg-pink-100 text-pink-800 font-bold px-2 py-0.5 rounded-full">
-                      Maria & Carlos
+                      Equipe
                     </span>
                   </div>
-                  <p className="text-[11px] text-neutral-400">Alternância dinâmica 50/50</p>
+                  <p className="text-[11px] text-neutral-500">Maria ({mariaLeads}) • Carlos ({carlosLeads})</p>
+                </div>
+              </div>
+
+              {/* Sales Funnel Progress Overview */}
+              <div className="bg-white p-5 sm:p-6 rounded-3xl border border-neutral-200 shadow-xs space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h3 className="font-extrabold text-sm sm:text-base text-neutral-900">
+                      Funil de Atendimento & Vendas no WhatsApp
+                    </h3>
+                    <p className="text-xs text-neutral-500">
+                      Progresso de pedidos desde a chegada do lead até a entrega em Manaus
+                    </p>
+                  </div>
+                  <button
+                    onClick={() => handleTabChange('kanban')}
+                    className="text-xs font-bold text-black hover:underline flex items-center gap-1"
+                  >
+                    <span>Abrir Quadro</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 pt-1">
+                  {kanbanStages.map((stage, idx) => (
+                    <div
+                      key={idx}
+                      onClick={() => handleTabChange('kanban')}
+                      className="p-3 bg-neutral-50 hover:bg-neutral-100 border border-neutral-200/80 rounded-2xl transition-all cursor-pointer space-y-1.5"
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <span className={`w-2 h-2 rounded-full ${stage.dot}`} />
+                        <span className="text-[11px] font-bold text-neutral-600 truncate">{stage.label}</span>
+                      </div>
+                      <div className="text-lg font-black text-neutral-900">
+                        {stage.count} <span className="text-[10px] font-normal text-neutral-400">pedidos</span>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -806,20 +994,106 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Kanban Preview */}
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <h3 className="font-extrabold text-base text-neutral-900">
-                    Visão Rápida do Kanban de Pedidos
-                  </h3>
+              {/* Recent Orders Table */}
+              <div className="bg-white rounded-3xl border border-neutral-200 shadow-xs p-5 sm:p-6 space-y-4">
+                <div className="flex items-center justify-between pb-3 border-b border-neutral-100">
+                  <div>
+                    <h3 className="font-extrabold text-base text-neutral-900">
+                      Últimos Pedidos Recebidos no WhatsApp
+                    </h3>
+                    <p className="text-xs text-neutral-500">
+                      Ações imediatas de atendimento e despacho por motoboy em Manaus
+                    </p>
+                  </div>
                   <button
                     onClick={() => handleTabChange('kanban')}
-                    className="text-xs font-bold text-black hover:underline"
+                    className="text-xs font-bold text-black hover:underline flex items-center gap-1"
                   >
-                    Abrir Kanban Completo →
+                    <span>Ver Todos os Pedidos</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
                   </button>
                 </div>
-                <AdminKanbanBoard />
+
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs border-collapse">
+                    <thead>
+                      <tr className="border-b border-neutral-200/80 text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+                        <th className="py-2.5 px-3">Cliente & Contato</th>
+                        <th className="py-2.5 px-3">Peças Selecionadas</th>
+                        <th className="py-2.5 px-3">Valor Total</th>
+                        <th className="py-2.5 px-3">Destino / Entrega</th>
+                        <th className="py-2.5 px-3">Atendente</th>
+                        <th className="py-2.5 px-3">Status</th>
+                        <th className="py-2.5 px-3 text-right">Ações Rápidas</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-neutral-100">
+                      {recentOrders.map((ord) => (
+                        <tr key={ord.id} className="hover:bg-neutral-50/80 transition-colors">
+                          <td className="py-3 px-3">
+                            <span className="font-extrabold text-neutral-900 block">{ord.customer}</span>
+                            <span className="text-[11px] text-neutral-500">{ord.customerPhone || 'Não informado'}</span>
+                          </td>
+                          <td className="py-3 px-3 max-w-[200px]">
+                            <span className="font-medium text-neutral-800 line-clamp-1">
+                              {ord.itemsList || `${ord.itemsCount} peças selecionadas`}
+                            </span>
+                            <span className="text-[10px] text-neutral-400">
+                              {ord.itemsCount} {ord.itemsCount === 1 ? 'peça' : 'peças'}
+                            </span>
+                          </td>
+                          <td className="py-3 px-3 font-black text-neutral-900 whitespace-nowrap">
+                            {formatCurrencyBRL(ord.total)}
+                          </td>
+                          <td className="py-3 px-3">
+                            <span className="text-neutral-800 font-semibold block truncate max-w-[140px]">
+                              {ord.deliveryMethod === 'retirada' ? 'Retirada no Showroom' : ord.neighborhood || 'Manaus'}
+                            </span>
+                            <span className="text-[10px] text-neutral-400">
+                              {ord.deliveryMethod === 'retirada' ? 'Sem frete' : 'Motoboy a combinar'}
+                            </span>
+                          </td>
+                          <td className="py-3 px-3 whitespace-nowrap">
+                            <span
+                              className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                                ord.attendantName?.toLowerCase().includes('maria')
+                                  ? 'bg-pink-100 text-pink-800'
+                                  : 'bg-blue-100 text-blue-800'
+                              }`}
+                            >
+                              {ord.attendantName || 'Equipe'}
+                            </span>
+                          </td>
+                          <td className="py-3 px-3 whitespace-nowrap">
+                            <span className="text-[10px] font-extrabold bg-neutral-100 text-neutral-800 px-2 py-0.5 rounded-full border border-neutral-200">
+                              {ord.status}
+                            </span>
+                          </td>
+                          <td className="py-3 px-3 text-right whitespace-nowrap">
+                            <div className="flex items-center justify-end gap-1.5">
+                              <button
+                                onClick={() => handleOpenCustomerWhatsApp(ord.customerPhone, ord.customer)}
+                                className="px-2.5 py-1 bg-[#25D366] hover:bg-[#1EBE5D] text-white text-[11px] font-bold rounded-lg flex items-center gap-1 shadow-2xs transition-all active:scale-95"
+                                title="Abrir conversa no WhatsApp"
+                              >
+                                <MessageCircle className="w-3 h-3 fill-current" />
+                                <span>WhatsApp</span>
+                              </button>
+                              <button
+                                onClick={() => handleQuickDispatchMotoboy(ord)}
+                                className="px-2 py-1 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 text-[11px] font-bold rounded-lg flex items-center gap-1 transition-all active:scale-95"
+                                title="Copiar ficha de entrega para motoboy"
+                              >
+                                <Copy className="w-3 h-3" />
+                                <span className="hidden sm:inline">Despacho</span>
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </div>
           )}

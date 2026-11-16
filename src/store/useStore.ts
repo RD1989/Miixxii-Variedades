@@ -452,6 +452,7 @@ interface StoreState {
   // Orders & Kanban Board
   adminOrders: AdminOrder[];
   addAdminOrder: (order: AdminOrder) => void;
+  updateAdminOrder: (orderId: string, data: Partial<AdminOrder>) => void;
   updateOrderStatus: (orderId: string, status: KanbanStatus) => void;
   moveKanbanOrder: (orderId: string, status: KanbanStatus) => void;
   deleteAdminOrder: (orderId: string) => void;
@@ -1017,6 +1018,21 @@ export const useStore = create<StoreState>()(
             notes: order.notes,
           }).then();
         }
+      },
+
+      updateAdminOrder: (orderId, data) => {
+        set((state) => ({
+          adminOrders: state.adminOrders.map((ord) =>
+            ord.id === orderId
+              ? {
+                  ...ord,
+                  ...data,
+                  statusBadge: data.status ? (KANBAN_BADGE_MAP[data.status] || ord.statusBadge) : ord.statusBadge,
+                }
+              : ord
+          ),
+        }));
+        get().addActivityLog('Pedido Atualizado', `Pedido ${orderId} foi modificado.`);
       },
 
       updateOrderStatus: (orderId, status) => {
