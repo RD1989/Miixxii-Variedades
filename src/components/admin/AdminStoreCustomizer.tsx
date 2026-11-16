@@ -40,7 +40,13 @@ import {
 import { CarouselSlide } from '@/types/admin';
 import { CATEGORIES } from '@/data/mockData';
 
-export const AdminStoreCustomizer: React.FC = () => {
+export interface AdminStoreCustomizerProps {
+  initialSection?: 'all' | 'banners' | 'cms' | 'supabase';
+}
+
+export const AdminStoreCustomizer: React.FC<AdminStoreCustomizerProps> = ({
+  initialSection = 'all',
+}) => {
   const {
     storeCMS,
     updateStoreCMS,
@@ -57,6 +63,16 @@ export const AdminStoreCustomizer: React.FC = () => {
     resetCarouselToDefaults,
     categories,
   } = useStore();
+
+  const [activeSection, setActiveSection] = useState<'all' | 'banners' | 'cms' | 'supabase'>(
+    initialSection
+  );
+
+  useEffect(() => {
+    if (initialSection) {
+      setActiveSection(initialSection);
+    }
+  }, [initialSection]);
 
   const storeCategories = categories && categories.length > 0 ? categories : CATEGORIES;
 
@@ -275,9 +291,61 @@ export const AdminStoreCustomizer: React.FC = () => {
         </div>
       )}
 
+      {/* Sub-navigation tabs */}
+      <div className="flex flex-wrap items-center gap-2 p-1.5 bg-neutral-100 rounded-2xl border border-neutral-200">
+        <button
+          type="button"
+          onClick={() => setActiveSection('all')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
+            activeSection === 'all'
+              ? 'bg-black text-white shadow-xs'
+              : 'text-neutral-600 hover:text-black hover:bg-neutral-200/60'
+          }`}
+        >
+          Todas as Seções
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveSection('banners')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            activeSection === 'banners'
+              ? 'bg-black text-white shadow-xs'
+              : 'text-neutral-600 hover:text-black hover:bg-neutral-200/60'
+          }`}
+        >
+          <Layers className="w-3.5 h-3.5" />
+          <span>Banners & Carrossel</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveSection('cms')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            activeSection === 'cms'
+              ? 'bg-black text-white shadow-xs'
+              : 'text-neutral-600 hover:text-black hover:bg-neutral-200/60'
+          }`}
+        >
+          <Store className="w-3.5 h-3.5" />
+          <span>Identidade & Contatos</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveSection('supabase')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 ${
+            activeSection === 'supabase'
+              ? 'bg-black text-white shadow-xs'
+              : 'text-neutral-600 hover:text-black hover:bg-neutral-200/60'
+          }`}
+        >
+          <Database className="w-3.5 h-3.5" />
+          <span>Supabase (Nuvem)</span>
+        </button>
+      </div>
+
       {/* ==============================================================
           SECTION 1: CAROUSEL BANNER MANAGER (CORE USER REQUEST)
           ============================================================== */}
+      {(activeSection === 'all' || activeSection === 'banners') && (
       <div className="bg-white rounded-2xl border border-neutral-200 p-5 sm:p-6 shadow-xs space-y-5">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-neutral-200 gap-3">
           <div className="flex items-center gap-2.5">
@@ -481,10 +549,12 @@ export const AdminStoreCustomizer: React.FC = () => {
           ))}
         </div>
       </div>
+      )}
 
       {/* ==============================================================
           SECTION 2: SUPABASE CLOUD DATABASE CONNECTION
           ============================================================== */}
+      {(activeSection === 'all' || activeSection === 'supabase') && (
       <div className="bg-white rounded-2xl border border-neutral-200 p-5 sm:p-6 shadow-xs space-y-4">
         <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
           <div className="flex items-center gap-2">
@@ -601,10 +671,12 @@ export const AdminStoreCustomizer: React.FC = () => {
           </a>
         </div>
       </div>
+      )}
 
       {/* ==============================================================
           SECTION 3: STORE GENERAL TEXTS & BRAND IDENTITY
           ============================================================== */}
+      {(activeSection === 'all' || activeSection === 'cms') && (
       <form onSubmit={handleSaveAll} className="space-y-6">
         <div className="bg-white rounded-2xl border border-neutral-200 p-5 sm:p-6 shadow-xs space-y-4">
           <div className="flex items-center gap-2 pb-3 border-b border-neutral-200">
@@ -849,6 +921,7 @@ export const AdminStoreCustomizer: React.FC = () => {
           </button>
         </div>
       </form>
+      )}
 
       {/* ==============================================================
           MODAL: EDITAR / CRIAR SLIDE DO CARROSSEL
