@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import {
@@ -90,20 +90,22 @@ export default function AdminPage() {
     carouselSlides,
   } = useStore();
 
+  const [isMounted, setIsMounted] = useState(false);
   const [activeTab, setActiveTab] = useState<AdminTab>('dashboard');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
-  // If not authenticated, show professional login screen
-  if (!isAdminLoggedIn) {
-    return <AdminLogin />;
-  }
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleTabChange = (tab: AdminTab) => {
     setActiveTab(tab);
     setIsMobileMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   const mariaLeads = attendants.find((a) => a.id === 'maria')?.clicksCount || 0;
@@ -283,6 +285,20 @@ ${order.notes ? `📝 *Observação:* ${order.notes}` : ''}
     }
     return { label: 'Visão Geral', groupName: 'Painel & Atendimento' };
   }, [activeTab, menuGroups]);
+
+  // Prevent hydration mismatch while rehydrating persisted store
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen bg-[#09090B] flex items-center justify-center">
+        <div className="w-8 h-8 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+      </div>
+    );
+  }
+
+  // If not authenticated, show professional login screen
+  if (!isAdminLoggedIn) {
+    return <AdminLogin />;
+  }
 
   return (
     <div className="min-h-screen bg-[#F8F8FA] flex flex-col md:flex-row text-neutral-900 font-sans selection:bg-black selection:text-white">
