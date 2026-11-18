@@ -55,8 +55,11 @@ export const ProductDetailModal: React.FC = () => {
         setSelectedSize(selectedProduct.sizes[0]);
       }
       if (selectedProduct.colors && selectedProduct.colors.length > 0) {
-        setSelectedColor(selectedProduct.colors[0]);
-        setActiveImage(selectedProduct.colors[0].image || selectedProduct.image);
+        const matchingColor =
+          selectedProduct.colors.find((c) => c.image === selectedProduct.image) ||
+          selectedProduct.colors[0];
+        setSelectedColor(matchingColor);
+        setActiveImage(matchingColor.image || selectedProduct.image);
       } else {
         setActiveImage(selectedProduct.image);
       }

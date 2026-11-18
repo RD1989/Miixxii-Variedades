@@ -1591,6 +1591,14 @@ export const AdminProductManager: React.FC = () => {
                   )}
                 </div>
 
+                {/* Cognitive Fidelity Rule Helper */}
+                <div className="p-3 bg-amber-50/90 border border-amber-200/80 rounded-2xl flex items-start gap-2.5 text-xs text-amber-950">
+                  <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-extrabold text-amber-900">Fidelidade Visual à Peça:</span> Cadastre a cor com foco exclusivo na <strong>peça principal</strong> do anúncio (ex.: para bermuda/short/calça, indique a cor da peça inferior e não da blusa da modelo).
+                  </div>
+                </div>
+
                 {/* Color Cards List */}
                 <div className="space-y-2.5">
                   {formColors.map((color, idx) => {
