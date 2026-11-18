@@ -669,20 +669,20 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/camisas-e-regatas/blusa-t-shirt-estampada-chic/1.png"
+        "image": "/images/catalog/camisas-e-regatas/blusa-t-shit/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/camisas-e-regatas/blusa-t-shirt-estampada-chic/2.png"
+        "image": "/images/catalog/camisas-e-regatas/blusa-t-shit/2.png"
       },
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/camisas-e-regatas/blusa-t-shirt-estampada-chic/3.png"
+        "image": "/images/catalog/camisas-e-regatas/blusa-t-shit/3.png"
       }
     ],
-    "image": "/images/catalog/camisas-e-regatas/blusa-t-shirt-estampada-chic/1.png",
+    "image": "/images/catalog/camisas-e-regatas/blusa-t-shit/1.png",
     "gallery": [
       "/images/catalog/camisas-e-regatas/blusa-t-shit/1.png",
       "/images/catalog/camisas-e-regatas/blusa-t-shit/2.png",
@@ -719,20 +719,20 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Terracota",
         "hex": "#C62828",
-        "image": "/images/catalog/camisas-e-regatas/camisa-lorena-linho/1.png"
+        "image": "/images/catalog/camisas-e-regatas/camisa-lorena/1.png"
       },
       {
         "name": "Caramelo / Bege Linho",
         "hex": "#D8C3A5",
-        "image": "/images/catalog/camisas-e-regatas/camisa-lorena-linho/2.png"
+        "image": "/images/catalog/camisas-e-regatas/camisa-lorena/2.png"
       },
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/camisas-e-regatas/camisa-lorena-linho/3.png"
+        "image": "/images/catalog/camisas-e-regatas/camisa-lorena/3.png"
       }
     ],
-    "image": "/images/catalog/camisas-e-regatas/camisa-lorena-linho/1.png",
+    "image": "/images/catalog/camisas-e-regatas/camisa-lorena/1.png",
     "gallery": [
       "/images/catalog/camisas-e-regatas/camisa-lorena/1.png",
       "/images/catalog/camisas-e-regatas/camisa-lorena/2.png",
@@ -769,20 +769,20 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/camisas-e-regatas/camiseta-basica-ribana/1.png"
+        "image": "/images/catalog/camisas-e-regatas/camisa-ribana/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/camisas-e-regatas/camiseta-basica-ribana/2.png"
+        "image": "/images/catalog/camisas-e-regatas/camisa-ribana/2.png"
       },
       {
         "name": "Cinza Mescla",
         "hex": "#838589",
-        "image": "/images/catalog/camisas-e-regatas/camiseta-basica-ribana/3.png"
+        "image": "/images/catalog/camisas-e-regatas/camisa-ribana/3.png"
       }
     ],
-    "image": "/images/catalog/camisas-e-regatas/camiseta-basica-ribana/1.png",
+    "image": "/images/catalog/camisas-e-regatas/camisa-ribana/1.png",
     "gallery": [
       "/images/catalog/camisas-e-regatas/camisa-ribana/1.png",
       "/images/catalog/camisas-e-regatas/camisa-ribana/2.png",
@@ -818,15 +818,15 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Azul Marinho",
         "hex": "#1A237E",
-        "image": "/images/catalog/camisas-e-regatas/camiseta-luara-decote-canoa/1.png"
+        "image": "/images/catalog/camisas-e-regatas/camiseta-luara/1.png"
       },
       {
         "name": "Estampado Animal Print",
         "hex": "#C49000",
-        "image": "/images/catalog/camisas-e-regatas/camiseta-luara-decote-canoa/2.png"
+        "image": "/images/catalog/camisas-e-regatas/camiseta-luara/2.png"
       }
     ],
-    "image": "/images/catalog/camisas-e-regatas/camiseta-luara-decote-canoa/1.png",
+    "image": "/images/catalog/camisas-e-regatas/camiseta-luara/1.png",
     "gallery": [
       "/images/catalog/camisas-e-regatas/camiseta-luara/1.png",
       "/images/catalog/camisas-e-regatas/camiseta-luara/2.png",
@@ -862,30 +862,30 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/camisas-e-regatas/regata-ribana-gola-alta/1.png"
+        "image": "/images/catalog/camisas-e-regatas/regata-ribana/1.png"
       },
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/camisas-e-regatas/regata-ribana-gola-alta/2.png"
+        "image": "/images/catalog/camisas-e-regatas/regata-ribana/2.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/camisas-e-regatas/regata-ribana-gola-alta/3.png"
+        "image": "/images/catalog/camisas-e-regatas/regata-ribana/3.png"
       },
       {
         "name": "Cinza Mescla",
         "hex": "#838589",
-        "image": "/images/catalog/camisas-e-regatas/regata-ribana-gola-alta/4.png"
+        "image": "/images/catalog/camisas-e-regatas/regata-ribana/4.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/camisas-e-regatas/regata-ribana-gola-alta/5.png"
+        "image": "/images/catalog/camisas-e-regatas/regata-ribana/5.png"
       }
     ],
-    "image": "/images/catalog/camisas-e-regatas/regata-ribana-gola-alta/1.png",
+    "image": "/images/catalog/camisas-e-regatas/regata-ribana/1.png",
     "gallery": [
       "/images/catalog/camisas-e-regatas/regata-ribana/1.png",
       "/images/catalog/camisas-e-regatas/regata-ribana/2.png",
@@ -922,15 +922,15 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-e-calca/1.png"
+        "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/1.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-e-calca/3.png"
+        "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/3.png"
       }
     ],
-    "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-e-calca/1.png",
+    "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/1.png",
     "gallery": [
       "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/1.png",
       "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/2.png",
@@ -967,15 +967,15 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla-alfaiataria/1.png"
+        "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla/1.png"
       },
       {
         "name": "Azul Royal",
         "hex": "#1E56A0",
-        "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla-alfaiataria/3.png"
+        "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla/3.png"
       }
     ],
-    "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla-alfaiataria/1.png",
+    "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla/1.png",
     "gallery": [
       "/images/catalog/conjuntos-de-calca/conjunto-sheyla/1.png",
       "/images/catalog/conjuntos-de-calca/conjunto-sheyla/2.png",
@@ -1012,35 +1012,35 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-kimono-e-short/1.png"
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/1.png"
       },
       {
         "name": "Verde Militar",
         "hex": "#556B2F",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-kimono-e-short/3.png"
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/3.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-kimono-e-short/4.png"
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/4.png"
       },
       {
         "name": "Azul Royal",
         "hex": "#1E56A0",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-kimono-e-short/6.png"
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/6.png"
       },
       {
         "name": "Pink Fúcsia",
         "hex": "#C2185B",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-kimono-e-short/7.png"
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/7.png"
       },
       {
         "name": "Azul Céu",
         "hex": "#64B5F6",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-kimono-e-short/8.png"
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/8.png"
       }
     ],
-    "image": "/images/catalog/conjuntos-de-shorts/conjunto-kimono-e-short/1.png",
+    "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/1.png",
     "gallery": [
       "/images/catalog/conjuntos-de-shorts/conjnto-kimono/1.png",
       "/images/catalog/conjuntos-de-shorts/conjnto-kimono/2.png",
@@ -1082,15 +1082,15 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella-colete-short/1.png"
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella/1.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella-colete-short/3.png"
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella/3.png"
       }
     ],
-    "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella-colete-short/1.png",
+    "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella/1.png",
     "gallery": [
       "/images/catalog/conjuntos-de-shorts/conjunto-bella/1.png",
       "/images/catalog/conjuntos-de-shorts/conjunto-bella/2.png",
@@ -1488,15 +1488,15 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiataria/1.png"
+        "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiateria/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiataria/2.png"
+        "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiateria/2.png"
       }
     ],
-    "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiataria/1.png",
+    "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiateria/1.png",
     "gallery": [
       "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiateria/1.png",
       "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiateria/2.png"
@@ -1576,30 +1576,30 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/chemises/chemise-keyla-curto/1.png"
+        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/1.png"
       },
       {
         "name": "Terracota",
         "hex": "#C62828",
-        "image": "/images/catalog/chemises/chemise-keyla-curto/3.png"
+        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/3.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/chemises/chemise-keyla-curto/4.png"
+        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/4.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/chemises/chemise-keyla-curto/5.png"
+        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/5.png"
       },
       {
         "name": "Verde Esmeralda",
         "hex": "#00695C",
-        "image": "/images/catalog/chemises/chemise-keyla-curto/7.png"
+        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/7.png"
       }
     ],
-    "image": "/images/catalog/chemises/chemise-keyla-curto/1.png",
+    "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/1.png",
     "gallery": [
       "/images/catalog/vestidos-curtos/chemise-keyla-curto/1.png",
       "/images/catalog/vestidos-curtos/chemise-keyla-curto/2.png",
@@ -1829,25 +1829,25 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Verde Oliva",
         "hex": "#6B8E23",
-        "image": "/images/catalog/vestidos-curtos/vestido-mayra/1.png"
+        "image": "/images/catalog/vestidos-curtos/vstido-mayra/1.png"
       },
       {
         "name": "Estampado Floral",
         "hex": "#4A6572",
-        "image": "/images/catalog/vestidos-curtos/vestido-mayra/2.png"
+        "image": "/images/catalog/vestidos-curtos/vstido-mayra/2.png"
       },
       {
         "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/vestido-mayra/3.png"
+        "image": "/images/catalog/vestidos-curtos/vstido-mayra/3.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-curtos/vestido-mayra/4.png"
+        "image": "/images/catalog/vestidos-curtos/vstido-mayra/4.png"
       }
     ],
-    "image": "/images/catalog/vestidos-curtos/vestido-mayra/1.png",
+    "image": "/images/catalog/vestidos-curtos/vstido-mayra/1.png",
     "gallery": [
       "/images/catalog/vestidos-curtos/vstido-mayra/1.png",
       "/images/catalog/vestidos-curtos/vstido-mayra/2.png",
@@ -1886,20 +1886,20 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Preto / Grafite",
         "hex": "#2F2F2F",
-        "image": "/images/catalog/chemises/vestido-selina/1.png"
+        "image": "/images/catalog/vestidos-curtos/vstido-selina/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/chemises/vestido-selina/2.png"
+        "image": "/images/catalog/vestidos-curtos/vstido-selina/2.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/chemises/vestido-selina/3.png"
+        "image": "/images/catalog/vestidos-curtos/vstido-selina/3.png"
       }
     ],
-    "image": "/images/catalog/chemises/vestido-selina/1.png",
+    "image": "/images/catalog/vestidos-curtos/vstido-selina/1.png",
     "gallery": [
       "/images/catalog/vestidos-curtos/vstido-selina/1.png",
       "/images/catalog/vestidos-curtos/vstido-selina/2.png",
@@ -1936,30 +1936,30 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/chemises/chemise-ivana-longo/1.png"
+        "image": "/images/catalog/vestidos-longos/chemise-ivana/1.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/chemises/chemise-ivana-longo/3.png"
+        "image": "/images/catalog/vestidos-longos/chemise-ivana/3.png"
       },
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/chemises/chemise-ivana-longo/6.png"
+        "image": "/images/catalog/vestidos-longos/chemise-ivana/6.png"
       },
       {
         "name": "Azul Marinho",
         "hex": "#1A237E",
-        "image": "/images/catalog/chemises/chemise-ivana-longo/7.png"
+        "image": "/images/catalog/vestidos-longos/chemise-ivana/7.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/chemises/chemise-ivana-longo/8.png"
+        "image": "/images/catalog/vestidos-longos/chemise-ivana/8.png"
       }
     ],
-    "image": "/images/catalog/chemises/chemise-ivana-longo/1.png",
+    "image": "/images/catalog/vestidos-longos/chemise-ivana/1.png",
     "gallery": [
       "/images/catalog/vestidos-longos/chemise-ivana/1.png",
       "/images/catalog/vestidos-longos/chemise-ivana/2.png",
@@ -2061,15 +2061,15 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Estampado Floral / Preto",
         "hex": "#4A6572",
-        "image": "/images/catalog/vestidos-longos/vestido-barbara/1.png"
+        "image": "/images/catalog/vestidos-longos/vestido-barata/1.png"
       },
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/vestidos-longos/vestido-barbara/3.png"
+        "image": "/images/catalog/vestidos-longos/vestido-barata/3.png"
       }
     ],
-    "image": "/images/catalog/vestidos-longos/vestido-barbara/1.png",
+    "image": "/images/catalog/vestidos-longos/vestido-barata/1.png",
     "gallery": [
       "/images/catalog/vestidos-longos/vestido-barata/1.png",
       "/images/catalog/vestidos-longos/vestido-barata/2.png",
@@ -2173,15 +2173,15 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/chemises/vestido-vitoria-longo/1.png"
+        "image": "/images/catalog/vestidos-longos/vestido-vitoria/1.png"
       },
       {
         "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/chemises/vestido-vitoria-longo/4.png"
+        "image": "/images/catalog/vestidos-longos/vestido-vitoria/4.png"
       }
     ],
-    "image": "/images/catalog/chemises/vestido-vitoria-longo/1.png",
+    "image": "/images/catalog/vestidos-longos/vestido-vitoria/1.png",
     "gallery": [
       "/images/catalog/vestidos-longos/vestido-vitoria/1.png",
       "/images/catalog/vestidos-longos/vestido-vitoria/2.png",
@@ -2283,25 +2283,25 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-midi/vestido-midi-farm/1.png"
+        "image": "/images/catalog/vestidos-midi/vestido-farm/1.png"
       },
       {
         "name": "Estampado Floral",
         "hex": "#4A6572",
-        "image": "/images/catalog/vestidos-midi/vestido-midi-farm/2.png"
+        "image": "/images/catalog/vestidos-midi/vestido-farm/2.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-midi/vestido-midi-farm/4.png"
+        "image": "/images/catalog/vestidos-midi/vestido-farm/4.png"
       },
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/vestidos-midi/vestido-midi-farm/5.png"
+        "image": "/images/catalog/vestidos-midi/vestido-farm/5.png"
       }
     ],
-    "image": "/images/catalog/vestidos-midi/vestido-midi-farm/1.png",
+    "image": "/images/catalog/vestidos-midi/vestido-farm/1.png",
     "gallery": [
       "/images/catalog/vestidos-midi/vestido-farm/1.png",
       "/images/catalog/vestidos-midi/vestido-farm/2.png",
@@ -2340,15 +2340,15 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-midi/vestido-karla-midi/1.png"
+        "image": "/images/catalog/vestidos-midi/vestido-karla/1.png"
       },
       {
         "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-midi/vestido-karla-midi/2.png"
+        "image": "/images/catalog/vestidos-midi/vestido-karla/2.png"
       }
     ],
-    "image": "/images/catalog/vestidos-midi/vestido-karla-midi/1.png",
+    "image": "/images/catalog/vestidos-midi/vestido-karla/1.png",
     "gallery": [
       "/images/catalog/vestidos-midi/vestido-karla/1.png",
       "/images/catalog/vestidos-midi/vestido-karla/2.png",
@@ -2385,20 +2385,20 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-midi/vestido-lana-midi/1.png"
+        "image": "/images/catalog/vestidos-midi/vestido-lana/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-midi/vestido-lana-midi/3.png"
+        "image": "/images/catalog/vestidos-midi/vestido-lana/3.png"
       },
       {
         "name": "Caramelo / Marrom",
         "hex": "#8D6E63",
-        "image": "/images/catalog/vestidos-midi/vestido-lana-midi/6.png"
+        "image": "/images/catalog/vestidos-midi/vestido-lana/6.png"
       }
     ],
-    "image": "/images/catalog/vestidos-midi/vestido-lana-midi/1.png",
+    "image": "/images/catalog/vestidos-midi/vestido-lana/1.png",
     "gallery": [
       "/images/catalog/vestidos-midi/vestido-lana/1.png",
       "/images/catalog/vestidos-midi/vestido-lana/2.png",

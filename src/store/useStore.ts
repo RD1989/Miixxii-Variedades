@@ -29,7 +29,7 @@ import { getSupabaseClient } from '@/lib/supabase';
 // Purge any stale client localStorage caches containing legacy typos, duplicate numbered colors, or outdated color mappings
 if (typeof window !== 'undefined') {
   try {
-    ['miixxiie_store_v11_live', 'miixxiie_store_v10_live', 'miixxiie_store_v8_live', 'miixxiie_store_v7_live', 'miixxiie_store_real_v4_pro', 'miixxiie_store_real_v3', 'miixxe-store-storage'].forEach((key) => {
+    ['miixxiie_store_v12_live', 'miixxiie_store_v11_live', 'miixxiie_store_v10_live', 'miixxiie_store_v8_live', 'miixxiie_store_v7_live', 'miixxiie_store_real_v4_pro', 'miixxiie_store_real_v3', 'miixxe-store-storage'].forEach((key) => {
       const val = localStorage.getItem(key);
       if (val && (
         val.includes('Malaquinhas') || 
@@ -38,7 +38,7 @@ if (typeof window !== 'undefined') {
         val.includes('Branco / Off-White 2') || 
         val.includes('Entregas em toda Manaus via Motoboy ou Retirada') || 
         val.includes('grátis a partir') ||
-        (val.includes('miixxe-002') && val.includes('\"name\":\"Branco / Off-White\",\"hex\":\"#F5F5F5\",\"image\":\"/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/1.png\"'))
+        (val.includes('miixxe-002') && val.includes('\"name\":\"Branco / Off-White\",\"hex\":\"#F5F5F5\",\"image\":\"/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/1.png\"')) || val.includes('camisa-lorena-linho') || val.includes('blusa-t-shirt-estampada-chic')
       )) {
         localStorage.removeItem(key);
       }
@@ -1209,11 +1209,11 @@ export const useStore = create<StoreState>()(
         set({ infoModal: { isOpen: false, title: '', description: '' } }),
     }),
     {
-      name: 'miixxiie_store_v12_live',
+      name: 'miixxiie_store_v13_live',
       onRehydrateStorage: () => (state) => {
         if (state && state.products) {
           const hasOutdatedColors = state.products.some((p) =>
-            p.colors?.some((c) => / \d+$/.test(c.name)) || (p.id === 'miixxe-002' && p.colors[0]?.name.includes('Branco')) || (p.id === 'miixxe-001' && p.colors[0]?.name.includes('Preto')) || (p.id === 'miixxe-004' && p.colors.some((c) => c.name.includes('Oliva'))) || (p.id === 'miixxe-006' && p.colors.some((c) => c.name.includes('Floral')))
+            p.colors?.some((c) => / \d+$/.test(c.name)) || (p.id === 'miixxe-002' && p.colors[0]?.name.includes('Branco')) || (p.id === 'miixxe-001' && p.colors[0]?.name.includes('Preto')) || (p.id === 'miixxe-004' && p.colors.some((c) => c.name.includes('Oliva'))) || (p.id === 'miixxe-006' && p.colors.some((c) => c.name.includes('Floral'))) || (p.image && p.image.includes('camisa-lorena-linho')) || p.colors?.some((c) => c.image && c.image.includes('camisa-lorena-linho'))
           );
           if (hasOutdatedColors) {
             state.setProducts(PRODUCTS);
