@@ -40,22 +40,41 @@ import {
 } from 'lucide-react';
 import { compressAndEncodeImage } from '@/lib/supabase';
 
-const COLOR_PRESETS = [
-  { name: 'Preto', hex: '#111111' },
-  { name: 'Branco', hex: '#FFFFFF' },
-  { name: 'Off-White', hex: '#F8F8F5' },
-  { name: 'Marrom Chocolate', hex: '#5D4037' },
-  { name: 'Marsala / Vinho', hex: '#58111A' },
-  { name: 'Azul Marinho', hex: '#1B263B' },
+const MIIXXIIE_PALETTE_PRESETS = [
+  { name: 'Preto Clássico', hex: '#1F1F1F' },
+  { name: 'Branco / Off-White', hex: '#F5F5F5' },
+  { name: 'Terracota', hex: '#C62828' },
+  { name: 'Vinho Marsala', hex: '#6B0833' },
+  { name: 'Verde Militar', hex: '#556B2F' },
   { name: 'Verde Oliva', hex: '#6B8E23' },
-  { name: 'Verde Militar', hex: '#4B5320' },
-  { name: 'Terracota', hex: '#D95D39' },
-  { name: 'Fúcsia', hex: '#C71585' },
-  { name: 'Nude / Rosé', hex: '#E8A598' },
-  { name: 'Mostarda', hex: '#D4A017' },
+  { name: 'Verde Esmeralda', hex: '#00695C' },
+  { name: 'Azul Royal', hex: '#1E56A0' },
+  { name: 'Azul Marinho', hex: '#1A237E' },
+  { name: 'Azul Céu', hex: '#64B5F6' },
+  { name: 'Rosé Blush', hex: '#E8A598' },
+  { name: 'Pink Fúcsia', hex: '#C2185B' },
+  { name: 'Marrom Chocolate', hex: '#5D4037' },
+  { name: 'Caramelo / Mostarda', hex: '#C49000' },
+  { name: 'Amarelo Canário', hex: '#FDD835' },
+  { name: 'Vermelho Paixão', hex: '#D32F2F' },
+  { name: 'Estampado Floral', hex: '#4A6572' },
+  { name: 'Cinza Mescla', hex: '#838589' },
 ];
 
-const STANDARD_SIZES = ['G (44)', 'GG (46/48)', 'G1 (50)', 'G2 (52)', 'G3 (54)', 'G4 (56)'];
+const SIZE_PRESET_GROUPS = {
+  plus: {
+    label: 'Grade Plus Size (G ao G4)',
+    sizes: ['G (44)', 'GG (46/48)', 'G1 (50)', 'G2 (52)', 'G3 (54)', 'G4 (56)'],
+  },
+  numeric: {
+    label: 'Numeração (42 ao 56)',
+    sizes: ['42', '44', '46', '48', '50', '52', '54', '56'],
+  },
+  single: {
+    label: 'Tamanho Único',
+    sizes: ['Tamanho Único (44 ao 52)'],
+  },
+};
 
 export const AdminProductManager: React.FC = () => {
   const {
@@ -261,15 +280,55 @@ export const AdminProductManager: React.FC = () => {
 
   // Color management
   const handleAddColor = () => {
-    if (!newColorName.trim()) return;
-    setFormColors([...formColors, { name: newColorName.trim(), hex: newColorHex }]);
+    const trimmed = newColorName.trim();
+    if (!trimmed) return;
+    if (formColors.some((c) => c.name.toLowerCase() === trimmed.toLowerCase())) {
+      alert(`A cor "${trimmed}" já está adicionada.`);
+      return;
+    }
+    // Find next unassigned image from gallery if available
+    const assignedImgs = new Set(formColors.map((c) => c.image).filter(Boolean));
+    const nextUnassigned = formGallery.find((img) => !assignedImgs.has(img)) || formImage;
+
+    setFormColors([
+      ...formColors,
+      { name: trimmed, hex: newColorHex, image: nextUnassigned, stock: 2 },
+    ]);
     setNewColorName('');
   };
 
   const handleApplyPresetColor = (preset: { name: string; hex: string }) => {
-    if (!formColors.some((c) => c.name.toLowerCase() === preset.name.toLowerCase())) {
-      setFormColors([...formColors, { name: preset.name, hex: preset.hex }]);
+    if (formColors.some((c) => c.name.toLowerCase() === preset.name.toLowerCase())) {
+      return; // Already present, prevent duplicate!
     }
+    const assignedImgs = new Set(formColors.map((c) => c.image).filter(Boolean));
+    const nextUnassigned = formGallery.find((img) => !assignedImgs.has(img)) || formImage;
+
+    setFormColors([
+      ...formColors,
+      { name: preset.name, hex: preset.hex, image: nextUnassigned, stock: 2 },
+    ]);
+  };
+
+  const handleUpdateColorField = (
+    index: number,
+    field: 'name' | 'hex' | 'image' | 'stock',
+    value: any
+  ) => {
+    const updated = [...formColors];
+    if (updated[index]) {
+      updated[index] = { ...updated[index], [field]: value };
+      setFormColors(updated);
+    }
+  };
+
+  const handleAutoLinkImagesToColors = () => {
+    if (formGallery.length === 0 || formColors.length === 0) return;
+    const updated = formColors.map((color, idx) => ({
+      ...color,
+      image: formGallery[idx % formGallery.length],
+    }));
+    setFormColors(updated);
   };
 
   const handleRemoveColor = (index: number) => {
@@ -277,6 +336,49 @@ export const AdminProductManager: React.FC = () => {
   };
 
   // Size & Stock management
+  const [customSizeInput, setCustomSizeInput] = useState('');
+
+  const handleAddCustomSize = () => {
+    const s = customSizeInput.trim().toUpperCase();
+    if (!s) return;
+    if (!formSizes.includes(s)) {
+      const newSizes = [...formSizes, s];
+      const newStock = { ...formSizeStock, [s]: 2 };
+      setFormSizes(newSizes);
+      setFormSizeStock(newStock);
+      const total = Object.values(newStock).reduce((sum, q) => sum + q, 0);
+      setFormStockTotal(total);
+    }
+    setCustomSizeInput('');
+  };
+
+  const handleBatchStock = (action: 'add1' | 'set2' | 'zero') => {
+    const newStock: Record<string, number> = {};
+    formSizes.forEach((s) => {
+      const current = formSizeStock[s] ?? 0;
+      if (action === 'add1') newStock[s] = current + 1;
+      else if (action === 'set2') newStock[s] = 2;
+      else if (action === 'zero') newStock[s] = 0;
+    });
+    setFormSizeStock(newStock);
+    const total = Object.values(newStock).reduce((sum, q) => sum + q, 0);
+    setFormStockTotal(total);
+  };
+
+  const handleApplySizeGroup = (sizes: string[]) => {
+    const newStock = { ...formSizeStock };
+    sizes.forEach((s) => {
+      if (newStock[s] === undefined) {
+        newStock[s] = 2;
+      }
+    });
+    const combined = Array.from(new Set([...formSizes, ...sizes]));
+    setFormSizes(combined);
+    setFormSizeStock(newStock);
+    const total = Object.values(newStock).reduce((sum, q) => sum + q, 0);
+    setFormStockTotal(total);
+  };
+
   const handleToggleSize = (size: string) => {
     if (formSizes.includes(size)) {
       const newSizes = formSizes.filter((s) => s !== size);
@@ -1267,140 +1369,399 @@ export const AdminProductManager: React.FC = () => {
               </div>
 
               {/* Sizes Selection & Detailed Stock per Size */}
-              <div className="p-4 bg-[#F9F9FB] rounded-3xl border border-neutral-200 space-y-3">
-                <div className="flex items-center justify-between">
-                  <label className="font-extrabold text-neutral-900 text-xs">
-                    Grade de Tamanhos & Quantidades em Manaus:
-                  </label>
-                  <span className="text-[11px] font-black text-black">
-                    Estoque Total: {formStockTotal} peças
-                  </span>
+              <div className="p-4 sm:p-5 bg-[#F9F9FB] rounded-3xl border border-neutral-200 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <label className="font-black text-neutral-900 text-xs sm:text-sm flex items-center gap-2">
+                      <Layers className="w-4 h-4 text-neutral-800" />
+                      <span>Grade de Tamanhos & Estoque em Manaus</span>
+                    </label>
+                    <p className="text-[11px] text-neutral-500 mt-0.5">
+                      Controle individual de pronta-entrega por tamanho para clientes de Manaus.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <span className="text-[11px] font-black bg-black text-white px-3 py-1 rounded-full shadow-2xs">
+                      Estoque Total: {formStockTotal} un
+                    </span>
+                  </div>
                 </div>
 
-                {/* Size Chips Toggle */}
+                {/* Quick Preset Buttons */}
+                <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                  <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mr-1">
+                    Atalhos de Grade:
+                  </span>
+                  {Object.entries(SIZE_PRESET_GROUPS).map(([key, group]) => (
+                    <button
+                      key={key}
+                      type="button"
+                      onClick={() => handleApplySizeGroup(group.sizes)}
+                      className="px-2.5 py-1 bg-white hover:bg-neutral-100 border border-neutral-200 rounded-xl text-[11px] font-bold text-neutral-700 shadow-2xs transition-all active:scale-95"
+                    >
+                      {group.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Available Sizes Toggle Chips */}
                 <div className="flex flex-wrap gap-2">
-                  {STANDARD_SIZES.map((size) => {
+                  {Array.from(
+                    new Set([
+                      'G (44)',
+                      'GG (46/48)',
+                      'G1 (50)',
+                      'G2 (52)',
+                      'G3 (54)',
+                      'G4 (56)',
+                      '42',
+                      '44',
+                      '46',
+                      '48',
+                      '50',
+                      '52',
+                      '54',
+                      '56',
+                      'Tamanho Único (44 ao 52)',
+                      ...formSizes,
+                    ])
+                  ).map((size) => {
                     const isSelected = formSizes.includes(size);
                     return (
                       <button
                         key={size}
                         type="button"
                         onClick={() => handleToggleSize(size)}
-                        className={`px-3 py-1.5 rounded-xl font-bold text-xs transition-all active:scale-95 ${
+                        className={`px-3 py-1.5 rounded-xl font-black text-xs transition-all active:scale-95 flex items-center gap-1.5 ${
                           isSelected
                             ? 'bg-black text-white shadow-xs'
-                            : 'bg-white text-neutral-700 border border-neutral-200 hover:border-neutral-400'
+                            : 'bg-white text-neutral-600 border border-neutral-200 hover:border-neutral-400'
                         }`}
                       >
-                        {size}
+                        <span>{size}</span>
+                        {isSelected && <Check className="w-3.5 h-3.5 stroke-[3]" />}
                       </button>
                     );
                   })}
                 </div>
 
-                {/* Stock per Selected Size */}
+                {/* Custom Size Adder */}
+                <div className="flex items-center gap-2 pt-1">
+                  <input
+                    type="text"
+                    value={customSizeInput}
+                    onChange={(e) => setCustomSizeInput(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault();
+                        handleAddCustomSize();
+                      }
+                    }}
+                    placeholder="Adicionar outro tamanho (Ex: G5, 58, P, M)..."
+                    className="px-3 py-1.5 bg-white border border-neutral-200 rounded-xl text-xs font-medium focus:outline-none focus:border-black max-w-xs"
+                  />
+                  <button
+                    type="button"
+                    onClick={handleAddCustomSize}
+                    className="px-3 py-1.5 bg-neutral-100 hover:bg-neutral-200 border border-neutral-200 text-neutral-800 text-xs font-bold rounded-xl transition-all"
+                  >
+                    + Incluir
+                  </button>
+                </div>
+
+                {/* Stock Matrix Cards & Batch Toolbar */}
                 {formSizes.length > 0 && (
-                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 pt-2 border-t border-neutral-200/60">
-                    {formSizes.map((size) => (
-                      <div key={size} className="bg-white p-2.5 rounded-2xl border border-neutral-200 flex flex-col gap-1">
-                        <span className="text-[10px] font-bold text-neutral-500">{size}</span>
-                        <div className="flex items-center gap-1.5">
-                          <input
-                            type="number"
-                            min="0"
-                            value={formSizeStock[size] ?? 0}
-                            onChange={(e) => handleSizeQuantityChange(size, parseInt(e.target.value) || 0)}
-                            className="w-full px-2 py-1 text-xs font-extrabold bg-neutral-50 border border-neutral-200 rounded-lg focus:outline-none focus:border-black text-center"
-                          />
-                          <span className="text-[10px] text-neutral-400 font-semibold">un</span>
-                        </div>
+                  <div className="pt-3 border-t border-neutral-200/70 space-y-3">
+                    <div className="flex items-center justify-between flex-wrap gap-2">
+                      <span className="text-[11px] font-bold text-neutral-700">
+                        Unidades em Estoque por Tamanho:
+                      </span>
+                      <div className="flex items-center gap-1.5 text-[10px]">
+                        <button
+                          type="button"
+                          onClick={() => handleBatchStock('set2')}
+                          className="px-2 py-0.5 bg-white hover:bg-neutral-100 border border-neutral-200 rounded-lg font-bold text-neutral-600 transition-colors"
+                        >
+                          Definir 2 em Todos
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleBatchStock('add1')}
+                          className="px-2 py-0.5 bg-white hover:bg-neutral-100 border border-neutral-200 rounded-lg font-bold text-neutral-600 transition-colors"
+                        >
+                          +1 em Todos
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleBatchStock('zero')}
+                          className="px-2 py-0.5 bg-white hover:bg-neutral-100 border border-neutral-200 rounded-lg font-bold text-rose-600 transition-colors"
+                        >
+                          Zerar Grade
+                        </button>
                       </div>
-                    ))}
+                    </div>
+
+                    <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2.5">
+                      {formSizes.map((size) => {
+                        const qty = formSizeStock[size] ?? 0;
+                        return (
+                          <div
+                            key={size}
+                            className={`p-2.5 rounded-2xl border transition-all flex flex-col justify-between gap-1.5 ${
+                              qty === 0
+                                ? 'bg-rose-50/40 border-rose-200'
+                                : qty <= 2
+                                ? 'bg-amber-50/40 border-amber-200'
+                                : 'bg-white border-neutral-200'
+                            }`}
+                          >
+                            <div className="flex items-center justify-between">
+                              <span className="text-xs font-black text-neutral-900">{size}</span>
+                              <span
+                                className={`text-[9px] font-bold px-1.5 py-0.5 rounded-md ${
+                                  qty === 0
+                                    ? 'bg-rose-100 text-rose-700'
+                                    : qty <= 2
+                                    ? 'bg-amber-100 text-amber-800'
+                                    : 'bg-emerald-100 text-emerald-800'
+                                }`}
+                              >
+                                {qty === 0 ? 'Esgotado' : qty <= 2 ? 'Baixo' : 'OK'}
+                              </span>
+                            </div>
+
+                            <div className="flex items-center gap-1 bg-white rounded-xl border border-neutral-200 p-0.5 shadow-2xs">
+                              <button
+                                type="button"
+                                onClick={() => handleSizeQuantityChange(size, qty - 1)}
+                                className="w-6 h-6 flex items-center justify-center text-neutral-600 hover:bg-neutral-100 rounded-lg font-bold text-xs active:scale-95"
+                              >
+                                -
+                              </button>
+                              <input
+                                type="number"
+                                min="0"
+                                value={qty}
+                                onChange={(e) => handleSizeQuantityChange(size, parseInt(e.target.value) || 0)}
+                                className="w-full text-xs font-black text-center bg-transparent focus:outline-none"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => handleSizeQuantityChange(size, qty + 1)}
+                                className="w-6 h-6 flex items-center justify-center text-neutral-600 hover:bg-neutral-100 rounded-lg font-bold text-xs active:scale-95"
+                              >
+                                +
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 )}
               </div>
 
-              {/* Colors Manager with Presets */}
-              <div className="p-4 bg-[#F9F9FB] rounded-3xl border border-neutral-200 space-y-3">
-                <div className="flex items-center justify-between">
-                  <label className="font-extrabold text-neutral-900 text-xs flex items-center gap-1.5">
-                    <Palette className="w-4 h-4 text-neutral-700" />
-                    Cores Disponíveis:
-                  </label>
-                  <span className="text-[10px] text-neutral-500 font-semibold">
-                    {formColors.length} {formColors.length === 1 ? 'cor' : 'cores'}
-                  </span>
-                </div>
+              {/* Gestão Visual de Cores & Fotos do Mostruário */}
+              <div className="p-4 sm:p-5 bg-[#F9F9FB] rounded-3xl border border-neutral-200 space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <label className="font-black text-neutral-900 text-xs sm:text-sm flex items-center gap-2">
+                      <Palette className="w-4 h-4 text-neutral-800" />
+                      <span>Cores Disponíveis & Fotos Vinculadas</span>
+                      <span className="bg-black text-white text-[10px] px-2 py-0.5 rounded-full font-bold">
+                        {formColors.length} {formColors.length === 1 ? 'cor' : 'cores'}
+                      </span>
+                    </label>
+                    <p className="text-[11px] text-neutral-500 mt-0.5">
+                      Ao vincular uma foto à cor, a foto no mostruário muda automaticamente quando a cliente clica na cor.
+                    </p>
+                  </div>
 
-                {/* Current Colors Badges */}
-                <div className="flex flex-wrap gap-2">
-                  {formColors.map((color, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-2 bg-white px-3 py-1.5 rounded-2xl border border-neutral-200 shadow-2xs"
+                  {formGallery.length > 1 && formColors.length > 1 && (
+                    <button
+                      type="button"
+                      onClick={handleAutoLinkImagesToColors}
+                      className="self-start sm:self-auto px-3 py-1.5 bg-white hover:bg-neutral-100 border border-neutral-200 text-neutral-700 text-[11px] font-bold rounded-xl flex items-center gap-1.5 shadow-2xs transition-all active:scale-95"
+                      title="Vincula em sequência as fotos da galeria às cores cadastradas"
                     >
-                      <span
-                        className="w-4 h-4 rounded-full border border-black/20 shrink-0"
-                        style={{ backgroundColor: color.hex }}
-                      />
-                      <span className="font-extrabold text-neutral-900 text-xs">{color.name}</span>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveColor(idx)}
-                        className="text-neutral-300 hover:text-red-500 transition-colors ml-1"
-                        title="Remover cor"
-                      >
-                        <X className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  ))}
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                      <span>Vincular Fotos Automaticamente</span>
+                    </button>
+                  )}
                 </div>
 
-                {/* Color Presets */}
-                <div className="pt-2 border-t border-neutral-200/60">
-                  <span className="text-[10px] font-bold text-neutral-400 block mb-1.5">
-                    Adicionar cor rápida por paleta:
-                  </span>
-                  <div className="flex flex-wrap gap-1.5">
-                    {COLOR_PRESETS.map((preset) => (
-                      <button
-                        key={preset.name}
-                        type="button"
-                        onClick={() => handleApplyPresetColor(preset)}
-                        className="flex items-center gap-1 px-2 py-1 rounded-xl bg-white border border-neutral-200 hover:border-neutral-400 text-[10px] font-semibold transition-all active:scale-95"
+                {/* Color Cards List */}
+                <div className="space-y-2.5">
+                  {formColors.map((color, idx) => {
+                    const assignedImg = color.image || formImage;
+                    const isAvailable = color.stock === undefined || color.stock > 0;
+
+                    return (
+                      <div
+                        key={idx}
+                        className="bg-white p-3 rounded-2xl border border-neutral-200 shadow-2xs flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:border-neutral-300 transition-all"
                       >
-                        <span
-                          className="w-2.5 h-2.5 rounded-full border border-black/20 shrink-0"
-                          style={{ backgroundColor: preset.hex }}
-                        />
-                        <span>{preset.name}</span>
-                      </button>
-                    ))}
+                        {/* Left: Swatch + Name Edit */}
+                        <div className="flex items-center gap-3 min-w-0 flex-1">
+                          <div className="relative group/swatch shrink-0">
+                            <span
+                              className="w-8 h-8 rounded-full border-2 border-white shadow-sm block ring-1 ring-black/10 cursor-pointer"
+                              style={{ backgroundColor: color.hex }}
+                              title="Clique para alterar o tom da cor"
+                            />
+                            <input
+                              type="color"
+                              value={color.hex}
+                              onChange={(e) => handleUpdateColorField(idx, 'hex', e.target.value)}
+                              className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                              title="Alterar tom"
+                            />
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <input
+                              type="text"
+                              value={color.name}
+                              onChange={(e) => handleUpdateColorField(idx, 'name', e.target.value)}
+                              placeholder="Nome da cor"
+                              className="w-full text-xs font-black text-neutral-900 bg-transparent border-b border-transparent hover:border-neutral-200 focus:border-black focus:outline-none py-0.5 transition-colors"
+                            />
+                            <span className="text-[10px] text-neutral-400 font-mono block">
+                              {color.hex.toUpperCase()}
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Center: Linked Photo Selector */}
+                        <div className="flex items-center gap-2 bg-neutral-50 px-2.5 py-1.5 rounded-xl border border-neutral-100 shrink-0">
+                          <div className="relative w-7 h-9 rounded-md overflow-hidden bg-neutral-200 shrink-0 border border-neutral-200">
+                            <Image
+                              src={assignedImg}
+                              alt={color.name}
+                              fill
+                              sizes="36px"
+                              className="object-cover"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[9px] font-bold text-neutral-400 uppercase tracking-wider">
+                              Foto no Mostruário
+                            </span>
+                            <select
+                              value={color.image || formImage}
+                              onChange={(e) => handleUpdateColorField(idx, 'image', e.target.value)}
+                              className="text-[11px] font-bold text-neutral-800 bg-transparent focus:outline-none cursor-pointer max-w-[140px] truncate"
+                            >
+                              {formGallery.map((imgUrl, imgIdx) => (
+                                <option key={imgIdx} value={imgUrl}>
+                                  Foto {imgIdx + 1} {imgUrl === formImage ? '(Principal)' : ''}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Right: Availability Toggle + Remove */}
+                        <div className="flex items-center justify-between sm:justify-end gap-2 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => handleUpdateColorField(idx, 'stock', isAvailable ? 0 : 2)}
+                            className={`px-2.5 py-1 rounded-xl text-[10px] font-extrabold transition-all ${
+                              isAvailable
+                                ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100'
+                                : 'bg-rose-50 text-rose-700 border border-rose-200 hover:bg-rose-100'
+                            }`}
+                            title="Alternar disponibilidade desta cor"
+                          >
+                            {isAvailable ? '✓ Disponível' : '✕ Esgotada'}
+                          </button>
+
+                          <button
+                            type="button"
+                            onClick={() => handleRemoveColor(idx)}
+                            className="p-1.5 text-neutral-400 hover:text-red-500 hover:bg-neutral-100 rounded-xl transition-colors"
+                            title="Remover esta cor"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Quick Boutique Palette Presets */}
+                <div className="pt-3 border-t border-neutral-200/70 space-y-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] font-bold text-neutral-600 flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                      Paleta Boutique MIIXXIIE (Toque para adicionar):
+                    </span>
+                    <span className="text-[10px] text-neutral-400 font-medium">
+                      Evita duplicações automáticas
+                    </span>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto p-1 bg-white rounded-2xl border border-neutral-200">
+                    {MIIXXIIE_PALETTE_PRESETS.map((preset) => {
+                      const isAlreadyAdded = formColors.some(
+                        (c) => c.name.toLowerCase() === preset.name.toLowerCase()
+                      );
+                      return (
+                        <button
+                          key={preset.name}
+                          type="button"
+                          onClick={() => handleApplyPresetColor(preset)}
+                          className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-[11px] font-semibold transition-all active:scale-95 ${
+                            isAlreadyAdded
+                              ? 'bg-neutral-100 text-neutral-400 border border-neutral-200 cursor-default'
+                              : 'bg-neutral-50 text-neutral-800 border border-neutral-200 hover:border-black hover:bg-white shadow-2xs'
+                          }`}
+                        >
+                          <span
+                            className="w-2.5 h-2.5 rounded-full border border-black/20 shrink-0"
+                            style={{ backgroundColor: preset.hex }}
+                          />
+                          <span>{preset.name}</span>
+                          {isAlreadyAdded && <Check className="w-3 h-3 text-neutral-400 ml-0.5" />}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
 
-                {/* Custom Color Input */}
-                <div className="flex items-center gap-2 pt-1">
-                  <input
-                    type="color"
-                    value={newColorHex}
-                    onChange={(e) => setNewColorHex(e.target.value)}
-                    className="w-9 h-9 rounded-xl cursor-pointer border border-neutral-300 shrink-0"
-                    title="Escolha tom personalizado"
-                  />
-                  <input
-                    type="text"
-                    value={newColorName}
-                    onChange={(e) => setNewColorName(e.target.value)}
-                    placeholder="Nome da cor personalizada (Ex: Fúcsia Vibrante)"
-                    className="flex-1 px-3 py-2 bg-white border border-neutral-200 rounded-xl focus:outline-none focus:border-black text-xs font-medium"
-                  />
+                {/* Add Custom Color Input */}
+                <div className="flex flex-col sm:flex-row items-center gap-2 pt-2 border-t border-neutral-200/70">
+                  <div className="flex items-center gap-2 w-full sm:w-auto">
+                    <input
+                      type="color"
+                      value={newColorHex}
+                      onChange={(e) => setNewColorHex(e.target.value)}
+                      className="w-9 h-9 rounded-xl cursor-pointer border border-neutral-300 shrink-0"
+                      title="Escolha tom personalizado"
+                    />
+                    <input
+                      type="text"
+                      value={newColorName}
+                      onChange={(e) => setNewColorName(e.target.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault();
+                          handleAddColor();
+                        }
+                      }}
+                      placeholder="Nome de tom especial (Ex: Lilás Lavanda, Nude Dourado)..."
+                      className="flex-1 sm:w-64 px-3 py-2 bg-white border border-neutral-200 rounded-xl focus:outline-none focus:border-black text-xs font-medium"
+                    />
+                  </div>
                   <button
                     type="button"
                     onClick={handleAddColor}
-                    className="px-4 py-2 bg-black text-white rounded-xl font-bold hover:bg-neutral-800 transition-all text-xs"
+                    className="w-full sm:w-auto px-4 py-2 bg-black hover:bg-neutral-800 text-white rounded-xl font-bold transition-all text-xs flex items-center justify-center gap-1.5 shadow-2xs active:scale-95"
                   >
-                    Adicionar Cor
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Adicionar Cor Personalizada</span>
                   </button>
                 </div>
               </div>

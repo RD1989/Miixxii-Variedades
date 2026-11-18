@@ -288,7 +288,7 @@ export const PRODUCTS: Product[] = [
     "slug": "bermuda-bangaline",
     "category": "bermudas-e-shorts",
     "subcategory": "Bermudas Bengaline",
-    "price": 50.0,
+    "price": 50,
     "originalPrice": null,
     "comboOffer": "Combo: 3 peças por R$ 110,00",
     "badge": "Oferta",
@@ -304,46 +304,24 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 3",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/3.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/1.png"
       },
       {
         "name": "Verde Militar",
         "hex": "#556B2F",
-        "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/4.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/4.png"
       },
       {
-        "name": "Terracota / Telha",
+        "name": "Terracota",
         "hex": "#C62828",
-        "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/5.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 4",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/6.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/5.png"
       },
       {
         "name": "Azul Royal",
         "hex": "#1E56A0",
-        "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/7.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/7.png"
       }
     ],
     "image": "/images/catalog/bermudas-e-shorts/bermuda-bangaline/1.png",
@@ -375,8 +353,8 @@ export const PRODUCTS: Product[] = [
     "slug": "bermuda-meia-coxa-de-linho",
     "category": "bermudas-e-shorts",
     "subcategory": "Bermudas de Linho",
-    "price": 68.0,
-    "originalPrice": 80.0,
+    "price": 68,
+    "originalPrice": 80,
     "comboOffer": null,
     "badge": "Oferta",
     "rating": 4.9,
@@ -392,26 +370,22 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/1.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/1.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/2.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/2.png"
       },
       {
         "name": "Verde Militar",
         "hex": "#556B2F",
-        "image": "/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/3.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/3.png"
       },
       {
         "name": "Caramelo / Mostarda",
         "hex": "#C49000",
-        "image": "/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/4.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/4.png"
       }
     ],
     "image": "/images/catalog/bermudas-e-shorts/bermuda-meia-coxa-de-linho/1.png",
@@ -439,11 +413,11 @@ export const PRODUCTS: Product[] = [
     "slug": "short-plus-duna",
     "category": "bermudas-e-shorts",
     "subcategory": "Shorts Duna",
-    "price": 38.0,
+    "price": 38,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Mais Vendido",
-    "rating": 5.0,
+    "rating": 5,
     "reviewsCount": 45,
     "sizes": [
       "46",
@@ -453,76 +427,34 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/2.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/1.png"
       },
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/3.png",
-        "stock": 4
-      },
-      {
-        "name": "Branco / Off-White 2",
-        "hex": "#F5F5F5",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/4.png",
-        "stock": 4
-      },
-      {
-        "name": "Branco / Off-White 3",
-        "hex": "#F5F5F5",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/5.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/3.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/6.png",
-        "stock": 4
-      },
-      {
-        "name": "Branco / Off-White 4",
-        "hex": "#F5F5F5",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/7.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/6.png"
       },
       {
         "name": "Vermelho Paixão",
         "hex": "#D32F2F",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/8.png",
-        "stock": 4
-      },
-      {
-        "name": "Branco / Off-White 5",
-        "hex": "#F5F5F5",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/9.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/8.png"
       },
       {
         "name": "Azul Marinho",
         "hex": "#1A237E",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/10.png",
-        "stock": 4
-      },
-      {
-        "name": "Branco / Off-White 6",
-        "hex": "#F5F5F5",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/11.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/10.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/12.png",
-        "stock": 4
+        "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/12.png"
       }
     ],
     "image": "/images/catalog/bermudas-e-shorts/short-plus-duna/1.png",
@@ -557,7 +489,7 @@ export const PRODUCTS: Product[] = [
     "slug": "calca-lucia",
     "category": "calcas",
     "subcategory": "Calças Alfaiataria",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Destaque",
@@ -573,20 +505,12 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/calcas/calca-lucia/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Marrom Chocolate 2",
-        "hex": "#5D4037",
-        "image": "/images/catalog/calcas/calca-lucia/2.png",
-        "stock": 4
+        "image": "/images/catalog/calcas/calca-lucia/1.png"
       },
       {
         "name": "Verde Oliva",
         "hex": "#6B8E23",
-        "image": "/images/catalog/calcas/calca-lucia/3.png",
-        "stock": 4
+        "image": "/images/catalog/calcas/calca-lucia/3.png"
       }
     ],
     "image": "/images/catalog/calcas/calca-lucia/1.png",
@@ -612,7 +536,7 @@ export const PRODUCTS: Product[] = [
     "slug": "calca-pantalona-plus-duna",
     "category": "calcas",
     "subcategory": "Calças Pantalona",
-    "price": 70.0,
+    "price": 70,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Novo",
@@ -626,34 +550,9 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/calcas/calca-pantalona-plus-duna/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/calcas/calca-pantalona-plus-duna/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 3",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/calcas/calca-pantalona-plus-duna/3.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 4",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/calcas/calca-pantalona-plus-duna/4.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 5",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/calcas/calca-pantalona-plus-duna/5.png",
-        "stock": 4
+        "image": "/images/catalog/calcas/calca-pantalona-plus-duna/1.png"
       }
     ],
     "image": "/images/catalog/calcas/calca-pantalona-plus-duna/1.png",
@@ -681,8 +580,8 @@ export const PRODUCTS: Product[] = [
     "slug": "calca-skinny-de-alfaiataria",
     "category": "calcas",
     "subcategory": "Calças Alfaiataria",
-    "price": 90.0,
-    "originalPrice": 110.0,
+    "price": 90,
+    "originalPrice": 110,
     "comboOffer": null,
     "badge": "Oferta",
     "rating": 4.9,
@@ -698,26 +597,12 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Estampado Floral",
         "hex": "#4A6572",
-        "image": "/images/catalog/calcas/calca-skinny-de-alfaiataria/1.png",
-        "stock": 4
+        "image": "/images/catalog/calcas/calca-skinny-de-alfaiataria/1.png"
       },
       {
-        "name": "Estampado Floral 2",
-        "hex": "#4A6572",
-        "image": "/images/catalog/calcas/calca-skinny-de-alfaiataria/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/calcas/calca-skinny-de-alfaiataria/3.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/calcas/calca-skinny-de-alfaiataria/4.png",
-        "stock": 4
+        "image": "/images/catalog/calcas/calca-skinny-de-alfaiataria/3.png"
       }
     ],
     "image": "/images/catalog/calcas/calca-skinny-de-alfaiataria/1.png",
@@ -749,7 +634,7 @@ export const PRODUCTS: Product[] = [
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Novo",
-    "rating": 5.0,
+    "rating": 5,
     "reviewsCount": 73,
     "sizes": [
       "GG (44-46)",
@@ -757,22 +642,19 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/camisas-e-regatas/blusa-t-shit/1.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/blusa-t-shit/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/camisas-e-regatas/blusa-t-shit/2.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/blusa-t-shit/2.png"
       },
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/camisas-e-regatas/blusa-t-shit/3.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/blusa-t-shit/3.png"
       }
     ],
     "image": "/images/catalog/camisas-e-regatas/blusa-t-shit/1.png",
@@ -796,8 +678,8 @@ export const PRODUCTS: Product[] = [
     "slug": "camisa-lorena",
     "category": "camisas-e-regatas",
     "subcategory": "Camisas",
-    "price": 58.0,
-    "originalPrice": 65.0,
+    "price": 58,
+    "originalPrice": 65,
     "comboOffer": null,
     "badge": "Oferta",
     "rating": 4.7,
@@ -810,22 +692,19 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Terracota / Telha",
+        "name": "Terracota",
         "hex": "#C62828",
-        "image": "/images/catalog/camisas-e-regatas/camisa-lorena/1.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/camisa-lorena/1.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/camisas-e-regatas/camisa-lorena/2.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/camisa-lorena/2.png"
       },
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/camisas-e-regatas/camisa-lorena/3.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/camisa-lorena/3.png"
       }
     ],
     "image": "/images/catalog/camisas-e-regatas/camisa-lorena/1.png",
@@ -851,8 +730,8 @@ export const PRODUCTS: Product[] = [
     "slug": "camisa-ribana",
     "category": "camisas-e-regatas",
     "subcategory": "Camisetas",
-    "price": 50.0,
-    "originalPrice": 65.0,
+    "price": 50,
+    "originalPrice": 65,
     "comboOffer": null,
     "badge": "Oferta",
     "rating": 4.8,
@@ -863,22 +742,14 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/camisas-e-regatas/camisa-ribana/1.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/camisa-ribana/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/camisas-e-regatas/camisa-ribana/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/camisas-e-regatas/camisa-ribana/3.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/camisa-ribana/2.png"
       }
     ],
     "image": "/images/catalog/camisas-e-regatas/camisa-ribana/1.png",
@@ -902,7 +773,7 @@ export const PRODUCTS: Product[] = [
     "slug": "camiseta-luara",
     "category": "camisas-e-regatas",
     "subcategory": "Camisetas",
-    "price": 65.0,
+    "price": 65,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Novo",
@@ -917,20 +788,12 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Azul Marinho",
         "hex": "#1A237E",
-        "image": "/images/catalog/camisas-e-regatas/camiseta-luara/1.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/camiseta-luara/1.png"
       },
       {
         "name": "Estampado Floral",
         "hex": "#4A6572",
-        "image": "/images/catalog/camisas-e-regatas/camiseta-luara/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Azul Marinho 2",
-        "hex": "#1A237E",
-        "image": "/images/catalog/camisas-e-regatas/camiseta-luara/3.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/camiseta-luara/2.png"
       }
     ],
     "image": "/images/catalog/camisas-e-regatas/camiseta-luara/1.png",
@@ -955,11 +818,11 @@ export const PRODUCTS: Product[] = [
     "slug": "regata-ribana",
     "category": "camisas-e-regatas",
     "subcategory": "Regatas",
-    "price": 50.0,
+    "price": 50,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Mais Vendido",
-    "rating": 5.0,
+    "rating": 5,
     "reviewsCount": 101,
     "sizes": [
       "44/46",
@@ -969,32 +832,22 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/camisas-e-regatas/regata-ribana/1.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/regata-ribana/1.png"
       },
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/camisas-e-regatas/regata-ribana/2.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/regata-ribana/2.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/camisas-e-regatas/regata-ribana/3.png",
-        "stock": 4
+        "image": "/images/catalog/camisas-e-regatas/regata-ribana/3.png"
       },
       {
-        "name": "Estampado Floral",
-        "hex": "#4A6572",
-        "image": "/images/catalog/camisas-e-regatas/regata-ribana/4.png",
-        "stock": 4
-      },
-      {
-        "name": "Marrom Chocolate 2",
-        "hex": "#5D4037",
-        "image": "/images/catalog/camisas-e-regatas/regata-ribana/5.png",
-        "stock": 4
+        "name": "Cinza Mescla",
+        "hex": "#838589",
+        "image": "/images/catalog/camisas-e-regatas/regata-ribana/4.png"
       }
     ],
     "image": "/images/catalog/camisas-e-regatas/regata-ribana/1.png",
@@ -1020,7 +873,7 @@ export const PRODUCTS: Product[] = [
     "slug": "conjunto-kimono-de-calca",
     "category": "conjuntos-de-calca",
     "subcategory": "Conjuntos Kimono",
-    "price": 148.0,
+    "price": 148,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Destaque",
@@ -1034,26 +887,12 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Vinho Marsala 2",
-        "hex": "#6B0833",
-        "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/2.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/1.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/3.png",
-        "stock": 4
-      },
-      {
-        "name": "Marrom Chocolate 2",
-        "hex": "#5D4037",
-        "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/4.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/3.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-calca/conjunto-kimono-de-calca/1.png",
@@ -1078,7 +917,7 @@ export const PRODUCTS: Product[] = [
     "slug": "conjunto-sheyla",
     "category": "conjuntos-de-calca",
     "subcategory": "Conjuntos Alfaiataria",
-    "price": 168.0,
+    "price": 168,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Festa",
@@ -1091,22 +930,14 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla/2.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla/1.png"
       },
       {
         "name": "Azul Royal",
         "hex": "#1E56A0",
-        "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla/3.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla/3.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-calca/conjunto-sheyla/1.png",
@@ -1131,7 +962,7 @@ export const PRODUCTS: Product[] = [
     "slug": "conjnto-kimono",
     "category": "conjuntos-de-shorts",
     "subcategory": "Conjuntos Kimono",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Destaque",
@@ -1146,50 +977,32 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/1.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/1.png"
       },
       {
-        "name": "Branco / Off-White 2",
-        "hex": "#F5F5F5",
-        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/3.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/3.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/4.png",
-        "stock": 4
-      },
-      {
-        "name": "Branco / Off-White 3",
-        "hex": "#F5F5F5",
-        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/5.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/4.png"
       },
       {
         "name": "Azul Royal",
         "hex": "#1E56A0",
-        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/6.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/6.png"
       },
       {
         "name": "Pink Fúcsia",
         "hex": "#C2185B",
-        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/7.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/7.png"
       },
       {
         "name": "Azul Céu",
         "hex": "#64B5F6",
-        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/8.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/8.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-shorts/conjnto-kimono/1.png",
@@ -1219,11 +1032,11 @@ export const PRODUCTS: Product[] = [
     "slug": "conjunto-bella",
     "category": "conjuntos-de-shorts",
     "subcategory": "Conjuntos Alfaiataria",
-    "price": 168.0,
+    "price": 168,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Novo",
-    "rating": 5.0,
+    "rating": 5,
     "reviewsCount": 49,
     "sizes": [
       "46",
@@ -1234,20 +1047,12 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Rosé Blush 2",
-        "hex": "#E8A598",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella/2.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella/1.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella/3.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella/3.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-shorts/conjunto-bella/1.png",
@@ -1272,7 +1077,7 @@ export const PRODUCTS: Product[] = [
     "slug": "conjunto-dandara",
     "category": "conjuntos-de-shorts",
     "subcategory": "Conjuntos Casuais",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Mais Vendido",
@@ -1284,22 +1089,14 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-dandara/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-dandara/2.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-dandara/1.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-dandara/3.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-dandara/3.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-shorts/conjunto-dandara/1.png",
@@ -1323,7 +1120,7 @@ export const PRODUCTS: Product[] = [
     "slug": "conjunto-danny",
     "category": "conjuntos-de-shorts",
     "subcategory": "Conjuntos Alfaiataria",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Oferta",
@@ -1339,32 +1136,22 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Amarelo Canário",
         "hex": "#FDD835",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-danny/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Amarelo Canário 2",
-        "hex": "#FDD835",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-danny/2.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-danny/1.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-danny/3.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-danny/3.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-danny/4.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-danny/4.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-danny/5.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-danny/5.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-shorts/conjunto-danny/1.png",
@@ -1392,7 +1179,7 @@ export const PRODUCTS: Product[] = [
     "slug": "conjunto-gabi",
     "category": "conjuntos-de-shorts",
     "subcategory": "Conjuntos Casuais",
-    "price": 148.0,
+    "price": 148,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Novo",
@@ -1404,16 +1191,14 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Marrom Chocolate",
-        "hex": "#5D4037",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-gabi/1.png",
-        "stock": 4
+        "name": "Verde Militar",
+        "hex": "#556B2F",
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-gabi/1.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-gabi/2.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-gabi/2.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-shorts/conjunto-gabi/1.png",
@@ -1436,11 +1221,11 @@ export const PRODUCTS: Product[] = [
     "slug": "conjunto-laura",
     "category": "conjuntos-de-shorts",
     "subcategory": "Conjuntos Casuais",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Mais Vendido",
-    "rating": 5.0,
+    "rating": 5,
     "reviewsCount": 77,
     "sizes": [
       "50",
@@ -1451,20 +1236,12 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-laura/1.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-laura/1.png"
       },
       {
-        "name": "Rosé Blush 2",
-        "hex": "#E8A598",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-laura/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-laura/3.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-laura/3.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-shorts/conjunto-laura/1.png",
@@ -1489,8 +1266,8 @@ export const PRODUCTS: Product[] = [
     "slug": "conjunto-lolla",
     "category": "conjuntos-de-shorts",
     "subcategory": "Conjuntos Casuais",
-    "price": 68.0,
-    "originalPrice": 80.0,
+    "price": 68,
+    "originalPrice": 80,
     "comboOffer": null,
     "badge": "Oferta",
     "rating": 4.7,
@@ -1502,28 +1279,19 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Terracota / Telha",
+        "name": "Terracota",
         "hex": "#C62828",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lolla/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Terracota / Telha 2",
-        "hex": "#C62828",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lolla/2.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lolla/1.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lolla/3.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lolla/3.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lolla/4.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lolla/4.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-shorts/conjunto-lolla/1.png",
@@ -1549,7 +1317,7 @@ export const PRODUCTS: Product[] = [
     "slug": "conjunto-lucia",
     "category": "conjuntos-de-shorts",
     "subcategory": "Conjuntos Alfaiataria",
-    "price": 168.0,
+    "price": 168,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Destaque",
@@ -1562,22 +1330,14 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lucia/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lucia/2.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lucia/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lucia/3.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-lucia/3.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-shorts/conjunto-lucia/1.png",
@@ -1602,7 +1362,7 @@ export const PRODUCTS: Product[] = [
     "slug": "conjunto-ritinha",
     "category": "conjuntos-de-shorts",
     "subcategory": "Conjuntos Casuais",
-    "price": 80.0,
+    "price": 80,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Novo",
@@ -1614,10 +1374,9 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-ritinha/1.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-ritinha/1.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-shorts/conjunto-ritinha/1.png",
@@ -1639,11 +1398,11 @@ export const PRODUCTS: Product[] = [
     "slug": "conjunto-zara",
     "category": "conjuntos-de-shorts",
     "subcategory": "Conjuntos Alfaiataria",
-    "price": 148.0,
+    "price": 148,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Festa",
-    "rating": 5.0,
+    "rating": 5,
     "reviewsCount": 25,
     "sizes": [
       "46",
@@ -1653,10 +1412,9 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Rosé Blush",
-        "hex": "#E8A598",
-        "image": "/images/catalog/conjuntos-de-shorts/conjunto-zara/1.png",
-        "stock": 4
+        "name": "Branco / Off-White",
+        "hex": "#F5F5F5",
+        "image": "/images/catalog/conjuntos-de-shorts/conjunto-zara/1.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-shorts/conjunto-zara/1.png",
@@ -1680,7 +1438,7 @@ export const PRODUCTS: Product[] = [
     "slug": "trijunto-de-alfaiateria",
     "category": "conjuntos-de-shorts",
     "subcategory": "Trijuntos",
-    "price": 198.0,
+    "price": 198,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Destaque",
@@ -1693,16 +1451,14 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiateria/1.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiateria/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiateria/2.png",
-        "stock": 4
+        "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiateria/2.png"
       }
     ],
     "image": "/images/catalog/conjuntos-de-shorts/trijunto-de-alfaiateria/1.png",
@@ -1726,7 +1482,7 @@ export const PRODUCTS: Product[] = [
     "slug": "macaquinho-keyla",
     "category": "macaquinhos",
     "subcategory": "Macaquinhas",
-    "price": 78.0,
+    "price": 78,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Mais Vendido",
@@ -1741,20 +1497,12 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/macaquinhos/macaquinho-keyla/1.png",
-        "stock": 4
+        "image": "/images/catalog/macaquinhos/macaquinho-keyla/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/macaquinhos/macaquinho-keyla/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Marrom Chocolate 2",
-        "hex": "#5D4037",
-        "image": "/images/catalog/macaquinhos/macaquinho-keyla/3.png",
-        "stock": 4
+        "image": "/images/catalog/macaquinhos/macaquinho-keyla/2.png"
       }
     ],
     "image": "/images/catalog/macaquinhos/macaquinho-keyla/1.png",
@@ -1779,7 +1527,7 @@ export const PRODUCTS: Product[] = [
     "slug": "chemise-keyla-curto",
     "category": "chemises",
     "subcategory": "Chemises",
-    "price": 78.0,
+    "price": 78,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Mais Vendido",
@@ -1791,52 +1539,29 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/1.png"
       },
       {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Terracota / Telha",
+        "name": "Terracota",
         "hex": "#C62828",
-        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/3.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/3.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/4.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/4.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/5.png",
-        "stock": 4
-      },
-      {
-        "name": "Rosé Blush 2",
-        "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/6.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/5.png"
       },
       {
         "name": "Verde Esmeralda",
         "hex": "#00695C",
-        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/7.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 3",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/8.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/7.png"
       }
     ],
     "image": "/images/catalog/vestidos-curtos/chemise-keyla-curto/1.png",
@@ -1865,11 +1590,11 @@ export const PRODUCTS: Product[] = [
     "slug": "vestido-liz",
     "category": "vestidos-curtos",
     "subcategory": "Vestidos Curtos",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Novo",
-    "rating": 5.0,
+    "rating": 5,
     "reviewsCount": 53,
     "sizes": [
       "48",
@@ -1879,28 +1604,19 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Terracota / Telha",
+        "name": "Terracota",
         "hex": "#C62828",
-        "image": "/images/catalog/vestidos-curtos/vestido-liz/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-liz/1.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-curtos/vestido-liz/2.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-liz/2.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/vestido-liz/3.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/vestido-liz/4.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-liz/3.png"
       }
     ],
     "image": "/images/catalog/vestidos-curtos/vestido-liz/1.png",
@@ -1927,7 +1643,7 @@ export const PRODUCTS: Product[] = [
     "slug": "vestido-luna",
     "category": "vestidos-curtos",
     "subcategory": "Vestidos Curtos",
-    "price": 118.0,
+    "price": 118,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Novo",
@@ -1941,52 +1657,34 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Terracota / Telha",
+        "name": "Terracota",
         "hex": "#C62828",
-        "image": "/images/catalog/vestidos-curtos/vestido-luna/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-luna/1.png"
       },
       {
         "name": "Verde Esmeralda",
         "hex": "#00695C",
-        "image": "/images/catalog/vestidos-curtos/vestido-luna/2.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-luna/2.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-curtos/vestido-luna/3.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-luna/3.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-curtos/vestido-luna/4.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-luna/4.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/vestido-luna/5.png",
-        "stock": 4
-      },
-      {
-        "name": "Marrom Chocolate 2",
-        "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-curtos/vestido-luna/6.png",
-        "stock": 4
-      },
-      {
-        "name": "Rosé Blush 2",
-        "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-curtos/vestido-luna/7.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-luna/5.png"
       },
       {
         "name": "Azul Céu",
         "hex": "#64B5F6",
-        "image": "/images/catalog/vestidos-curtos/vestido-luna/8.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-luna/8.png"
       }
     ],
     "image": "/images/catalog/vestidos-curtos/vestido-luna/1.png",
@@ -2017,7 +1715,7 @@ export const PRODUCTS: Product[] = [
     "slug": "vestido-maria",
     "category": "vestidos-curtos",
     "subcategory": "Vestidos Curtos",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Destaque",
@@ -2033,38 +1731,27 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Verde Oliva",
         "hex": "#6B8E23",
-        "image": "/images/catalog/vestidos-curtos/vestido-maria/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-maria/1.png"
       },
       {
         "name": "Caramelo / Mostarda",
         "hex": "#C49000",
-        "image": "/images/catalog/vestidos-curtos/vestido-maria/2.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-maria/2.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-curtos/vestido-maria/3.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-maria/3.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/vestido-maria/4.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-maria/4.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-curtos/vestido-maria/5.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/vestido-maria/6.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vestido-maria/5.png"
       }
     ],
     "image": "/images/catalog/vestidos-curtos/vestido-maria/1.png",
@@ -2093,7 +1780,7 @@ export const PRODUCTS: Product[] = [
     "slug": "vstido-mayra",
     "category": "vestidos-curtos",
     "subcategory": "Vestidos Curtos",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Destaque",
@@ -2107,32 +1794,22 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-curtos/vstido-mayra/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vstido-mayra/1.png"
       },
       {
         "name": "Estampado Floral",
         "hex": "#4A6572",
-        "image": "/images/catalog/vestidos-curtos/vstido-mayra/2.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vstido-mayra/2.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/vstido-mayra/3.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vstido-mayra/3.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-curtos/vstido-mayra/4.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/vstido-mayra/5.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vstido-mayra/4.png"
       }
     ],
     "image": "/images/catalog/vestidos-curtos/vstido-mayra/1.png",
@@ -2158,11 +1835,11 @@ export const PRODUCTS: Product[] = [
     "slug": "vstido-selina",
     "category": "chemises",
     "subcategory": "Vestidos Curtos",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Novo",
-    "rating": 5.0,
+    "rating": 5,
     "reviewsCount": 81,
     "sizes": [
       "46",
@@ -2174,20 +1851,17 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-curtos/vstido-selina/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vstido-selina/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-curtos/vstido-selina/2.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vstido-selina/2.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-curtos/vstido-selina/3.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-curtos/vstido-selina/3.png"
       }
     ],
     "image": "/images/catalog/vestidos-curtos/vstido-selina/1.png",
@@ -2213,7 +1887,7 @@ export const PRODUCTS: Product[] = [
     "slug": "chemise-ivana",
     "category": "chemises",
     "subcategory": "Chemises",
-    "price": 198.0,
+    "price": 198,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Festa",
@@ -2225,40 +1899,29 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-longos/chemise-ivana/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-longos/chemise-ivana/2.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/chemise-ivana/1.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-longos/chemise-ivana/3.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/chemise-ivana/3.png"
       },
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/vestidos-longos/chemise-ivana/6.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/chemise-ivana/6.png"
       },
       {
         "name": "Azul Marinho",
         "hex": "#1A237E",
-        "image": "/images/catalog/vestidos-longos/chemise-ivana/7.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/chemise-ivana/7.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-longos/chemise-ivana/8.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/chemise-ivana/8.png"
       }
     ],
     "image": "/images/catalog/vestidos-longos/chemise-ivana/1.png",
@@ -2285,7 +1948,7 @@ export const PRODUCTS: Product[] = [
     "slug": "chemise-keyla-longo",
     "category": "vestidos-longos",
     "subcategory": "Chemises",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Mais Vendido",
@@ -2297,58 +1960,29 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Terracota / Telha",
+        "name": "Terracota",
         "hex": "#C62828",
-        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/1.png"
       },
       {
         "name": "Verde Esmeralda",
         "hex": "#00695C",
-        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/2.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/2.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/3.png",
-        "stock": 4
-      },
-      {
-        "name": "Terracota / Telha 2",
-        "hex": "#C62828",
-        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/4.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/5.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 3",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/6.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/3.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/7.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 4",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/8.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/7.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/9.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/9.png"
       }
     ],
     "image": "/images/catalog/vestidos-longos/chemise-keyla-longo/1.png",
@@ -2378,7 +2012,7 @@ export const PRODUCTS: Product[] = [
     "slug": "vestido-barata",
     "category": "vestidos-longos",
     "subcategory": "Vestidos Longos",
-    "price": 198.0,
+    "price": 198,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Destaque",
@@ -2392,26 +2026,12 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Estampado Floral",
         "hex": "#4A6572",
-        "image": "/images/catalog/vestidos-longos/vestido-barata/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/vestido-barata/1.png"
       },
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/vestidos-longos/vestido-barata/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Branco / Off-White 2",
-        "hex": "#F5F5F5",
-        "image": "/images/catalog/vestidos-longos/vestido-barata/3.png",
-        "stock": 4
-      },
-      {
-        "name": "Estampado Floral 2",
-        "hex": "#4A6572",
-        "image": "/images/catalog/vestidos-longos/vestido-barata/4.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/vestido-barata/2.png"
       }
     ],
     "image": "/images/catalog/vestidos-longos/vestido-barata/1.png",
@@ -2436,11 +2056,11 @@ export const PRODUCTS: Product[] = [
     "slug": "vestido-maysa",
     "category": "vestidos-longos",
     "subcategory": "Vestidos Longos",
-    "price": 148.0,
+    "price": 148,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Destaque",
-    "rating": 5.0,
+    "rating": 5,
     "reviewsCount": 29,
     "sizes": [
       "46",
@@ -2450,46 +2070,34 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Terracota / Telha",
+        "name": "Terracota",
         "hex": "#C62828",
-        "image": "/images/catalog/vestidos-longos/vestido-maysa/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/vestido-maysa/1.png"
       },
       {
         "name": "Vermelho Paixão",
         "hex": "#D32F2F",
-        "image": "/images/catalog/vestidos-longos/vestido-maysa/2.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/vestido-maysa/2.png"
       },
       {
         "name": "Estampado Floral",
         "hex": "#4A6572",
-        "image": "/images/catalog/vestidos-longos/vestido-maysa/3.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/vestido-maysa/3.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-longos/vestido-maysa/4.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/vestido-maysa/4.png"
       },
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-longos/vestido-maysa/5.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/vestido-maysa/5.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-longos/vestido-maysa/6.png",
-        "stock": 4
-      },
-      {
-        "name": "Marrom Chocolate 2",
-        "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-longos/vestido-maysa/7.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/vestido-maysa/6.png"
       }
     ],
     "image": "/images/catalog/vestidos-longos/vestido-maysa/1.png",
@@ -2519,7 +2127,7 @@ export const PRODUCTS: Product[] = [
     "slug": "vestido-vitoria",
     "category": "chemises",
     "subcategory": "Vestidos Longos",
-    "price": 158.0,
+    "price": 158,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Festa",
@@ -2535,32 +2143,17 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/vestidos-longos/vestido-vitoria/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/vestido-vitoria/1.png"
       },
       {
-        "name": "Vinho Marsala 2",
-        "hex": "#6B0833",
-        "image": "/images/catalog/vestidos-longos/vestido-vitoria/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Terracota / Telha",
+        "name": "Terracota",
         "hex": "#C62828",
-        "image": "/images/catalog/vestidos-longos/vestido-vitoria/3.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/vestido-vitoria/3.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-longos/vestido-vitoria/4.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-longos/vestido-vitoria/5.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-longos/vestido-vitoria/4.png"
       }
     ],
     "image": "/images/catalog/vestidos-longos/vestido-vitoria/1.png",
@@ -2588,7 +2181,7 @@ export const PRODUCTS: Product[] = [
     "slug": "chemise-midi",
     "category": "vestidos-midi",
     "subcategory": "Chemises",
-    "price": 90.0,
+    "price": 90,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Oferta",
@@ -2603,32 +2196,27 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-midi/chemise-midi/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/chemise-midi/1.png"
       },
       {
         "name": "Branco / Off-White",
         "hex": "#F5F5F5",
-        "image": "/images/catalog/vestidos-midi/chemise-midi/2.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/chemise-midi/2.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-midi/chemise-midi/3.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/chemise-midi/3.png"
       },
       {
         "name": "Verde Militar",
         "hex": "#556B2F",
-        "image": "/images/catalog/vestidos-midi/chemise-midi/4.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/chemise-midi/4.png"
       },
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/vestidos-midi/chemise-midi/5.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/chemise-midi/5.png"
       }
     ],
     "image": "/images/catalog/vestidos-midi/chemise-midi/1.png",
@@ -2655,7 +2243,7 @@ export const PRODUCTS: Product[] = [
     "slug": "vestido-farm",
     "category": "vestidos-midi",
     "subcategory": "Vestidos Midi",
-    "price": 98.0,
+    "price": 98,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Destaque",
@@ -2670,32 +2258,22 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Marrom Chocolate",
         "hex": "#5D4037",
-        "image": "/images/catalog/vestidos-midi/vestido-farm/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/vestido-farm/1.png"
       },
       {
         "name": "Estampado Floral",
         "hex": "#4A6572",
-        "image": "/images/catalog/vestidos-midi/vestido-farm/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Estampado Floral 2",
-        "hex": "#4A6572",
-        "image": "/images/catalog/vestidos-midi/vestido-farm/3.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/vestido-farm/2.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-midi/vestido-farm/4.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/vestido-farm/4.png"
       },
       {
         "name": "Vinho Marsala",
         "hex": "#6B0833",
-        "image": "/images/catalog/vestidos-midi/vestido-farm/5.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/vestido-farm/5.png"
       }
     ],
     "image": "/images/catalog/vestidos-midi/vestido-farm/1.png",
@@ -2722,11 +2300,11 @@ export const PRODUCTS: Product[] = [
     "slug": "vestido-karla",
     "category": "vestidos-midi",
     "subcategory": "Vestidos Midi",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Novo",
-    "rating": 5.0,
+    "rating": 5,
     "reviewsCount": 57,
     "sizes": [
       "46",
@@ -2737,20 +2315,12 @@ export const PRODUCTS: Product[] = [
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-midi/vestido-karla/1.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/vestido-karla/1.png"
       },
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-midi/vestido-karla/2.png",
-        "stock": 4
-      },
-      {
-        "name": "Rosé Blush 2",
-        "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-midi/vestido-karla/3.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/vestido-karla/2.png"
       }
     ],
     "image": "/images/catalog/vestidos-midi/vestido-karla/1.png",
@@ -2775,7 +2345,7 @@ export const PRODUCTS: Product[] = [
     "slug": "vestido-lana",
     "category": "vestidos-midi",
     "subcategory": "Vestidos Midi",
-    "price": 128.0,
+    "price": 128,
     "originalPrice": null,
     "comboOffer": null,
     "badge": "Destaque",
@@ -2788,40 +2358,19 @@ export const PRODUCTS: Product[] = [
     ],
     "colors": [
       {
-        "name": "Preto",
+        "name": "Preto Clássico",
         "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-midi/vestido-lana/1.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 2",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-midi/vestido-lana/2.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/vestido-lana/1.png"
       },
       {
         "name": "Rosé Blush",
         "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-midi/vestido-lana/3.png",
-        "stock": 4
-      },
-      {
-        "name": "Rosé Blush 2",
-        "hex": "#E8A598",
-        "image": "/images/catalog/vestidos-midi/vestido-lana/4.png",
-        "stock": 4
-      },
-      {
-        "name": "Preto 3",
-        "hex": "#1F1F1F",
-        "image": "/images/catalog/vestidos-midi/vestido-lana/5.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/vestido-lana/3.png"
       },
       {
         "name": "Pink Fúcsia",
         "hex": "#C2185B",
-        "image": "/images/catalog/vestidos-midi/vestido-lana/6.png",
-        "stock": 4
+        "image": "/images/catalog/vestidos-midi/vestido-lana/6.png"
       }
     ],
     "image": "/images/catalog/vestidos-midi/vestido-lana/1.png",
@@ -2845,8 +2394,6 @@ export const PRODUCTS: Product[] = [
   }
 ];
 
-
-// Carrinho Pré-Populado de Demonstração
 export const INITIAL_DEMO_CART: CartItem[] = [
   {
     product: PRODUCTS[0],

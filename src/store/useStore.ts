@@ -26,12 +26,12 @@ import {
 } from '@/types/admin';
 import { getSupabaseClient } from '@/lib/supabase';
 
-// Purge any stale client localStorage caches containing legacy typos or outdated shipping policies
+// Purge any stale client localStorage caches containing legacy typos, duplicate numbered colors, or outdated shipping policies
 if (typeof window !== 'undefined') {
   try {
-    ['miixxiie_store_v7_live', 'miixxiie_store_real_v4_pro', 'miixxiie_store_real_v3', 'miixxe-store-storage'].forEach((key) => {
+    ['miixxiie_store_v8_live', 'miixxiie_store_v7_live', 'miixxiie_store_real_v4_pro', 'miixxiie_store_real_v3', 'miixxe-store-storage'].forEach((key) => {
       const val = localStorage.getItem(key);
-      if (val && (val.includes('Malaquinhas') || val.includes('Macaquihas') || val.includes('Entregas em toda Manaus via Motoboy ou Retirada') || val.includes('grátis a partir'))) {
+      if (val && (val.includes('Malaquinhas') || val.includes('Macaquihas') || val.includes('Preto 2') || val.includes('Branco / Off-White 2') || val.includes('Entregas em toda Manaus via Motoboy ou Retirada') || val.includes('grátis a partir'))) {
         localStorage.removeItem(key);
       }
     });
@@ -1201,8 +1201,16 @@ export const useStore = create<StoreState>()(
         set({ infoModal: { isOpen: false, title: '', description: '' } }),
     }),
     {
-      name: 'miixxiie_store_v8_live',
+      name: 'miixxiie_store_v10_live',
       onRehydrateStorage: () => (state) => {
+        if (state && state.products) {
+          const hasOutdatedColors = state.products.some((p) =>
+            p.colors?.some((c) => / \d+$/.test(c.name) || (p.id === 'miixxe-023' && c.name.includes('Rosé')))
+          );
+          if (hasOutdatedColors) {
+            state.setProducts(PRODUCTS);
+          }
+        }
         if (state && state.carouselSlides) {
           let dirty = false;
           const cleaned = state.carouselSlides.map((s) => {
