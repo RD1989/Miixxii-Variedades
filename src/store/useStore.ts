@@ -29,7 +29,7 @@ import { getSupabaseClient } from '@/lib/supabase';
 // Purge any stale client localStorage caches containing legacy typos, duplicate numbered colors, or outdated color mappings
 if (typeof window !== 'undefined') {
   try {
-    ['miixxiie_store_v12_live', 'miixxiie_store_v11_live', 'miixxiie_store_v10_live', 'miixxiie_store_v8_live', 'miixxiie_store_v7_live', 'miixxiie_store_real_v4_pro', 'miixxiie_store_real_v3', 'miixxe-store-storage'].forEach((key) => {
+    ['miixxiie_store_v13_live', 'miixxiie_store_v12_live', 'miixxiie_store_v11_live', 'miixxiie_store_v10_live', 'miixxiie_store_v8_live', 'miixxiie_store_v7_live', 'miixxiie_store_real_v4_pro', 'miixxiie_store_real_v3', 'miixxe-store-storage'].forEach((key) => {
       const val = localStorage.getItem(key);
       if (val && (
         val.includes('Malaquinhas') || 
@@ -69,184 +69,11 @@ export const KANBAN_BADGE_MAP: Record<KanbanStatus, string> = {
   'Cancelado': 'bg-neutral-100 text-neutral-600 border-neutral-300',
 };
 
-const INITIAL_ORDERS: AdminOrder[] = [
-  {
-    id: '#1059',
-    customer: 'Amanda Cavalcante',
-    customerPhone: '(92) 99124-5582',
-    itemsCount: 3,
-    itemsList: 'Vestido Bárbara Preto (G1), Macacão Pantalona (GG)',
-    total: 289.0,
-    subtotal: 269.0,
-    shippingFee: 20.0,
-    deliveryMethod: 'Motoboy (Adrianópolis)',
-    neighborhood: 'Adrianópolis / Vieiralves',
-    deliveryAddress: 'Rua Salvador, Condomínio Privilege',
-    status: 'Novo Lead',
-    statusBadge: KANBAN_BADGE_MAP['Novo Lead'],
-    attendantId: 'maria',
-    attendantName: 'Maria',
-    date: 'Hoje',
-    time: '18:45',
-    notes: 'Cliente pediu confirmação do comprimento do vestido.',
-  },
-  {
-    id: '#1058',
-    customer: 'Juliana Silva',
-    customerPhone: '(92) 98455-1290',
-    itemsCount: 2,
-    itemsList: 'Conjunto Alfaiataria Marsala (G2)',
-    total: 218.0,
-    subtotal: 203.0,
-    shippingFee: 15.0,
-    deliveryMethod: 'Motoboy (Flores)',
-    neighborhood: 'Flores / Parque 10',
-    deliveryAddress: 'Conjunto Beija-Flor II, Rua 4',
-    status: 'Separando Estoque',
-    statusBadge: KANBAN_BADGE_MAP['Separando Estoque'],
-    attendantId: 'maria',
-    attendantName: 'Maria',
-    date: 'Hoje',
-    time: '16:20',
-    notes: 'PIX conferido. Peça já reservada no mostruário.',
-  },
-  {
-    id: '#1057',
-    customer: 'Carla Souza',
-    customerPhone: '(92) 98133-7721',
-    itemsCount: 2,
-    itemsList: 'Vestido Chemise Off White (GG), Shorts Alfaiataria (G)',
-    total: 198.0,
-    subtotal: 198.0,
-    shippingFee: 0,
-    deliveryMethod: 'Retirada na Loja',
-    neighborhood: 'Retirada Presencial',
-    status: 'Pagamento Confirmado',
-    statusBadge: KANBAN_BADGE_MAP['Pagamento Confirmado'],
-    attendantId: 'carlos',
-    attendantName: 'Carlos',
-    date: 'Hoje',
-    time: '15:10',
-    notes: 'Cliente vai retirar pessoalmente amanhã às 14h.',
-  },
-  {
-    id: '#1056',
-    customer: 'Renata Alves',
-    customerPhone: '(92) 99401-8843',
-    itemsCount: 3,
-    itemsList: 'Camisa Seda Gola Padre (G3), Calça Pantalona (G2)',
-    total: 236.0,
-    subtotal: 211.0,
-    shippingFee: 25.0,
-    deliveryMethod: 'Motoboy (Ponta Negra)',
-    neighborhood: 'Ponta Negra / Tarumã',
-    deliveryAddress: 'Av. Coronel Teixeira, Alphaville',
-    status: 'Saiu para Entrega',
-    statusBadge: KANBAN_BADGE_MAP['Saiu para Entrega'],
-    attendantId: 'carlos',
-    attendantName: 'Carlos',
-    date: 'Hoje',
-    time: '14:05',
-    notes: 'Motoboy Marcos em rota com a encomenda.',
-  },
-  {
-    id: '#1055',
-    customer: 'Beatriz Lima',
-    customerPhone: '(92) 98210-9934',
-    itemsCount: 1,
-    itemsList: 'Vestido Festa Longo Prata (G1)',
-    total: 128.0,
-    subtotal: 128.0,
-    shippingFee: 0,
-    deliveryMethod: 'Retirada na Loja',
-    neighborhood: 'Retirada Presencial',
-    status: 'Concluído',
-    statusBadge: KANBAN_BADGE_MAP['Concluído'],
-    attendantId: 'maria',
-    attendantName: 'Maria',
-    date: 'Ontem',
-    time: '17:30',
-    notes: 'Entrega finalizada com elogio à modelagem.',
-  },
-];
+const INITIAL_ORDERS: AdminOrder[] = [];
 
-const INITIAL_LOGS: ActivityLog[] = [
-  {
-    id: 'log-1',
-    timestamp: new Date().toISOString(),
-    timeFormatted: 'Hoje às 18:45',
-    action: 'Novo Lead',
-    description: 'Novo pedido #1059 recebido via WhatsApp (Amanda Cavalcante) — Adrianópolis',
-    user: 'Sistema Web',
-  },
-  {
-    id: 'log-2',
-    timestamp: new Date(Date.now() - 3600000).toISOString(),
-    timeFormatted: 'Hoje às 17:45',
-    action: 'Movimentação Kanban',
-    description: 'Pedido #1058 avançou para "Separando Estoque"',
-    user: 'Maria (Consultora)',
-  },
-  {
-    id: 'log-3',
-    timestamp: new Date(Date.now() - 7200000).toISOString(),
-    timeFormatted: 'Hoje às 16:45',
-    action: 'Estoque Atualizado',
-    description: 'Estoque da Camisa Seda ajustado para +5 unidades',
-    user: 'Admin',
-  },
-  {
-    id: 'log-4',
-    timestamp: new Date(Date.now() - 14400000).toISOString(),
-    timeFormatted: 'Hoje às 14:45',
-    action: 'Despacho Motoboy',
-    description: 'Pedido #1056 saiu para entrega com motoboy em Ponta Negra',
-    user: 'Carlos (Logística)',
-  },
-];
+const INITIAL_LOGS: ActivityLog[] = [];
 
-const INITIAL_CLICKS: LeadClickEvent[] = [
-  {
-    id: 'click-1',
-    timestamp: new Date().toISOString(),
-    timeFormatted: '18:45',
-    attendantId: 'maria',
-    attendantName: 'Maria',
-    phoneNumber: '5592986137969',
-    source: 'Modal de Detalhes do Produto',
-    productName: 'Vestido Bárbara Preto Plus Size',
-  },
-  {
-    id: 'click-2',
-    timestamp: new Date(Date.now() - 1800000).toISOString(),
-    timeFormatted: '18:15',
-    attendantId: 'carlos',
-    attendantName: 'Carlos',
-    phoneNumber: '5592986064005',
-    source: 'Botão Navbar',
-    productName: 'Atendimento Geral Manaus',
-  },
-  {
-    id: 'click-3',
-    timestamp: new Date(Date.now() - 3600000).toISOString(),
-    timeFormatted: '17:45',
-    attendantId: 'maria',
-    attendantName: 'Maria',
-    phoneNumber: '5592986137969',
-    source: 'Checkout do Carrinho',
-    productName: 'Conjunto Alfaiataria Marsala',
-  },
-  {
-    id: 'click-4',
-    timestamp: new Date(Date.now() - 7200000).toISOString(),
-    timeFormatted: '16:45',
-    attendantId: 'carlos',
-    attendantName: 'Carlos',
-    phoneNumber: '5592986064005',
-    source: 'Banner Promocional Intermediário',
-    productName: 'Coleção Festa Manaus',
-  },
-];
+const INITIAL_CLICKS: LeadClickEvent[] = [];
 
 const INITIAL_CMS: StoreCMSConfig = {
   storeName: 'MIIXXIIE',
@@ -782,7 +609,7 @@ export const useStore = create<StoreState>()(
       },
 
       // Cart
-      cart: INITIAL_DEMO_CART,
+      cart: [],
       isCartOpen: false,
       setIsCartOpen: (open) => set({ isCartOpen: open }),
 
@@ -845,7 +672,7 @@ export const useStore = create<StoreState>()(
       },
 
       clearCart: () => set({ cart: [] }),
-      resetToDemoCart: () => set({ cart: INITIAL_DEMO_CART }),
+      resetToDemoCart: () => set({ cart: [] }),
 
       // Local Delivery Manaus
       neighborhoods: MANAUS_NEIGHBORHOODS_LIST,
@@ -1209,8 +1036,22 @@ export const useStore = create<StoreState>()(
         set({ infoModal: { isOpen: false, title: '', description: '' } }),
     }),
     {
-      name: 'miixxiie_store_v13_live',
+      name: 'miixxiie_store_v14_live',
       onRehydrateStorage: () => (state) => {
+        if (state) {
+          if (state.adminOrders && state.adminOrders.some((o) => o.id === '#1059' || o.customer === 'Amanda Cavalcante' || o.id === '#1058' || o.id === '#1057')) {
+            state.adminOrders = [];
+          }
+          if (state.leadClicks && state.leadClicks.some((c) => c.id === 'click-1' || c.id === 'click-2')) {
+            state.leadClicks = [];
+          }
+          if (state.activityLogs && state.activityLogs.some((l) => l.id === 'log-1' || l.id === 'log-2')) {
+            state.activityLogs = [];
+          }
+          if (state.cart && state.cart.some((item) => item.product?.id === 'miixxe-001' && item.selectedSize === '48')) {
+            state.cart = [];
+          }
+        }
         if (state && state.products) {
           const hasOutdatedColors = state.products.some((p) =>
             p.colors?.some((c) => / \d+$/.test(c.name)) || (p.id === 'miixxe-002' && p.colors[0]?.name.includes('Branco')) || (p.id === 'miixxe-001' && p.colors[0]?.name.includes('Preto')) || (p.id === 'miixxe-004' && p.colors.some((c) => c.name.includes('Oliva'))) || (p.id === 'miixxe-006' && p.colors.some((c) => c.name.includes('Floral'))) || (p.image && p.image.includes('camisa-lorena-linho')) || p.colors?.some((c) => c.image && c.image.includes('camisa-lorena-linho'))

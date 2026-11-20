@@ -1044,7 +1044,22 @@ ${order.notes ? `📝 *Observação:* ${order.notes}` : ''}
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-neutral-100">
-                      {recentOrders.map((ord) => (
+                      {recentOrders.length === 0 ? (
+                        <tr>
+                          <td colSpan={7} className="py-12 text-center text-neutral-400">
+                            <div className="flex flex-col items-center justify-center gap-2">
+                              <div className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-400">
+                                <ShoppingBag className="w-5 h-5" />
+                              </div>
+                              <p className="font-semibold text-neutral-600 text-sm">Nenhum pedido recebido ainda</p>
+                              <p className="text-xs text-neutral-400 max-w-sm">
+                                Quando os clientes fecharem pedidos pelo WhatsApp na loja virtual, os pedidos aparecerão aqui em tempo real.
+                              </p>
+                            </div>
+                          </td>
+                        </tr>
+                      ) : (
+                        recentOrders.map((ord) => (
                         <tr key={ord.id} className="hover:bg-neutral-50/80 transition-colors">
                           <td className="py-3 px-3">
                             <span className="font-extrabold text-neutral-900 block">{ord.customer}</span>
@@ -1106,7 +1121,7 @@ ${order.notes ? `📝 *Observação:* ${order.notes}` : ''}
                             </div>
                           </td>
                         </tr>
-                      ))}
+                      )))}
                     </tbody>
                   </table>
                 </div>

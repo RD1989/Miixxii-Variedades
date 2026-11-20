@@ -36,14 +36,24 @@ export const AdminMetricsAndClicks: React.FC = () => {
   const ticketMedio = adminOrders.length > 0 ? totalRevenue / adminOrders.length : 0;
   const conversionRate = totalLeads > 0 ? Math.round((adminOrders.length / totalLeads) * 100) : 0;
 
-  // Neighborhood metrics calculated from actual orders and leads
-  const neighborhoodData = [
-    { name: 'Adrianópolis / Vieiralves', count: 42, percent: 32, fee: 'R$ 15,00' },
-    { name: 'Flores / Parque 10', count: 35, percent: 27, fee: 'R$ 15,00' },
-    { name: 'Ponta Negra / Tarumã', count: 26, percent: 20, fee: 'R$ 25,00' },
-    { name: 'Centro / Praça 14', count: 18, percent: 14, fee: 'R$ 12,00' },
-    { name: 'Cidade Nova / Manoa', count: 9, percent: 7, fee: 'R$ 20,00' },
-  ];
+  // Neighborhood metrics dynamically calculated from real orders
+  const neighborhoodData = React.useMemo(() => {
+    if (adminOrders.length === 0) return [];
+    const counts: Record<string, number> = {};
+    adminOrders.forEach((o) => {
+      const key = o.neighborhood || (o.deliveryMethod?.includes('Retirada') ? 'Retirada no Showroom' : 'Manaus');
+      counts[key] = (counts[key] || 0) + 1;
+    });
+    const total = adminOrders.length;
+    return Object.entries(counts)
+      .map(([name, count]) => ({
+        name,
+        count,
+        percent: Math.round((count / total) * 100),
+        fee: name.includes('Retirada') ? 'Grátis' : 'A combinar',
+      }))
+      .sort((a, b) => b.count - a.count);
+  }, [adminOrders]);
 
   const handleCopyDailyReport = () => {
     const today = new Date().toLocaleDateString('pt-BR', {
@@ -66,9 +76,9 @@ export const AdminMetricsAndClicks: React.FC = () => {
 🎯 *Taxa de Conversão estimada:* ${conversionRate}%
 
 🛵 *Bairros com Maior Procura em Manaus:*
-1. Adrianópolis / Vieiralves (32%)
-2. Flores / Parque 10 (27%)
-3. Ponta Negra / Tarumã (20%)
+${neighborhoodData.length > 0 
+  ? neighborhoodData.slice(0, 3).map((n, i) => `${i + 1}. ${n.name} (${n.percent}%)`).join('\n')
+  : 'Nenhum pedido registrado ainda.'}
 ────────────────────────────────────────
 _Relatório operacional gerado automaticamente via Painel Admin MIIXXIIE_`;
 
@@ -267,7 +277,20 @@ _Relatório operacional gerado automaticamente via Painel Admin MIIXXIIE_`;
                 </tr>
               </thead>
               <tbody className="divide-y divide-neutral-100">
-                {leadClicks.map((click) => (
+                {leadClicks.length === 0 ? (
+                  <tr>
+                    <td colSpan={5} className="py-10 text-center text-neutral-400">
+                      <div className="flex flex-col items-center justify-center gap-1.5">
+                        <MessageCircle className="w-5 h-5 text-neutral-300" />
+                        <p className="font-semibold text-neutral-600 text-xs">Nenhum lead de WhatsApp registrado ainda</p>
+                        <p className="text-[11px] text-neutral-400">
+                          Os cliques nos botões de atendimento da loja serão registrados aqui em tempo real.
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                ) : (
+                  leadClicks.map((click) => (
                   <tr key={click.id} className="hover:bg-neutral-50/80 transition-colors">
                     <td className="py-2.5 font-mono text-[11px] text-neutral-500">
                       {click.timeFormatted}
@@ -302,7 +325,7 @@ _Relatório operacional gerado automaticamente via Painel Admin MIIXXIIE_`;
                       </button>
                     </td>
                   </tr>
-                ))}
+                )))}
               </tbody>
             </table>
           </div>
@@ -320,25 +343,35 @@ _Relatório operacional gerado automaticamente via Painel Admin MIIXXIIE_`;
             <span className="text-[10px] text-neutral-500 font-medium">Motoboy Express</span>
           </div>
 
-          <div className="space-y-3 text-xs">
-            {neighborhoodData.map((neigh, idx) => (
-              <div key={idx} className="space-y-1">
-                <div className="flex items-center justify-between">
-                  <span className="font-semibold text-neutral-800">{neigh.name}</span>
-                  <div className="flex items-center gap-2">
-                    <span className="text-[11px] text-neutral-400">{neigh.fee}</span>
-                    <span className="font-bold text-neutral-900">{neigh.count} pedidos</span>
+          {neighborhoodData.length === 0 ? (
+            <div className="text-center py-8 px-4 text-neutral-400 text-xs border border-dashed border-neutral-200 rounded-xl bg-neutral-50/50 space-y-1">
+              <MapPin className="w-5 h-5 mx-auto text-neutral-300" />
+              <p className="font-semibold text-neutral-600">Nenhum pedido registrado ainda</p>
+              <p className="text-[11px] text-neutral-400">
+                A métrica de demanda por bairros de Manaus será calculada automaticamente após os primeiros pedidos.
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-3 text-xs">
+              {neighborhoodData.map((neigh, idx) => (
+                <div key={idx} className="space-y-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-semibold text-neutral-800">{neigh.name}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[11px] text-neutral-400">{neigh.fee}</span>
+                      <span className="font-bold text-neutral-900">{neigh.count} {neigh.count === 1 ? 'pedido' : 'pedidos'}</span>
+                    </div>
+                  </div>
+                  <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
+                    <div
+                      className="bg-black h-full rounded-full transition-all duration-500"
+                      style={{ width: `${neigh.percent}%` }}
+                    />
                   </div>
                 </div>
-                <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
-                  <div
-                    className="bg-black h-full rounded-full transition-all duration-500"
-                    style={{ width: `${neigh.percent}%` }}
-                  />
-                </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
 
           <div className="p-3 bg-neutral-50 rounded-xl border border-neutral-200 text-[11px] text-neutral-600 space-y-1 mt-4">
             <p className="font-bold text-neutral-800">💡 Dica de Logística Local:</p>
@@ -364,7 +397,16 @@ _Relatório operacional gerado automaticamente via Painel Admin MIIXXIIE_`;
         </div>
 
         <div className="space-y-2.5 max-h-64 overflow-y-auto pr-1">
-          {activityLogs.map((log) => (
+          {activityLogs.length === 0 ? (
+            <div className="text-center py-8 px-4 text-neutral-400 text-xs border border-dashed border-neutral-200 rounded-xl bg-neutral-50/50 space-y-1">
+              <Clock className="w-5 h-5 mx-auto text-neutral-300" />
+              <p className="font-semibold text-neutral-600">Nenhuma atividade registrada ainda</p>
+              <p className="text-[11px] text-neutral-400">
+                Mudanças no Kanban, novos pedidos e ações de estoque ficarão auditados aqui automaticamente.
+              </p>
+            </div>
+          ) : (
+            activityLogs.map((log) => (
             <div
               key={log.id}
               className="p-3 rounded-xl bg-neutral-50 border border-neutral-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 text-xs"
@@ -383,7 +425,7 @@ _Relatório operacional gerado automaticamente via Painel Admin MIIXXIIE_`;
                 <span className="font-mono">{log.timeFormatted}</span>
               </div>
             </div>
-          ))}
+          )))}
         </div>
       </div>
     </div>
